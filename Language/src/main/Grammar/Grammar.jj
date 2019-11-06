@@ -1,0 +1,314 @@
+
+options
+{
+    DEBUG_PARSER=false;
+}
+
+PARSER_BEGIN(Parser)
+
+package parser;
+
+import nodes.*;
+import state.*;
+import java.util.List;
+import java.util.ArrayList;
+
+public class Parser {
+
+}
+
+PARSER_END(Parser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\r"
+| "\n"
+//|  <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+//|  <"/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/">
+}
+
+TOKEN :
+{
+  < DOT :  ".">
+  |
+  < COMA : "," >
+  |
+  < ADD : "+" >
+  |
+  < SUB : "-">
+  |
+  < MULT : "*">
+  |
+  < DIV : "/">
+  |
+  < EXCL : "!">
+//  |
+//  < DECR : "--">
+//  |
+//  < INCR : "++">
+  |
+  < CONJ : "&&">
+  |
+  < DISJ : "||">
+  |
+//  < NL: "\n" | "\r" ("\n")? >
+//  |
+  < EQUALS : "=" >
+  |
+  < EQEQ : "==" >
+  |
+  < EXCL_EQUALS : "!=" >
+  |
+  < GREATER : ">" >
+  |
+  < LESS : "<" >
+  |
+  < GR_EQUALS : ">=" >
+  |
+  < LE_EQUALS : "<=" >
+  |
+  < ARROW : "->" >
+  |
+  < SEMICOLON: ";" >
+  |
+  < COLON: ":" >
+  |
+  < LPAR : "(" >
+  |
+  < RPAR : ")" >
+  |
+  < END: "end" >
+  |
+  < LET: "let" >
+  |
+  < IN: "in" >
+  |
+//  < STAT_ENDS: (<SEMICOLON> | <NL>)>
+//  |
+  < NUMBER: (<DIGIT>) + >
+}
+
+TOKEN : {
+ <IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*>
+|  <#LETTER: ["a"-"z","A"-"Z","_"]>
+|  <#DIGIT: ["0"-"9"]>
+}
+
+ASTNode Start():
+{
+//	List<ASTNode> nodes = new ArrayList<>();
+	ASTNode node;
+}
+{
+//   (node = Statment() ((<STAT_ENDS> | <EOF>) Statment())* (<EOF>)?
+//   {return node;}
+//   )?
+    node = Statment()
+    {return node;}
+
+}
+
+ASTNode Statment() :
+{
+ ASTNode node;
+}
+{
+     node = Expression() <SEMICOLON>
+    { return node; }
+}
+
+// EXPERIMENTAL -==-----------------------------------
+ASTNode Expression() :
+{
+    ASTNode node;
+}
+{
+    node=Equality()
+    { return node; }
+}
+
+
+//ASTNode Disjunction() :
+//{
+//    ASTNode node;
+//}
+//{
+//    node = Conjunction() ((<NL>)* <DISJ> (<NL>)* Conjunction())*
+//    { return node; }
+//}
+//
+//ASTNode Conjunction() :
+//{
+//    ASTNode node;
+//}
+//{
+//    node = Equality() ((<NL>)* <CONJ> (<NL>)* Equality())*
+//    { return node; }
+//}
+
+ASTNode Equality() :
+{
+    Token op;
+    ASTNode node;
+}
+{
+    node = Comparison() (( op=<EQEQ> | op=<EXCL_EQUALS> )  Comparison())*
+    { return node; }
+}
+
+ASTNode Comparison() :
+{
+    Token op;
+    ASTNode node;
+}
+{
+    node = addSubExpression() (( op=<GREATER> | op=<LESS> | op=<GR_EQUALS> | op=<LE_EQUALS> )
+      addSubExpression())?
+     { return node; }
+}
+
+ASTNode addSubExpression() :
+{
+    Token op;
+    ASTNode node, node2;
+}
+{
+    node = multDivExpression() (( op=<ADD> | op=<SUB> )  node2=multDivExpression()
+                     { if (op.kind == ADD)
+                             node = new ASTAddition(node,node2);
+                       else  node = new ASTSubtraction(node,node2);
+                     }
+               )*
+     { return node; }
+}
+
+ASTNode multDivExpression() :
+{
+    Token op;
+    ASTNode node, node2;
+}
+{
+    node = Unary() (( op=<MULT> | op=<DIV> ) node2=Unary()
+                  { if (op.kind == MULT)
+                          node = new ASTMultiplication(node,node2);
+                    else  node = new ASTDivision(node,node2);
+                  }
+           ) *
+     { return node; }
+}
+
+Token UnaryOperator() :
+{
+    Token t;
+}
+{
+    ( t = <SUB> | t =<EXCL> )
+    {return t;}
+}
+
+ASTNode Unary():
+{
+    Token op = null;
+    ASTNode node;
+}
+{
+    (op=UnaryOperator())? node = Fact()
+    {
+        if (op==null)
+            return node;
+        switch(op.kind)
+        {
+            case SUB:
+                node = new ASTNegate(node);
+                break;
+            case EXCL:
+                node = new ASTNegate(node);
+                break;
+        }
+        return node;
+    }
+}
+
+ASTNode Fact() :
+{
+    ASTNode node;
+}
+{
+    (
+        node = Identifier()
+        |
+        node = Let()
+        |
+        node = parenthesizedExpression()
+        |
+        node = Number()
+    )
+    {
+        return node;
+    }
+}
+
+ASTNode Identifier() :
+{
+    Token id;
+    ASTNode node;
+}
+{
+    id = <IDENTIFIER>
+    {
+        node = new ASTIdentifier(id.image);
+        return node;
+    }
+}
+
+Declaration Declaration() :
+{
+    Token id;
+    ASTNode exp;
+}
+{
+    id=<IDENTIFIER> <EQUALS> exp=Expression() { return new Declaration(id.image,exp); }
+}
+
+List<Declaration> DeclarationsList() :
+{
+    Declaration d;
+    List<Declaration> list = new ArrayList<>();
+}
+{
+    d=Declaration() {list.add(d);} ((<COMA>)? d= Declaration() {list.add(d);})*
+    {return list;}
+
+}
+
+ASTNode Let() :
+{
+    List<Declaration> list;
+    ASTNode body;
+}
+{
+    <LET>
+        list = DeclarationsList()
+    <IN>
+        body = Expression()
+    <END>
+    { return new nodes.ASTLet(list,body); }
+}
+
+ASTNode Number() :
+{
+    Token num;
+}
+{
+   num = <NUMBER> { return new ASTNumber(Integer.parseInt(num.image)); }
+}
+
+ASTNode parenthesizedExpression() :
+{
+    ASTNode node;
+}
+{
+    <LPAR>  node=Expression()  <RPAR> { return node; }
+}
