@@ -10,7 +10,7 @@ import parser.Provider;
 import parser.StreamProvider;
 import state.Environment;
 
-public class Console {
+public class Interpreter {
 
     @SuppressWarnings("static-access")
     public static void main(String args[]) {

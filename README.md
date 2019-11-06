@@ -1,12 +1,12 @@
 # ICL1920_41774_44292
 
-Gonçalo Feliciano - 44292
+Gonï¿½alo Feliciano - 44292
 
 Tomas Pessanha - 41774
 
 ## Main
 
-### Console:
+### Interpreter:
 Runs the interpreter, and needs no arguments
 
 ### Compiler:
