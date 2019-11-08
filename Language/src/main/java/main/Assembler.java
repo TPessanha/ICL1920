@@ -17,7 +17,7 @@ public class Assembler {
 
 	public static void main(String[] args) {
 		try {
-			assemble();
+			run();
 //            jasminHelp();
 //            jasminVersion();
 		} catch (Exception e) {
@@ -29,17 +29,17 @@ public class Assembler {
 		Assembler.outputDir = outputDir;
 	}
 
-	public static void assemble() throws IOException {
+	public static void run() throws IOException {
 		if (Assembler.outputDir == null)
 			setOutputDir(new File(getAssembledPath().toAbsolutePath().toString()));
 		File inputDir = new File(getCompiledPath().toAbsolutePath().toString());
 
 		jasmin = new Main();
 		jasmin.run(new String[]{"-d", outputDir.getAbsolutePath(), "-g"});
-		assemble(inputDir);
+		run(inputDir);
 	}
 
-	public static void assemble(File inputDir) throws IOException {
+	public static void run(File inputDir) throws IOException {
 
 //        List<String> args = new ArrayList<>();
 //        args.add("-d");
@@ -52,7 +52,7 @@ public class Assembler {
 
 		for (File f : inputDir.listFiles()) {
 			if (f.isDirectory()) {
-				assemble(f);
+				run(f);
 			} else if (f.isFile() && f.getName().endsWith(".j")) {
 				jasmin.assemble(f.getAbsolutePath());
 			}
