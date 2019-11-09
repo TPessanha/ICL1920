@@ -1,1 +1,3 @@
-let x=10 in 5+x end;
+let x=10 in
+	5+x
+end;

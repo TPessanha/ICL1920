@@ -1,6 +1,11 @@
 public class RandomTests {
 
-    public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
+
+		boolean f = false;
+		int x = 5;
+
+
 //        Environment<Value> scope = new Environment();
 //        scope.declareVariable("test", new Int(5));
 //
@@ -25,7 +30,7 @@ public class RandomTests {
 //        System.out.println("First");
 //        System.out.println(elapsedTime);
 
-        //2nd
+		//2nd
 //
-    }
+	}
 }

@@ -1,5 +1,7 @@
 import main.Assembler;
 import main.Compiler;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import utils.PropertiesUtils;
@@ -8,6 +10,7 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,6 +18,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CompilerTests {
 	SummaryGeneratingListener listener = new SummaryGeneratingListener();
 	private Properties properties = new Properties();
+
+	@AfterEach
+	void cleanup() throws IOException {
+		File dir =
+			new File(Paths.get(PropertiesUtils.getCompiledPath().toString()).toString());
+
+		System.out.println("Delete: " + dir.getAbsolutePath());
+		for (File f: Objects.requireNonNull(dir.listFiles()))
+		{
+			f.delete();
+		}
+	}
+
+	@AfterAll
+	static void finish() throws IOException {
+		File dir =
+			new File(Paths.get(PropertiesUtils.getAssembledPath().toString()).toString());
+		System.out.println("Delete: " + dir.getAbsolutePath());
+		for (File f : Objects.requireNonNull(dir.listFiles())) {
+			f.delete();
+		}
+	}
 
 	@Test
 	void test_basic_1() throws Exception {
@@ -32,7 +57,7 @@ public class CompilerTests {
 	@Test
 	void test_let_1() throws Exception {
 		String fileName = "test_let_1.icl";
-		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/"+ fileName);
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		try {
 			compileAndAssemble(in);
 			List outputs = runClass();
@@ -42,9 +67,22 @@ public class CompilerTests {
 		}
 	}
 
+	@Test
+	void test_let_2() throws Exception {
+		String fileName = "test_let_2.icl";
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
+		try {
+			compileAndAssemble(in);
+			List outputs = runClass();
+			assertEquals(outputs.get(0), "16");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void compileAndAssemble(InputStream in) throws IOException {
 		Compiler.run(in);
-		Assembler.assemble();
+		Assembler.run();
 	}
 
 	private List<String> runClass() throws Exception {
@@ -68,7 +106,7 @@ public class CompilerTests {
 					if (line1 != null) System.out.print(line1);
 					if (line2 != null) {
 						outputs.add(line2);
-						System.out.print(line2);
+						System.out.println(line2);
 					}
 				}
 				errorOutput.close();
