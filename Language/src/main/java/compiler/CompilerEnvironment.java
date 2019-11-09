@@ -1,6 +1,5 @@
 package compiler;
 
-import exceptions.UndeclaredException;
 import state.Environment;
 
 import java.io.IOException;
@@ -10,19 +9,17 @@ import static utils.PropertiesUtils.getCompiledPath;
 
 public class CompilerEnvironment extends Environment<IdentifierDetails> {
 	private int level;
-	private int SL;
+	private int SL = 4;
 
 	public CompilerEnvironment() throws IOException {
 		super(true);
 		level = 0;
-		SL = 4;
 		StackFrameFile stackFrameFile = new StackFrameFile(this);
 		stackFrameFile.dump(getCompiledPath());
 	}
 
-	public CompilerEnvironment(CompilerEnvironment parent) throws IOException {
+	public CompilerEnvironment(CompilerEnvironment parent) {
 		super(parent, true);
-		SL = 4;
 		level = ((CompilerEnvironment) this.getParent()).level + 1;
 	}
 
@@ -30,12 +27,8 @@ public class CompilerEnvironment extends Environment<IdentifierDetails> {
 		return declarations.values();
 	}
 
-	public IdentifierDetails find(String identifier) throws UndeclaredException {
-		return super.find(identifier);
-	}
-
 	@Override
-	public CompilerEnvironment beginScope() throws IOException {
+	public CompilerEnvironment beginScope() {
 		return new CompilerEnvironment(this);
 	}
 

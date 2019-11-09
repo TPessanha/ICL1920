@@ -3,7 +3,6 @@ package state;
 import exceptions.DuplicatedIdentifierException;
 import exceptions.UndeclaredException;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,16 +39,16 @@ public class Environment<T> {
 			return value;
 
 		Environment<T> scope = parent;
-		do {
+		while (scope != null) {
 			if (scope.declarations.containsKey(identifier))
 				return scope.declarations.get(identifier);
 			scope = scope.parent;
-		} while (scope != null);
+		}
 
 		throw new UndeclaredException("Variable '" + identifier + "' is not declared");
 	}
 
-	public Environment<T> beginScope() throws IOException {
+	public Environment<T> beginScope() {
 		return new Environment<>(this,compiler);
 	}
 

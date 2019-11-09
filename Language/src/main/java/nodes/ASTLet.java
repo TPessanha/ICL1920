@@ -32,7 +32,7 @@ public class ASTLet implements ASTNode {
 		Environment<Value<?>> localScope = env.beginScope();
 
 		for (Declaration d : this.declarations)
-			localScope.declareVariable(d.getIdentifier(), d.getValue().eval(localScope));
+			localScope.declareVariable(d.getIdentifier(), d.getExpression().eval(localScope));
 
 		return body.eval(localScope);
 	}
@@ -81,7 +81,7 @@ public class ASTLet implements ASTNode {
 			code.emit_comment("Value of " + declaration.getIdentifier());
 
 			code.emit_aload(SL);
-			code.appendCodeBlock(declaration.getValue().compile(newEnv));
+			code.appendCodeBlock(declaration.getExpression().compile(newEnv));
 			code.emit_putField(className + "/x_" + i, details.getType());
 
 			code.emit_blank();

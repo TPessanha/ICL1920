@@ -38,7 +38,7 @@ public class Compiler {
 		run(parser);
 
 		if (assemble)
-			Assembler.assemble();
+			Assembler.run();
 	}
 
 	private static void run(Parser parser) {
@@ -55,9 +55,11 @@ public class Compiler {
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Could not find output path");
-		} catch (Exception e) {
+		} catch (ParseException e) {
 			e.printStackTrace();
 			System.out.println("Syntax Error!");//TODO change
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
