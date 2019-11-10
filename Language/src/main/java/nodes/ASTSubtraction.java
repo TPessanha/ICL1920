@@ -1,49 +1,29 @@
 package nodes;
 
 import compiler.CodeBlock;
-import compiler.CompilerEnvironment;
-import exceptions.IllegalOperatorException;
-import state.Environment;
-import types.IType;
-import types.NumberType;
-import types.UndefinedType;
 import values.NumberValue;
-import values.Value;
+import values.IValue;
 
-public class ASTSubtraction implements ASTNode {
-    private final ASTNode lNode, rNode;
-
-    public ASTSubtraction(ASTNode lNode, ASTNode rNode) {
-        this.lNode = lNode;
-        this.rNode = rNode;
-    }
-
-    public Value eval(Environment env) throws Exception {
-        Value v1 = lNode.eval(env);
-        Value v2 = rNode.eval(env);
-
-        if (v1 instanceof NumberValue && v2 instanceof NumberValue)
-            return ((NumberValue) v1).Subtract((NumberValue) v2);
-        throw new IllegalOperatorException("-", v1.getTypeName(), v2.getTypeName());
-    }
+public class ASTSubtraction extends ASTMath {
+	public ASTSubtraction(ASTNode lNode, ASTNode rNode) {
+		super(lNode, rNode);
+	}
 
 	@Override
-	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
+	CodeBlock emitOperation() {
 		CodeBlock code = new CodeBlock();
-		code.appendCodeBlock(lNode.compile(environment));
-		code.appendCodeBlock(rNode.compile(environment));
 		code.emit_isub();
 		code.emit_blank();
 		return code;
 	}
 
 	@Override
-	public IType typecheck() throws Exception {
-		IType t1 = lNode.typecheck();
-		IType t2 = rNode.typecheck();
-		if (t1 instanceof NumberType && t2 instanceof NumberType)
-			return t1.getType();
-		else
-			return UndefinedType.value;
+	NumberValue doOperation(IValue v1, IValue v2) {
+		return ((NumberValue) v1).Subtract((NumberValue) v2);
+	}
+
+	@Override
+	String getOperator() {
+		return "-";
 	}
 }

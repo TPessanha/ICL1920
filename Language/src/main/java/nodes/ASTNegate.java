@@ -6,7 +6,7 @@ import exceptions.IllegalOperatorException;
 import state.Environment;
 import types.IType;
 import values.NumberValue;
-import values.Value;
+import values.IValue;
 
 public class ASTNegate implements ASTNode{
 
@@ -18,8 +18,8 @@ public class ASTNegate implements ASTNode{
     }
 
     @Override
-    public Value<?> eval(Environment<Value<?>> environment) throws Exception {
-        Value v = node.eval(environment);
+    public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
+        IValue v = node.eval(environment);
 
         if (v instanceof NumberValue)
             return (NumberValue) v.negate();
@@ -36,7 +36,7 @@ public class ASTNegate implements ASTNode{
 	}
 
 	@Override
-	public IType typecheck() throws Exception {
+	public IType typecheck() {
 		return null;
 	}
 }

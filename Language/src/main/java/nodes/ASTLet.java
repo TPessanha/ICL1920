@@ -4,10 +4,11 @@ import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import compiler.IdentifierDetails;
 import compiler.StackFrameFile;
+import exceptions.TypeMismatchException;
 import state.Declaration;
 import state.Environment;
 import types.IType;
-import values.Value;
+import values.IValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +29,8 @@ public class ASTLet implements ASTNode {
 	}
 
 	@Override
-	public Value<?> eval(Environment<Value<?>> env) throws Exception {
-		Environment<Value<?>> localScope = env.beginScope();
+	public IValue<?> eval(Environment<IValue<?>> env) throws Exception {
+		Environment<IValue<?>> localScope = env.beginScope();
 
 		for (Declaration d : this.declarations)
 			localScope.declareVariable(d.getIdentifier(), d.getExpression().eval(localScope));
@@ -111,7 +112,7 @@ public class ASTLet implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() throws Exception {
-		return null;
+	public IType typecheck() throws TypeMismatchException {
+		return body.typecheck();
 	}
 }

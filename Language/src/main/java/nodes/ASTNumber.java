@@ -6,25 +6,25 @@ import state.Environment;
 import types.IType;
 import types.IntType;
 import values.IntValue;
-import values.Value;
+import values.IValue;
 
 public class ASTNumber implements ASTNode {
-    private final IntValue number;
+    private final IntValue value;
 
     public ASTNumber(int value) {
-        this.number = new IntValue(value);
+        this.value = new IntValue(value);
     }
 
     @Override
-    public Value<?> eval(Environment<Value<?>> environment) {
-        return number;
+    public IValue<?> eval(Environment<IValue<?>> environment) {
+        return value;
     }
 
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		CodeBlock instructions = new CodeBlock();
 
-		instructions.emit_sint(number.getValue());
+		instructions.emit_sint(value.getValue());
 
 		return instructions;
 	}

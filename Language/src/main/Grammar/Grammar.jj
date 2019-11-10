@@ -31,30 +31,24 @@ SKIP :
 
 TOKEN :
 {
-  < DOT :  ".">
+  < DOT :  "." >
   |
   < COMA : "," >
   |
   < ADD : "+" >
   |
-  < SUB : "-">
+  < SUB : "-" >
   |
-  < MULT : "*">
+  < MULT : "*" >
   |
-  < DIV : "/">
+  < DIV : "/" >
   |
-  < EXCL : "!">
-//  |
-//  < DECR : "--">
-//  |
-//  < INCR : "++">
+  < EXCL : "!" >
   |
-  < CONJ : "&&">
+  < CONJ : "&&" >
   |
-  < DISJ : "||">
+  < DISJ : "||" >
   |
-//  < NL: "\n" | "\r" ("\n")? >
-//  |
   < EQUALS : "=" >
   |
   < EQEQ : "==" >
@@ -78,22 +72,25 @@ TOKEN :
   < LPAR : "(" >
   |
   < RPAR : ")" >
-  |
-  < END: "end" >
-  |
-  < LET: "let" >
-  |
-  < IN: "in" >
-  |
+//  |
 //  < STAT_ENDS: (<SEMICOLON> | <NL>)>
 //  |
-  < NUMBER: (<DIGIT>) + >
+}
+
+//Reserved words
+TOKEN : {
+	< LET: "let" > |
+	< END: "end" > |
+	< IN: "in" > |
+	< TRUE: "true" > |
+   	< FALSE: "false" >
 }
 
 TOKEN : {
- <IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*>
-|  <#LETTER: ["a"-"z","A"-"Z","_"]>
-|  <#DIGIT: ["0"-"9"]>
+	< NUMBER: (<DIGIT>) + > |
+	< IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*> |
+	< #LETTER: ["a"-"z","A"-"Z","_"]> |
+	< #DIGIT: ["0"-"9"]>
 }
 
 ASTNode Start():
@@ -115,7 +112,7 @@ ASTNode Statment() :
  ASTNode node;
 }
 {
-     node = Expression() <SEMICOLON>
+	node = Expression() <SEMICOLON>
     { return node; }
 }
 

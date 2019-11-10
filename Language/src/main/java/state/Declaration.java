@@ -1,7 +1,7 @@
 package state;
 
 import nodes.ASTNode;
-import values.Value;
+import values.IValue;
 
 public class Declaration {
     private String identifier;
@@ -12,7 +12,7 @@ public class Declaration {
         this.expression = expression;
     }
 
-    public void declareIn(Environment<Value<?>> scope) throws Exception {
+    public void declareIn(Environment<IValue<?>> scope) throws Exception {
         scope.declareVariable(identifier, expression.eval(scope));
     }
 

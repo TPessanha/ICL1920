@@ -5,7 +5,7 @@ import compiler.CompilerEnvironment;
 import state.Environment;
 import types.IType;
 import values.IntValue;
-import values.Value;
+import values.IValue;
 
 public class ASTDeclaration implements ASTNode {
     private final String identifier;
@@ -22,7 +22,7 @@ public class ASTDeclaration implements ASTNode {
 //        return expression;
 //    }
 
-    public Value<?> eval(Environment<Value<?>> environment) throws Exception {
+    public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
         environment.declareVariable(this.identifier, new IntValue(0));
         return new IntValue(0);
     }
@@ -33,7 +33,7 @@ public class ASTDeclaration implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() throws Exception {
+	public IType typecheck() {
 		return null;
 	}
 }

@@ -57,7 +57,7 @@ public class Compiler {
 			System.out.println("Could not find output path");
 		} catch (ParseException e) {
 			e.printStackTrace();
-			System.out.println("Syntax Error!");//TODO change
+			System.out.println("Syntax Error!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

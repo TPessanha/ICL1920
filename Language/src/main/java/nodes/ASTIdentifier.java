@@ -3,10 +3,9 @@ package nodes;
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import compiler.IdentifierDetails;
-import exceptions.UndeclaredException;
 import state.Environment;
 import types.IType;
-import values.Value;
+import values.IValue;
 
 public class ASTIdentifier implements ASTNode {
 	private final String name;
@@ -16,7 +15,7 @@ public class ASTIdentifier implements ASTNode {
 	}
 
 	@Override
-	public Value<?> eval(Environment<Value<?>> env) throws Exception {
+	public IValue<?> eval(Environment<IValue<?>> env) throws Exception {
 		return env.find(name);
 	}
 
@@ -42,7 +41,7 @@ public class ASTIdentifier implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() throws Exception {
+	public IType typecheck() {
 		return null;
 	}
 }

@@ -6,10 +6,10 @@ import types.IType;
 /**
  * Description:
  */
-public class BooleanValue implements Value<Boolean> {
+public class BooleanValue implements IValue<Boolean> {
     private final boolean value;
 
-    BooleanValue(boolean value) {
+    public BooleanValue(boolean value) {
         this.value = value;
     }
 
@@ -34,17 +34,17 @@ public class BooleanValue implements Value<Boolean> {
     }
 
     @Override
-    public Value<Boolean> negate() {
+    public IValue<Boolean> negate() {
         return new BooleanValue(!value);
     }
 
     @Override
-    public int compareTo(Value<Boolean> anotherBoolean) {
+    public int compareTo(IValue<Boolean> anotherBoolean) {
         return getValue().compareTo(anotherBoolean.getValue());
     }
 
     @Override
-    public boolean equals(Value<Boolean> anotherBoolean) {
+    public boolean equals(IValue<Boolean> anotherBoolean) {
         return getValue().equals(anotherBoolean.getValue());
     }
 }

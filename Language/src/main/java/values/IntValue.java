@@ -37,12 +37,12 @@ public class IntValue extends NumberValue<Integer> {
     }
 
     @Override
-    public boolean equals(Value<Integer> anotherInt) {
+    public boolean equals(IValue<Integer> anotherInt) {
         return getValue().equals(anotherInt.getValue());
     }
 
     @Override
-    public int compareTo(Value<Integer> anotherInt) {
+    public int compareTo(IValue<Integer> anotherInt) {
         return getValue().compareTo(anotherInt.getValue());
     }
 
