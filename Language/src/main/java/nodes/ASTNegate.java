@@ -3,6 +3,8 @@ package nodes;
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
+import exceptions.TypeMismatchException;
+import exceptions.UndeclaredException;
 import state.Environment;
 import types.IType;
 import values.NumberValue;
@@ -36,7 +38,7 @@ public class ASTNegate implements ASTNode{
 	}
 
 	@Override
-	public IType typecheck() {
-		return null;
+	public IType typecheck(Environment<IType> environment) throws Exception {
+		return node.typecheck(environment);
 	}
 }

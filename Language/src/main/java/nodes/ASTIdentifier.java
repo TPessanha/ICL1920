@@ -3,6 +3,7 @@ package nodes;
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import compiler.IdentifierDetails;
+import exceptions.UndeclaredException;
 import state.Environment;
 import types.IType;
 import values.IValue;
@@ -41,7 +42,7 @@ public class ASTIdentifier implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() {
-		return null;
+	public IType typecheck(Environment<IType> environment) throws UndeclaredException {
+		return environment.find(name);
 	}
 }

@@ -5,6 +5,8 @@ import compiler.MainClassFile;
 import compiler.CodeBlock;
 import nodes.ASTNode;
 import parser.*;
+import state.Environment;
+import types.IType;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -48,8 +50,9 @@ public class Compiler {
 			exp = parser.Start();
 			MainClassFile mainClassFile = new MainClassFile(256, 10, "Main");
 			CodeBlock code = exp.compile(new CompilerEnvironment());
+			IType type = exp.typecheck(new Environment<>());
 			mainClassFile.emitCodeBlock(code);
-			mainClassFile.writeFooter();
+			mainClassFile.writeFooter(type.getJVMType());
 
 			mainClassFile.dump(getCompiledPath());
 		} catch (IOException e) {

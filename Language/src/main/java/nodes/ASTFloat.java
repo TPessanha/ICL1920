@@ -2,22 +2,21 @@ package nodes;
 
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
-import exceptions.TypeMismatchException;
 import state.Environment;
-import types.BooleanType;
+import types.FloatType;
 import types.IType;
-import values.BooleanValue;
+import values.FloatValue;
 import values.IValue;
 
-public class ASTBoolean implements ASTNode {
-	private BooleanValue value;
+public class ASTFloat implements ASTNode {
+	private final FloatValue value;
 
-	public ASTBoolean(boolean value) {
-		this.value = new BooleanValue(value);
+	public ASTFloat(float value) {
+		this.value = new FloatValue(value);
 	}
 
 	@Override
-	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
+	public IValue<?> eval(Environment<IValue<?>> environment) {
 		return value;
 	}
 
@@ -25,13 +24,13 @@ public class ASTBoolean implements ASTNode {
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		CodeBlock instructions = new CodeBlock();
 
-		instructions.emit_sint(value.getValue() ? 1 : 0);
+		instructions.emit_float(value.getValue());
 
 		return instructions;
 	}
 
 	@Override
 	public IType typecheck(Environment<IType> environment) {
-		return BooleanType.value;
+		return FloatType.value;
 	}
 }

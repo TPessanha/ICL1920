@@ -9,6 +9,7 @@ import parser.Parser;
 import parser.Provider;
 import parser.StreamProvider;
 import state.Environment;
+import values.IValue;
 
 public class Interpreter {
 
@@ -19,8 +20,9 @@ public class Interpreter {
 		while (true) {
 			try {
 				ASTNode exp = parser.Start();
-				System.out.println("Expected type: " + exp.typecheck().getTypeName());
-				System.out.println(exp.eval(new Environment<>(false)));
+				System.out.println("Expected type: " + exp.typecheck(new Environment<>(false)).getTypeName());
+				IValue<?> out = exp.eval(new Environment<>(false));
+				System.out.println(out.getValue());
 			} catch (ParseException e) {
 				System.out.println("Syntax Error!");
 				System.out.println(e.getMessage());

@@ -33,7 +33,7 @@ public class ASTDeclaration implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() {
+	public IType typecheck(Environment<IType> environment) {
 		return null;
 	}
 }

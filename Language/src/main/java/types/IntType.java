@@ -13,4 +13,8 @@ public class IntType extends NumberType{
 		return value;
 	}
 
+	@Override
+	public String getJVMType() {
+		return "I";
+	}
 }

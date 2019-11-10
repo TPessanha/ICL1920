@@ -1,5 +1,6 @@
 package values;
 
+import types.FloatType;
 import types.IType;
 
 public class FloatValue extends NumberValue<Float> {
@@ -35,26 +36,26 @@ public class FloatValue extends NumberValue<Float> {
 
 	@Override
 	public String getTypeName() {
-		return null;
+		return "float";
 	}
 
 	@Override
 	public IType getType() {
-		return null;
+		return FloatType.value;
 	}
 
 	@Override
 	public IValue<Float> negate() {
-		return null;
+		return new FloatValue(-value.floatValue());
 	}
 
 	@Override
-	public boolean equals(IValue<Float> value) {
-		return false;
+	public boolean equals(IValue<Float> anotherFloat) {
+		return getValue().equals(anotherFloat.getValue());
 	}
 
 	@Override
-	public int compareTo(IValue<Float> o) {
-		return 0;
+	public int compareTo(IValue<Float> anotherFloat) {
+		return getValue().compareTo(anotherFloat.getValue());
 	}
 }

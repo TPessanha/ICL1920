@@ -12,4 +12,9 @@ public class FloatType extends NumberType {
 	public FloatType getType() {
 		return value;
 	}
+
+	@Override
+	public String getJVMType() {
+		return "F";
+	}
 }

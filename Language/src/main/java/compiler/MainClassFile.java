@@ -45,12 +45,12 @@ public class MainClassFile extends ClassFile {
 		code.appendCodeLine("");
 	}
 
-	public void writeFooter() {
+	public void writeFooter(String valueType) {
 		code.appendCodeLine("");
 		code.appendCodeLine("; END ===================================================");
 		code.appendCodeLine("");
 		code.appendCodeLine("; convert to String;");
-		code.appendCodeLine("invokestatic java/lang/String/valueOf(I)Ljava/lang/String;");
+		code.appendCodeLine("invokestatic java/lang/String/valueOf(" + valueType + ")Ljava/lang/String;");
 		code.appendCodeLine("; call println");
 		code.appendCodeLine("invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
 		code.appendCodeLine("");

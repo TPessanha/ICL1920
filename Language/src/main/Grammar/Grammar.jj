@@ -87,7 +87,8 @@ TOKEN : {
 }
 
 TOKEN : {
-	< NUMBER: (<DIGIT>) + > |
+	< INTEGER: (<DIGIT>) + > |
+	< FLOAT: (<DIGIT>)+ "." (<DIGIT>)+ > |
 	< IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*> |
 	< #LETTER: ["a"-"z","A"-"Z","_"]> |
 	< #DIGIT: ["0"-"9"]>
@@ -234,13 +235,17 @@ ASTNode Fact() :
 }
 {
     (
+    	node = Boolean()
+    	|
         node = Identifier()
         |
         node = Let()
         |
         node = parenthesizedExpression()
         |
-        node = Number()
+        node = Float()
+        |
+        node = Integer()
     )
     {
         return node;
@@ -294,12 +299,31 @@ ASTNode Let() :
     { return new nodes.ASTLet(list,body); }
 }
 
-ASTNode Number() :
+ASTNode Integer() :
 {
     Token num;
 }
 {
-   num = <NUMBER> { return new ASTNumber(Integer.parseInt(num.image)); }
+   num = <INTEGER>
+   { return new ASTInteger(Integer.parseInt(num.image)); }
+}
+
+ASTNode Float() :
+{
+    Token num;
+}
+{
+   num = <FLOAT>
+   { return new ASTFloat(Float.parseFloat(num.image)); }
+}
+
+ASTNode Boolean() :
+{
+    Token value;
+}
+{
+   (value = <TRUE> | value = <FALSE> )
+   { return new ASTBoolean(Boolean.parseBoolean(value.image)); }
 }
 
 ASTNode parenthesizedExpression() :

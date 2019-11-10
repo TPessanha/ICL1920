@@ -8,10 +8,10 @@ import types.IntType;
 import values.IntValue;
 import values.IValue;
 
-public class ASTNumber implements ASTNode {
+public class ASTInteger implements ASTNode {
     private final IntValue value;
 
-    public ASTNumber(int value) {
+    public ASTInteger(int value) {
         this.value = new IntValue(value);
     }
 
@@ -30,7 +30,7 @@ public class ASTNumber implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() {
+	public IType typecheck(Environment<IType> environment){
 		return IntType.value;
 	}
 }

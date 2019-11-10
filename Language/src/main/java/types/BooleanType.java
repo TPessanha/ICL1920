@@ -12,4 +12,9 @@ public class BooleanType implements IType {
 	public BooleanType getType() {
 		return value;
 	}
+
+	@Override
+	public String getJVMType() {
+		return "Z";
+	}
 }

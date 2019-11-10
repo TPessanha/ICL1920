@@ -42,9 +42,11 @@ public class ASTLet implements ASTNode {
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		CompilerEnvironment newEnv = environment.beginScope();
 
-
 		for (int i = 0; i < this.declarations.size(); i++) {
-			IdentifierDetails details = new IdentifierDetails("I", newEnv.getLevel(), "x_" + i);
+			Declaration d = this.declarations.get(i);
+
+			IdentifierDetails details =
+				new IdentifierDetails(d.getExpression().typecheck(new Environment<>()).getJVMType(), newEnv.getLevel(), "x_" + i);
 			newEnv.declareVariable(this.declarations.get(i).getIdentifier(), details);
 		}
 
@@ -112,7 +114,12 @@ public class ASTLet implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() throws TypeMismatchException {
-		return body.typecheck();
+	public IType typecheck(Environment<IType> environment) throws Exception {
+		Environment<IType> localScope = environment.beginScope();
+
+		for (Declaration d : this.declarations)
+			localScope.declareVariable(d.getIdentifier(),d.getExpression().typecheck(localScope));
+
+		return body.typecheck(localScope);
 	}
 }

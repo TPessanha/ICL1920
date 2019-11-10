@@ -249,6 +249,11 @@ if (op==null)
 
   final public ASTNode Fact() throws ParseException {ASTNode node;
     switch (jj_ntk == -1 ? jj_ntk_f() : jj_ntk) {
+    case TRUE:
+    case FALSE:{
+      node = Boolean();
+      break;
+      }
     case IDENTIFIER:{
       node = Identifier();
       break;
@@ -261,8 +266,12 @@ if (op==null)
       node = parenthesizedExpression();
       break;
       }
-    case NUMBER:{
-      node = Number();
+    case FLOAT:{
+      node = Float();
+      break;
+      }
+    case INTEGER:{
+      node = Integer();
       break;
       }
     default:
@@ -333,9 +342,34 @@ list.add(d);
     throw new IllegalStateException ("Missing return statement in function");
 }
 
-  final public ASTNode Number() throws ParseException {Token num;
-    num = jj_consume_token(NUMBER);
-{if ("" != null) return new ASTNumber(Integer.parseInt(num.image));}
+  final public ASTNode Integer() throws ParseException {Token num;
+    num = jj_consume_token(INTEGER);
+{if ("" != null) return new ASTInteger(Integer.parseInt(num.image));}
+    throw new IllegalStateException ("Missing return statement in function");
+}
+
+  final public ASTNode Float() throws ParseException {Token num;
+    num = jj_consume_token(FLOAT);
+{if ("" != null) return new ASTFloat(Float.parseFloat(num.image));}
+    throw new IllegalStateException ("Missing return statement in function");
+}
+
+  final public ASTNode Boolean() throws ParseException {Token value;
+    switch (jj_ntk == -1 ? jj_ntk_f() : jj_ntk) {
+    case TRUE:{
+      value = jj_consume_token(TRUE);
+      break;
+      }
+    case FALSE:{
+      value = jj_consume_token(FALSE);
+      break;
+      }
+    default:
+      jj_la1[13] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+{if ("" != null) return new ASTBoolean(Boolean.parseBoolean(value.image));}
     throw new IllegalStateException ("Missing return statement in function");
 }
 
@@ -356,7 +390,7 @@ list.add(d);
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[13];
+  final private int[] jj_la1 = new int[14];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -364,10 +398,10 @@ list.add(d);
 	   jj_la1_init_1();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x18000,0x18000,0x1e0000,0x1e0000,0x180,0x180,0x600,0x600,0x900,0x900,0x69000000,0x40000040,0x40,};
+	   jj_la1_0 = new int[] {0x18000,0x18000,0x1e0000,0x1e0000,0x180,0x180,0x600,0x600,0x900,0x900,0xe5000000,0x40,0x40,0x60000000,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+	   jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x3,0x2,0x0,0x0,};
 	}
 
   /**
@@ -380,7 +414,7 @@ list.add(d);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-   for (int i = 0; i < 13; i++)
+   for (int i = 0; i < 14; i++)
      jj_la1[i] = -1;
   }
 
@@ -417,7 +451,7 @@ list.add(d);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-   for (int i = 0; i < 13; i++)
+   for (int i = 0; i < 14; i++)
      jj_la1[i] = -1;
   }
 
@@ -430,7 +464,7 @@ list.add(d);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /**
@@ -442,7 +476,7 @@ list.add(d);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(final int kind) throws ParseException {
@@ -512,12 +546,12 @@ list.add(d);
    */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[33];
+    boolean[] la1tokens = new boolean[36];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 13; i++) {
+    for (int i = 0; i < 14; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -529,7 +563,7 @@ list.add(d);
         }
       }
     }
-    for (int i = 0; i < 33; i++) {
+    for (int i = 0; i < 36; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

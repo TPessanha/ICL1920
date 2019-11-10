@@ -12,4 +12,9 @@ public class UndefinedType implements IType {
 	public UndefinedType getType() {
 		return value;
 	}
+
+	@Override
+	public String getJVMType() {
+		return null;
+	}
 }

@@ -3,6 +3,7 @@ package nodes;
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.TypeMismatchException;
+import exceptions.UndeclaredException;
 import state.Environment;
 import types.IType;
 import values.IValue;
@@ -12,5 +13,5 @@ public interface ASTNode {
 
     CodeBlock compile(CompilerEnvironment environment) throws Exception;
 
-    IType typecheck() throws TypeMismatchException;
+    IType typecheck(Environment<IType> environment) throws Exception;
 }

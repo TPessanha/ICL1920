@@ -38,9 +38,9 @@ public abstract class ASTMath implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() throws TypeMismatchException {
-		IType t1 = lNode.typecheck();
-		IType t2 = rNode.typecheck();
+	public IType typecheck(Environment<IType> environment) throws Exception {
+		IType t1 = lNode.typecheck(environment);
+		IType t2 = rNode.typecheck(environment);
 		if (t1 instanceof NumberType && t2 instanceof NumberType)
 			return t1.getType();
 		else
