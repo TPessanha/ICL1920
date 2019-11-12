@@ -1,5 +1,6 @@
 package values;
 
+import exceptions.DividedByZeroException;
 import types.IType;
 import types.IntType;
 
@@ -37,7 +38,7 @@ public class IntValue extends NumberValue<Integer> {
     }
 
     @Override
-    public boolean equals(IValue<Integer> anotherInt) {
+    public boolean equals(IValue anotherInt) {
         return getValue().equals(anotherInt.getValue());
     }
 
@@ -46,19 +47,22 @@ public class IntValue extends NumberValue<Integer> {
         return getValue().compareTo(anotherInt.getValue());
     }
 
-    public IntValue Add(NumberValue number) {
+    public IntValue add(NumberValue number) {
         return new IntValue(getValue() + ((Number) number.getValue()).intValue());
     }
 
-    public IntValue Subtract(NumberValue number) {
+    public IntValue subtract(NumberValue number) {
         return new IntValue(getValue() - ((Number) number.getValue()).intValue());
     }
 
-    public IntValue Multiply(NumberValue number) {
+    public IntValue multiply(NumberValue number) {
         return new IntValue(getValue() * ((Number) number.getValue()).intValue());
     }
 
-    public IntValue Divide(NumberValue number) {
-        return new IntValue(getValue() / ((Number) number.getValue()).intValue());
+    public IntValue divide(NumberValue number) throws DividedByZeroException {
+    	int v2 = ((Number) number.getValue()).intValue();
+    	if (v2==0)
+    		throw new DividedByZeroException();
+        return new IntValue(getValue() / v2);
     }
 }

@@ -2,7 +2,6 @@ package nodes;
 
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
-import exceptions.TypeMismatchException;
 import state.Environment;
 import types.BooleanType;
 import types.IType;
@@ -25,7 +24,7 @@ public class ASTBoolean implements ASTNode {
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		CodeBlock instructions = new CodeBlock();
 
-		instructions.emit_sint(value.getValue() ? 1 : 0);
+		instructions.emit_boolean(value.getValue());
 
 		return instructions;
 	}

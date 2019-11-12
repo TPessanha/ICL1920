@@ -1,5 +1,6 @@
 package values;
 
+import exceptions.DividedByZeroException;
 import types.FloatType;
 import types.IType;
 
@@ -10,23 +11,26 @@ public class FloatValue extends NumberValue<Float> {
 	}
 
 	@Override
-	public FloatValue Add(NumberValue number) {
+	public FloatValue add(NumberValue number) {
 		return new FloatValue(getValue() + ((Number) number.getValue()).floatValue());
 	}
 
 	@Override
-	public FloatValue Subtract(NumberValue number) {
+	public FloatValue subtract(NumberValue number) {
 		return new FloatValue(getValue() - ((Number) number.getValue()).floatValue());
 	}
 
 	@Override
-	public FloatValue Multiply(NumberValue number) {
+	public FloatValue multiply(NumberValue number) {
 		return new FloatValue(getValue() * ((Number) number.getValue()).floatValue());
 	}
 
 	@Override
-	public FloatValue Divide(NumberValue number) {
-		return new FloatValue(getValue() / ((Number) number.getValue()).floatValue());
+	public FloatValue divide(NumberValue number) throws DividedByZeroException {
+		float v2 = ((Number) number.getValue()).intValue();
+		if (v2 == 0)
+			throw new DividedByZeroException();
+		return new FloatValue(getValue() / v2);
 	}
 
 	@Override
@@ -45,17 +49,17 @@ public class FloatValue extends NumberValue<Float> {
 	}
 
 	@Override
-	public IValue<Float> negate() {
+	public FloatValue negate() {
 		return new FloatValue(-value.floatValue());
 	}
 
 	@Override
-	public boolean equals(IValue<Float> anotherFloat) {
+	public boolean equals(IValue anotherFloat) {
 		return getValue().equals(anotherFloat.getValue());
 	}
 
 	@Override
-	public int compareTo(IValue<Float> anotherFloat) {
-		return getValue().compareTo(anotherFloat.getValue());
+	public int compareTo(IValue anotherFloat) {
+		return getValue().compareTo((Float) anotherFloat.getValue());
 	}
 }

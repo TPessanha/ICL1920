@@ -45,6 +45,18 @@ public class CodeBlock {
 		appendCodeLine("sipush " + i);
 	}
 
+	public void emit_bint(int i) {
+		appendCodeLine("bipush " + i);
+	}
+
+	public void emit_iconst(int i) {
+		appendCodeLine("iconst_" + i);
+	}
+
+	public void emit_boolean(boolean b) {
+		emit_iconst(b ? 1 : 0);
+	}
+
 	public void emit_iadd() {
 		appendCodeLine("iadd");
 	}
@@ -103,5 +115,20 @@ public class CodeBlock {
 
 	public void emit_float(float value) {
 		appendCodeLine("ldc " + value);
+	}
+
+	public void emit_ixor() {
+		appendCodeLine("ixor");
+	}
+
+	public void emit_icomp(int mem) {
+		appendCodeLine("if_icmpne");
+	}
+
+	public void emit_println(String jvmType) {
+		appendCodeLine("; convert to String;");
+		appendCodeLine("invokestatic java/lang/String/valueOf(" + jvmType + ")Ljava/lang/String;");
+		appendCodeLine("; call println");
+		appendCodeLine("invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
 	}
 }

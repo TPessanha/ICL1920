@@ -149,6 +149,15 @@ class InterpreterTests {
 	}
 
 	@Test
+	void test_boolean_3() throws Exception {
+		Parser parser = getParser("!false;");
+		IValue result = parser.Start().eval(new Environment<>());
+
+		assertTrue(result instanceof BooleanValue);
+		assertEquals(true, (Boolean) result.getValue());
+	}
+
+	@Test
 	void test_let_with_boolean_1() throws Exception {
 		Parser parser = getParser("let x=false in x end;");
 		IValue result = parser.Start().eval(new Environment<>());
@@ -204,7 +213,7 @@ class InterpreterTests {
 		assertThrows(
 			DuplicatedIdentifierException.class,
 			() -> parser.Start().eval(new Environment<>()),
-			"Expected duplocated identifer"
+			"Expected duplicated identifier"
 		);
 	}
 }

@@ -1,16 +1,19 @@
 package nodes;
 
 import compiler.CodeBlock;
+import exceptions.DividedByZeroException;
 import values.NumberValue;
 import values.IValue;
 
-public class ASTMultiplication extends ASTMath {
+public class ASTMultiplication extends ASTArithmetic {
+	public final static String operator = "*";
+
 	public ASTMultiplication(ASTNode lNode, ASTNode rNode) {
-		super(lNode, rNode);
+		super(lNode, rNode, operator);
 	}
 
 	@Override
-	protected CodeBlock emitOperation() {
+	public CodeBlock emitOperation() {
 		CodeBlock code = new CodeBlock();
 		code.emit_imul();
 		code.emit_blank();
@@ -18,12 +21,7 @@ public class ASTMultiplication extends ASTMath {
 	}
 
 	@Override
-	protected NumberValue doOperation(IValue v1, IValue v2) {
-		return ((NumberValue) v1).Multiply((NumberValue) v2);
-	}
-
-	@Override
-	protected String getOperator() {
-		return "*";
+	public IValue basicOperation(IValue v1, IValue v2) {
+		return ((NumberValue) v1).multiply((NumberValue) v2);
 	}
 }

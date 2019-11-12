@@ -29,11 +29,6 @@ public class CellValue implements IValue<IValue> {
 	}
 
 	@Override
-	public IValue negate() {
-		return value.negate();
-	}
-
-	@Override
 	public boolean equals(IValue value) {
 		return this.value.equals(value);
 	}

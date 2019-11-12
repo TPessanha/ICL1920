@@ -83,7 +83,8 @@ TOKEN : {
 	< END: "end" > |
 	< IN: "in" > |
 	< TRUE: "true" > |
-   	< FALSE: "false" >
+   	< FALSE: "false" >|
+   	< PRINTLN: "println" >
 }
 
 TOKEN : {
@@ -113,7 +114,11 @@ ASTNode Statment() :
  ASTNode node;
 }
 {
-	node = Expression() <SEMICOLON>
+	(
+		node = Println() <SEMICOLON>
+		|
+		node = Expression() <SEMICOLON>
+	)
     { return node; }
 }
 
@@ -222,7 +227,7 @@ ASTNode Unary():
                 node = new ASTNegate(node);
                 break;
             case EXCL:
-                node = new ASTNegate(node);
+                node = new ASTNot(node);
                 break;
         }
         return node;
@@ -265,34 +270,35 @@ ASTNode Identifier() :
     }
 }
 
-Declaration Declaration() :
+Binding Binding() :
 {
     Token id;
     ASTNode exp;
 }
 {
-    id=<IDENTIFIER> <EQUALS> exp=Expression() { return new Declaration(id.image,exp); }
+    id=<IDENTIFIER> <EQUALS> exp=Expression()
+    { return new Binding(id.image,exp); }
 }
 
-List<Declaration> DeclarationsList() :
+List<Binding> BindingsList() :
 {
-    Declaration d;
-    List<Declaration> list = new ArrayList<>();
+    Binding d;
+    List<Binding> list = new ArrayList<>();
 }
 {
-    d=Declaration() {list.add(d);} ((<COMA>)? d= Declaration() {list.add(d);})*
+    d=Binding() {list.add(d);} ((<COMA>)? d= Binding() {list.add(d);})*
     {return list;}
 
 }
 
 ASTNode Let() :
 {
-    List<Declaration> list;
+    List<Binding> list;
     ASTNode body;
 }
 {
     <LET>
-        list = DeclarationsList()
+        list = BindingsList()
     <IN>
         body = Expression()
     <END>
@@ -324,6 +330,15 @@ ASTNode Boolean() :
 {
    (value = <TRUE> | value = <FALSE> )
    { return new ASTBoolean(Boolean.parseBoolean(value.image)); }
+}
+
+ASTNode Println() :
+{
+    ASTNode exp;
+}
+{
+	<PRINTLN> <LPAR> exp = Expression() <RPAR>
+   { return new ASTPrintln(exp); }
 }
 
 ASTNode parenthesizedExpression() :

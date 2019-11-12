@@ -24,7 +24,7 @@ public class ASTNegate implements ASTNode{
         IValue v = node.eval(environment);
 
         if (v instanceof NumberValue)
-            return (NumberValue) v.negate();
+            return ((NumberValue) v).negate();
         else
             throw new IllegalOperatorException("-", v.getTypeName());
     }

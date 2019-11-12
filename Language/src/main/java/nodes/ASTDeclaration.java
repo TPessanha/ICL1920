@@ -23,7 +23,7 @@ public class ASTDeclaration implements ASTNode {
 //    }
 
     public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
-        environment.declareVariable(this.identifier, new IntValue(0));
+        environment.associate(this.identifier, new IntValue(0));
         return new IntValue(0);
     }
 

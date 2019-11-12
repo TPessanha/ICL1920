@@ -14,7 +14,5 @@ public interface IValue<T> extends Comparable<IValue<T>> {
 
     String toString();
 
-    IValue<T> negate();
-
-    boolean equals(IValue<T> value);
+    boolean equals(IValue value);
 }

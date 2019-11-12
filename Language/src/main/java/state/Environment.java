@@ -56,14 +56,14 @@ public class Environment<T> {
 		return parent;
 	}
 
-	public void declareVariable(String identifier, T value) throws DuplicatedIdentifierException {
+	public void associate(String identifier, T value) throws DuplicatedIdentifierException {
 		if (declarations.containsKey(identifier))
 			throw new DuplicatedIdentifierException("Variable '" + identifier + "' is already declared in the scope");
 
 		declarations.put(identifier, value);
 	}
 
-	public T assignVariable(String identifier, T value) throws UndeclaredException {
+	public T assign(String identifier, T value) throws UndeclaredException {
 		Environment<T> scope = this;
 		do {
 			if (scope.declarations.containsKey(identifier)) {

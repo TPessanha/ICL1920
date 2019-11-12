@@ -4,8 +4,7 @@ import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import compiler.IdentifierDetails;
 import compiler.StackFrameFile;
-import exceptions.TypeMismatchException;
-import state.Declaration;
+import state.Binding;
 import state.Environment;
 import types.IType;
 import values.IValue;
@@ -20,11 +19,11 @@ import static utils.PropertiesUtils.getCompiledPath;
  */
 public class ASTLet implements ASTNode {
 
-	private final List<Declaration> declarations;
+	private final List<Binding> bindings;
 	private final ASTNode body;
 
-	public ASTLet(List<Declaration> declarations, ASTNode body) {
-		this.declarations = declarations;
+	public ASTLet(List<Binding> bindings, ASTNode body) {
+		this.bindings = bindings;
 		this.body = body;
 	}
 
@@ -32,8 +31,8 @@ public class ASTLet implements ASTNode {
 	public IValue<?> eval(Environment<IValue<?>> env) throws Exception {
 		Environment<IValue<?>> localScope = env.beginScope();
 
-		for (Declaration d : this.declarations)
-			localScope.declareVariable(d.getIdentifier(), d.getExpression().eval(localScope));
+		for (Binding d : this.bindings)
+			localScope.associate(d.getIdentifier(), d.getExpression().eval(localScope));
 
 		return body.eval(localScope);
 	}
@@ -42,12 +41,12 @@ public class ASTLet implements ASTNode {
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		CompilerEnvironment newEnv = environment.beginScope();
 
-		for (int i = 0; i < this.declarations.size(); i++) {
-			Declaration d = this.declarations.get(i);
+		for (int i = 0; i < this.bindings.size(); i++) {
+			Binding d = this.bindings.get(i);
 
 			IdentifierDetails details =
 				new IdentifierDetails(d.getExpression().typecheck(new Environment<>()).getJVMType(), newEnv.getLevel(), "x_" + i);
-			newEnv.declareVariable(this.declarations.get(i).getIdentifier(), details);
+			newEnv.associate(this.bindings.get(i).getIdentifier(), details);
 		}
 
 		StackFrameFile stackFrameFile = new StackFrameFile(newEnv);
@@ -78,13 +77,13 @@ public class ASTLet implements ASTNode {
 		//store vars
 		List<IdentifierDetails> vars = new ArrayList<>(newEnv.getValues());
 		for (int i = 0; i < vars.size(); i++) {
-			Declaration declaration = this.declarations.get(i);
+			Binding binding = this.bindings.get(i);
 			IdentifierDetails details = vars.get(i);
 
-			code.emit_comment("Value of " + declaration.getIdentifier());
+			code.emit_comment("Value of " + binding.getIdentifier());
 
 			code.emit_aload(SL);
-			code.appendCodeBlock(declaration.getExpression().compile(newEnv));
+			code.appendCodeBlock(binding.getExpression().compile(newEnv));
 			code.emit_putField(className + "/x_" + i, details.getType());
 
 			code.emit_blank();
@@ -117,8 +116,8 @@ public class ASTLet implements ASTNode {
 	public IType typecheck(Environment<IType> environment) throws Exception {
 		Environment<IType> localScope = environment.beginScope();
 
-		for (Declaration d : this.declarations)
-			localScope.declareVariable(d.getIdentifier(),d.getExpression().typecheck(localScope));
+		for (Binding d : this.bindings)
+			localScope.associate(d.getIdentifier(),d.getExpression().typecheck(localScope));
 
 		return body.typecheck(localScope);
 	}

@@ -52,7 +52,7 @@ public class Compiler {
 			CodeBlock code = exp.compile(new CompilerEnvironment());
 			IType type = exp.typecheck(new Environment<>());
 			mainClassFile.emitCodeBlock(code);
-			mainClassFile.writeFooter(type.getJVMType());
+			mainClassFile.writeFooter();
 
 			mainClassFile.dump(getCompiledPath());
 		} catch (IOException e) {

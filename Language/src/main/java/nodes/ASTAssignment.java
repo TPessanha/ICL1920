@@ -17,7 +17,7 @@ public class ASTAssignment implements ASTNode {
 
     @Override
     public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
-        return environment.assignVariable(identifier,expression.eval(environment));
+        return environment.assign(identifier,expression.eval(environment));
     }
 
 	@Override

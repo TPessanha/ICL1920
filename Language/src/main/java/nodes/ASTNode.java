@@ -2,8 +2,6 @@ package nodes;
 
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
-import exceptions.TypeMismatchException;
-import exceptions.UndeclaredException;
 import state.Environment;
 import types.IType;
 import values.IValue;

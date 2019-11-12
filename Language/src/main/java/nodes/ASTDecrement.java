@@ -23,7 +23,7 @@ public class ASTDecrement implements ASTNode {
         IValue value = node.eval(environment);
 
         if (value instanceof NumberValue)
-            return (NumberValue)((NumberValue) value).Subtract(new IntValue(1));
+            return (NumberValue)((NumberValue) value).subtract(new IntValue(1));
         throw new IllegalOperatorException("++",value.getTypeName());
     }
 

@@ -1,9 +1,13 @@
+import values.BooleanValue;
+import values.IntValue;
+
 public class RandomTests {
 
 	public static void main(String[] args) throws Exception {
 
-		boolean f = false;
-		int x = 5;
+		int x = 1;
+		int x2= 2;
+		System.out.println(x == x2);
 
 
 //        Environment<Value> scope = new Environment();
