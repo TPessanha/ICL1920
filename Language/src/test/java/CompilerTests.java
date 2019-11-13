@@ -1,5 +1,5 @@
-import main.Assembler;
-import main.Compiler;
+import compiler.Compiler;
+import main.MainAssembler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -81,8 +81,9 @@ public class CompilerTests {
 	}
 
 	private void compileAndAssemble(InputStream in) throws IOException {
-		Compiler.run(in);
-		Assembler.run();
+		Compiler compiler = new Compiler();
+		compiler.run(in);
+		MainAssembler.run();
 	}
 
 	private List<String> runClass() throws Exception {

@@ -11,7 +11,7 @@ import parser.StreamProvider;
 import state.Environment;
 import values.IValue;
 
-public class Interpreter {
+public class MainInterpreter {
 
 	public static void main(String args[]) {
 		Provider provider = new StreamProvider(System.in, Charset.defaultCharset());

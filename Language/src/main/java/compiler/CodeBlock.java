@@ -1,5 +1,7 @@
 package compiler;
 
+import types.StringType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,6 +125,10 @@ public class CodeBlock {
 
 	public void emit_icomp(int mem) {
 		appendCodeLine("if_icmpne");
+	}
+
+	public void emit_label(String name) {
+		appendCodeLine(name + ":");
 	}
 
 	public void emit_println(String jvmType) {
