@@ -2,29 +2,23 @@ package nodes;
 
 import compiler.CodeBlock;
 import compiler.Compiler;
-import compiler.CompilerEnvironment;
 import exceptions.NullTypecheckException;
-import state.Environment;
 import types.IType;
-import types.NumberType;
 import values.BooleanValue;
 import values.IValue;
 import values.NumberValue;
 
-public class ASTEquals extends ASTRelation {
+public class ASTEqual extends ASTRelation {
 	public final static String operator = "==";
 
-	public ASTEquals(ASTExpression lNode, ASTExpression rNode) {
+	public ASTEqual(ASTExpression lNode, ASTExpression rNode) {
 		super(lNode, rNode, operator);
 	}
 
 	@Override
 	public CodeBlock emitOperation() throws NullTypecheckException {
-		IType t1 = lNode.getType();
-		IType t2 = rNode.getType();
-
 		CodeBlock code = new CodeBlock();
-		switch (t1.getTypeName())
+		switch (lNode.getType().getTypeName())
 		{
 			case "int":
 				code.appendCodeBlock(integerCompare());

@@ -83,6 +83,10 @@ public class CodeBlock {
 		appendCodeLine("if_icmpne " + label);
 	}
 
+	public void emit_int_compare_equal(String label) {
+		appendCodeLine("if_icmpeq " + label);
+	}
+
 	public void emit_goto(String label) {
 		appendCodeLine("goto " + label);
 	}
@@ -185,6 +189,10 @@ public class CodeBlock {
 
 	public void emit_if_not_equal(String label) {
 		appendCodeLine("ifne " + label);
+	}
+
+	public void emit_if_equal(String label) {
+		appendCodeLine("ifeq " + label);
 	}
 
 	public void emit_convert(String type1, String type2) {

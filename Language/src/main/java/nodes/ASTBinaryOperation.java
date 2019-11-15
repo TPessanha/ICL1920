@@ -41,8 +41,13 @@ public abstract class ASTBinaryOperation extends ASTExpression {
 	}
 
 	public IValue doOperation(IValue v1, IValue v2) throws Exception {
-		if (v1.getType().equals(v2.getType()) || v1 instanceof NumberValue && v2 instanceof NumberValue)
-			return basicOperation(v1, v2);
+		if (v1.getType().equals(v2.getType()) || v1 instanceof NumberValue && v2 instanceof NumberValue) {
+			int priority1 = ((NumberType) v1.getType()).getPriorityLevel();
+			int priority2 = ((NumberType) v2.getType()).getPriorityLevel();
+			if (priority1 > priority2)
+				return basicOperation(v1, v2);
+			return basicOperation(v2, v1);
+		}
 		throw new IllegalOperatorException(operator, v1.getTypeName(), v2.getTypeName());
 	}
 

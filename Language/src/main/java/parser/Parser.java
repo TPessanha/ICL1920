@@ -105,14 +105,14 @@ ASTExpression Equality() throws ParseException {Token op;
       }
       node2 = Comparison();
 switch(op.kind)
-          {
-           case EQEQ:
-            node = new ASTEquals(node,node2);
-            break;
-              case EXCL_EQUALS:
-               node = new ASTNot(node);
-               break;
-          }
+     {
+      case EQEQ:
+       node = new ASTEqual(node,node2);
+       break;
+         case EXCL_EQUALS:
+          node = new ASTNotEqual(node,node2);
+          break;
+     }
     }
 {if ("" != null) return node;}
     throw new IllegalStateException ("Missing return statement in function");

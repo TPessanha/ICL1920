@@ -5,9 +5,9 @@ public class RandomTests {
 
 	public static void main(String[] args) throws Exception {
 
-		int x2= 2;
-		int x = 1;
-		boolean t = x2 == x;
+		float x2= 2;
+		float x = 1;
+		boolean t = x2 != x;
 
 
 //        Environment<Value> scope = new Environment();
