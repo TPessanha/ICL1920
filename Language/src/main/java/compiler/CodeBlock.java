@@ -63,6 +63,30 @@ public class CodeBlock {
 		appendCodeLine("iadd");
 	}
 
+	public void emit_add(String type) {
+		appendCodeLine(type + "add");
+	}
+
+	public void emit_sub(String type) {
+		appendCodeLine(type + "sub");
+	}
+
+	public void emit_mul(String type) {
+		appendCodeLine(type + "mul");
+	}
+
+	public void emit_div(String type) {
+		appendCodeLine(type + "div");
+	}
+
+	public void emit_int_compare_not_equal(String label) {
+		appendCodeLine("if_icmpne " + label);
+	}
+
+	public void emit_goto(String label) {
+		appendCodeLine("goto " + label);
+	}
+
 	public void emit_isub() {
 		appendCodeLine("isub");
 	}
@@ -73,6 +97,22 @@ public class CodeBlock {
 
 	public void emit_idiv() {
 		appendCodeLine("idiv");
+	}
+
+	public void emit_fadd() {
+		appendCodeLine("fadd");
+	}
+
+	public void emit_fsub() {
+		appendCodeLine("fsub");
+	}
+
+	public void emit_fmul() {
+		appendCodeLine("fmul");
+	}
+
+	public void emit_fdiv() {
+		appendCodeLine("fdiv");
 	}
 
 	public void emit_new(String className) {
@@ -123,12 +163,32 @@ public class CodeBlock {
 		appendCodeLine("ixor");
 	}
 
-	public void emit_icomp(int mem) {
+	public void emit_int_compare(int mem) {
 		appendCodeLine("if_icmpne");
 	}
 
 	public void emit_label(String name) {
 		appendCodeLine(name + ":");
+	}
+
+	public void emit_int_to_float() {
+		emit_convert("i", "f");
+	}
+
+	public void emit_float_to_int() {
+		emit_convert("f", "i");
+	}
+
+	public void emit_float_compare() {
+		appendCodeLine("fcmpl");
+	}
+
+	public void emit_if_not_equal(String label) {
+		appendCodeLine("ifne " + label);
+	}
+
+	public void emit_convert(String type1, String type2) {
+		appendCodeLine(type1 + "2" + type2);
 	}
 
 	public void emit_println(String jvmType) {

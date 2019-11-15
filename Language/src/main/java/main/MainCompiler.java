@@ -12,7 +12,7 @@ public class MainCompiler {
 	public static void main(String[] args) throws IOException {
 		Provider provider;
 		Parser parser;
-		Compiler compiler = new Compiler();
+		Compiler.initialize();
 
 		boolean assemble = false;
 		String filePath = null;
@@ -30,7 +30,7 @@ public class MainCompiler {
 			provider = new StreamProvider(in, Charset.defaultCharset());
 		}
 		parser = new Parser(provider);
-		compiler.run(parser);
+		Compiler.run(parser);
 
 		if (assemble)
 			MainAssembler.run();

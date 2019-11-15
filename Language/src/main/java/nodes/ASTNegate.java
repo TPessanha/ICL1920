@@ -10,7 +10,7 @@ import types.IType;
 import values.NumberValue;
 import values.IValue;
 
-public class ASTNegate implements ASTNode{
+public class ASTNegate extends ASTExpression{
 
     private ASTNode node;
 
@@ -39,6 +39,6 @@ public class ASTNegate implements ASTNode{
 
 	@Override
 	public IType typecheck(Environment<IType> environment) throws Exception {
-		return node.typecheck(environment);
+		return setType(node.typecheck(environment));
 	}
 }

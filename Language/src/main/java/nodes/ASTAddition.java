@@ -1,20 +1,22 @@
 package nodes;
 
 import compiler.CodeBlock;
+import exceptions.NullTypecheckException;
+import types.NumberType;
 import values.NumberValue;
 import values.IValue;
 
 public class ASTAddition extends ASTArithmetic {
 	public final static String operator = "+";
 
-	public ASTAddition(ASTNode lNode, ASTNode rNode) {
+	public ASTAddition(ASTExpression lNode, ASTExpression rNode) {
 		super(lNode, rNode, operator);
 	}
 
 	@Override
-	public CodeBlock emitOperation() {
+	public CodeBlock emitOperation() throws NullTypecheckException {
 		CodeBlock code = new CodeBlock();
-		code.emit_iadd();
+		code.emit_add(((NumberType) getType()).getConversionLiteral());
 		code.emit_blank();
 		return code;
 	}

@@ -6,4 +6,8 @@ public abstract class NumberType implements IType {
 
 	@Override
 	public abstract NumberType getType();
+
+	public abstract int getPriorityLevel();
+
+	public abstract String getConversionLiteral();
 }

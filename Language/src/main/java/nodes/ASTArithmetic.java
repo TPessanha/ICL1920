@@ -12,7 +12,7 @@ import values.NumberValue;
 import values.IValue;
 
 public abstract class ASTArithmetic extends ASTBinaryOperation {
-	protected ASTArithmetic(ASTNode lNode, ASTNode rNode, String operator) {
+	protected ASTArithmetic(ASTExpression lNode, ASTExpression rNode, String operator) {
 		super(lNode, rNode, operator);
 	}
 
@@ -20,16 +20,16 @@ public abstract class ASTArithmetic extends ASTBinaryOperation {
 	public IType typecheck(Environment<IType> environment) throws Exception {
 		IType t1 = lNode.typecheck(environment);
 		IType t2 = rNode.typecheck(environment);
-		if (t1 instanceof NumberType && t2 instanceof NumberType)
-			return t1.getType();
-		else
-			return UndefinedType.value;
-	}
+		if (t1 instanceof NumberType && t2 instanceof NumberType) {
+			int priority1 = ((NumberType) t1).getPriorityLevel();
+			int priority2 = ((NumberType) t2).getPriorityLevel();
 
-	public IValue doOperation(IValue v1, IValue v2) throws IllegalOperatorException, DividedByZeroException {
-		if (v1 instanceof NumberValue && v2 instanceof NumberValue)
-			return basicOperation(v1, v2);
-		throw new IllegalOperatorException(operator, v1.getTypeName(), v2.getTypeName());
+			if (priority1 > priority2)
+				return setType(t1.getType());
+			return setType(t2.getType());
+		} else
+//			throw new IllegalOperatorException(operator,t1.getTypeName(),t2.getTypeName());
+			return setType(UndefinedType.value);
 	}
 
 	public abstract IValue basicOperation(IValue v1, IValue v2) throws DividedByZeroException;

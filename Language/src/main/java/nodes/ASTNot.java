@@ -9,7 +9,7 @@ import values.BooleanValue;
 import values.IValue;
 import values.NumberValue;
 
-public class ASTNot implements ASTNode {
+public class ASTNot extends ASTExpression {
 	private ASTNode node;
 
 	public ASTNot(ASTNode node) {
@@ -36,6 +36,6 @@ public class ASTNot implements ASTNode {
 
 	@Override
 	public IType typecheck(Environment<IType> environment) throws Exception {
-		return node.typecheck(environment);
+		return setType(node.typecheck(environment));
 	}
 }

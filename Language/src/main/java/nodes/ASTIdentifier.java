@@ -8,7 +8,7 @@ import state.Environment;
 import types.IType;
 import values.IValue;
 
-public class ASTIdentifier implements ASTNode {
+public class ASTIdentifier extends ASTExpression {
 	private final String name;
 
 	public ASTIdentifier(String name) {
@@ -43,6 +43,6 @@ public class ASTIdentifier implements ASTNode {
 
 	@Override
 	public IType typecheck(Environment<IType> environment) throws UndeclaredException {
-		return environment.find(name);
+		return setType(environment.find(name));
 	}
 }

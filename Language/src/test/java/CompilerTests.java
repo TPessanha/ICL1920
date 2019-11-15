@@ -80,6 +80,32 @@ public class CompilerTests {
 		}
 	}
 
+	@Test
+	void test_autocast_1() throws Exception {
+		String fileName = "test_autocast_1.icl";
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
+		try {
+			compileAndAssemble(in);
+			List outputs = runClass();
+			assertEquals(outputs.get(0), "2.0");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	void test_complex_1() throws Exception {
+		String fileName = "test_complex_1.icl";
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
+		try {
+			compileAndAssemble(in);
+			List outputs = runClass();
+			assertEquals(outputs.get(0), "true");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void compileAndAssemble(InputStream in) throws IOException {
 		Compiler compiler = new Compiler();
 		compiler.run(in);

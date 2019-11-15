@@ -14,7 +14,16 @@ public class IntType extends NumberType{
 	}
 
 	@Override
+	public int getPriorityLevel() {
+		return 2;
+	}
+
+	@Override
 	public String getJVMType() {
 		return "I";
+	}
+
+	public String getConversionLiteral(){
+		return "i";
 	}
 }

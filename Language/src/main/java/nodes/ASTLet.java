@@ -17,7 +17,7 @@ import static utils.PropertiesUtils.getCompiledPath;
 /**
  * Description:
  */
-public class ASTLet implements ASTNode {
+public class ASTLet extends ASTExpression {
 
 	private final List<Binding> bindings;
 	private final ASTNode body;
@@ -119,6 +119,6 @@ public class ASTLet implements ASTNode {
 		for (Binding d : this.bindings)
 			localScope.associate(d.getIdentifier(),d.getExpression().typecheck(localScope));
 
-		return body.typecheck(localScope);
+		return setType(body.typecheck(localScope));
 	}
 }

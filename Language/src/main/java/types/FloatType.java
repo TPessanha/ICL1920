@@ -14,6 +14,16 @@ public class FloatType extends NumberType {
 	}
 
 	@Override
+	public int getPriorityLevel() {
+		return 4;
+	}
+
+	@Override
+	public String getConversionLiteral() {
+		return "f";
+	}
+
+	@Override
 	public String getJVMType() {
 		return "F";
 	}

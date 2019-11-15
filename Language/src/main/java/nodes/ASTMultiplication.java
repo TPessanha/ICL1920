@@ -2,20 +2,22 @@ package nodes;
 
 import compiler.CodeBlock;
 import exceptions.DividedByZeroException;
+import exceptions.NullTypecheckException;
+import types.NumberType;
 import values.NumberValue;
 import values.IValue;
 
 public class ASTMultiplication extends ASTArithmetic {
 	public final static String operator = "*";
 
-	public ASTMultiplication(ASTNode lNode, ASTNode rNode) {
+	public ASTMultiplication(ASTExpression lNode, ASTExpression rNode) {
 		super(lNode, rNode, operator);
 	}
 
 	@Override
-	public CodeBlock emitOperation() {
+	public CodeBlock emitOperation() throws NullTypecheckException {
 		CodeBlock code = new CodeBlock();
-		code.emit_imul();
+		code.emit_mul(((NumberType) getType()).getConversionLiteral());
 		code.emit_blank();
 		return code;
 	}

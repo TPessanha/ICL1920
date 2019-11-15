@@ -4,12 +4,14 @@ import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import state.Environment;
 import types.IType;
+import types.VoidType;
 import values.IValue;
+import values.VoidValue;
 
 public class ASTPrintln implements ASTNode {
-	private ASTNode expression;
+	private ASTExpression expression;
 
-	public ASTPrintln(ASTNode expression) {
+	public ASTPrintln(ASTExpression expression) {
 		this.expression = expression;
 	}
 
@@ -17,7 +19,7 @@ public class ASTPrintln implements ASTNode {
 	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
 		IValue value = expression.eval(environment);
 		System.out.println(value.getValue());
-		return value;
+		return new VoidValue();
 	}
 
 	@Override
@@ -29,6 +31,7 @@ public class ASTPrintln implements ASTNode {
 
 	@Override
 	public IType typecheck(Environment<IType> environment) throws Exception {
-		return expression.typecheck(environment);
+		expression.typecheck(environment);
+		return VoidType.value;
 	}
 }
