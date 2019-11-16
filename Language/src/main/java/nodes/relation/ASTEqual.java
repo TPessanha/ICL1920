@@ -1,9 +1,9 @@
-package nodes;
+package nodes.relation;
 
 import compiler.CodeBlock;
 import compiler.Compiler;
 import exceptions.NullTypecheckException;
-import types.IType;
+import nodes.ASTExpression;
 import values.BooleanValue;
 import values.IValue;
 import values.NumberValue;

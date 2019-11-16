@@ -3,10 +3,13 @@
 package parser;
 
 import nodes.*;
-import nodes.primitives.*;
-import state.*;
-import java.util.List;
+import nodes.primitives.ASTBoolean;
+import nodes.primitives.ASTFloat;
+import nodes.primitives.ASTInteger;
+import state.Binding;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Parser implements ParserConstants {
 
@@ -74,7 +77,7 @@ public class Parser implements ParserConstants {
 //    node = Equality() ((<NL>)* <CONJ> (<NL>)* Equality())*
 //    { return node; }
 //}
-  final public 
+  final public
 ASTExpression Equality() throws ParseException {Token op;
     ASTExpression node,node2;
     node = Comparison();
@@ -107,10 +110,10 @@ ASTExpression Equality() throws ParseException {Token op;
 switch(op.kind)
      {
       case EQEQ:
-       node = new ASTEqual(node,node2);
+       node = new nodes.relation.ASTEqual(node,node2);
        break;
          case EXCL_EQUALS:
-          node = new ASTNotEqual(node,node2);
+          node = new nodes.relation.ASTNotEqual(node,node2);
           break;
      }
     }
@@ -189,8 +192,8 @@ switch(op.kind)
       }
       node2 = multDivExpression();
 if (op.kind == ADD)
-                             node = new ASTAddition(node,node2);
-                       else  node = new ASTSubtraction(node,node2);
+        node = new nodes.arithmetic.ASTAddition(node,node2);
+  else  node = new nodes.arithmetic.ASTSubtraction(node,node2);
     }
 {if ("" != null) return node;}
     throw new IllegalStateException ("Missing return statement in function");
@@ -226,8 +229,8 @@ if (op.kind == ADD)
       }
       node2 = Cast();
 if (op.kind == MULT)
-                          node = new ASTMultiplication(node,node2);
-                    else  node = new ASTDivision(node,node2);
+        node = new nodes.arithmetic.ASTMultiplication(node,node2);
+  else  node = new nodes.arithmetic.ASTDivision(node,node2);
     }
 {if ("" != null) return node;}
     throw new IllegalStateException ("Missing return statement in function");
@@ -480,10 +483,10 @@ list.add(d);
 	   jj_la1_init_1();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x95000900,0x18000,0x18000,0x1e0000,0x1e0000,0x180,0x180,0x600,0x600,0x0,0x4000000,0x900,0x900,0x91000000,0x40,0x40,0x80000000,};
+	   jj_la1_0 = new int[] {0x54002400,0x60000,0x60000,0x780000,0x780000,0x600,0x600,0x1800,0x1800,0x0,0x10000000,0x2400,0x2400,0x44000000,0x100,0x100,0x0,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x79,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x6,0x0,0x0,0x0,0x71,0x40,0x0,0x1,};
+	   jj_la1_1 = new int[] {0x1e6,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x18,0x0,0x0,0x0,0x1c6,0x100,0x0,0x6,};
 	}
 
   /**
@@ -628,7 +631,7 @@ list.add(d);
    */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[41];
+    boolean[] la1tokens = new boolean[43];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -645,7 +648,7 @@ list.add(d);
         }
       }
     }
-    for (int i = 0; i < 41; i++) {
+    for (int i = 0; i < 43; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

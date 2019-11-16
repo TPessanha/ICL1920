@@ -1,6 +1,7 @@
-package nodes;
+package nodes.relation;
 
-import exceptions.IllegalOperatorException;
+import nodes.ASTBinaryOperation;
+import nodes.ASTExpression;
 import state.Environment;
 import types.BooleanType;
 import types.IType;
@@ -8,7 +9,6 @@ import types.NumberType;
 import types.UndefinedType;
 import values.BooleanValue;
 import values.IValue;
-import values.NumberValue;
 
 public abstract class ASTRelation extends ASTBinaryOperation {
 	protected ASTRelation(ASTExpression lNode, ASTExpression rNode, String operator) {

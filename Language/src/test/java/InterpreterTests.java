@@ -1,15 +1,25 @@
 import exceptions.DuplicatedIdentifierException;
 import exceptions.IllegalOperatorException;
 import exceptions.UndeclaredException;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import parser.Parser;
+import parser.StreamProvider;
 import parser.StringProvider;
 import state.Environment;
-import types.FloatType;
 import values.BooleanValue;
 import values.FloatValue;
-import values.IntValue;
 import values.IValue;
-import org.junit.jupiter.api.Test;
+import values.IntValue;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +30,10 @@ class InterpreterTests {
 
 	private Parser getParser(String cmd) {
 		return new Parser(new StringProvider(cmd));
+	}
+
+	private Parser getParser(InputStream cmd) {
+		return new Parser(new StreamProvider(cmd, Charset.defaultCharset()));
 	}
 
 	@Test
@@ -171,8 +185,8 @@ class InterpreterTests {
 		Parser parser = getParser("3+3.1;");
 		IValue result = parser.Start().eval(new Environment<>());
 
-		assertTrue(result instanceof IntValue);
-		assertEquals(6, (Integer) result.getValue());
+		assertTrue(result instanceof FloatValue);
+		assertEquals(6.1f, (Float) result.getValue());
 	}
 
 	@Test
@@ -215,5 +229,49 @@ class InterpreterTests {
 			() -> parser.Start().eval(new Environment<>()),
 			"Expected duplicated identifier"
 		);
+	}
+
+	@TestFactory
+	Iterable<DynamicTest> runTests() throws URISyntaxException {
+		List<DynamicTest> tests = new ArrayList<>();
+		File dir = new File(this.getClass().getClassLoader().getResource("compilerTests/").toURI());
+
+		for (File f : dir.listFiles()) {
+			DynamicTest t = DynamicTest.dynamicTest(
+				f.getName(),
+				() ->
+				{
+					runSingleTest(f.getName());
+				}
+			);
+			tests.add(t);
+		}
+
+		return tests;
+	}
+
+	private void runSingleTest(String fileName) throws Exception {
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
+		String expected = getResultCheck(in);
+
+		String[] info = expected.split(":");
+
+		in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
+		try {
+			Parser parser = getParser(in);
+			IValue result = parser.Start().eval(new Environment<>());
+
+			assertTrue(result.getTypeName().equals(info[1]));
+			assertEquals(info[0], result.getValue().toString());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	private String getResultCheck(InputStream in) {
+		Scanner reader = new Scanner(in);
+		String check = reader.nextLine().substring(2);
+		return check;
 	}
 }

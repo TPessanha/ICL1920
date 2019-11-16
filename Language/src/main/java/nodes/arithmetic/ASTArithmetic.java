@@ -1,14 +1,12 @@
-package nodes;
+package nodes.arithmetic;
 
-import compiler.CodeBlock;
-import compiler.CompilerEnvironment;
 import exceptions.DividedByZeroException;
-import exceptions.IllegalOperatorException;
+import nodes.ASTBinaryOperation;
+import nodes.ASTExpression;
 import state.Environment;
 import types.IType;
 import types.NumberType;
 import types.UndefinedType;
-import values.NumberValue;
 import values.IValue;
 
 public abstract class ASTArithmetic extends ASTBinaryOperation {

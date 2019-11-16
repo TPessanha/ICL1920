@@ -2,13 +2,13 @@ package nodes;
 
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
-import exceptions.IllegalCastException;
 import exceptions.IllegalOperatorException;
 import exceptions.NullTypecheckException;
 import state.Environment;
 import types.IType;
 import types.NumberType;
 import types.UndefinedType;
+import values.FloatValue;
 import values.IValue;
 import values.NumberValue;
 
@@ -44,9 +44,12 @@ public abstract class ASTBinaryOperation extends ASTExpression {
 		if (v1.getType().equals(v2.getType()) || v1 instanceof NumberValue && v2 instanceof NumberValue) {
 			int priority1 = ((NumberType) v1.getType()).getPriorityLevel();
 			int priority2 = ((NumberType) v2.getType()).getPriorityLevel();
-			if (priority1 > priority2)
-				return basicOperation(v1, v2);
-			return basicOperation(v2, v1);
+			if (priority1 < priority2)
+				v1 = new FloatValue(((Number) v1.getValue()).floatValue());
+			else if (priority1 > priority2)
+				v2 = new FloatValue(((Number) v2.getValue()).floatValue());
+
+			return basicOperation(v1, v2);
 		}
 		throw new IllegalOperatorException(operator, v1.getTypeName(), v2.getTypeName());
 	}

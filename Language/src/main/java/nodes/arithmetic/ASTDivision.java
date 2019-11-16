@@ -1,11 +1,12 @@
-package nodes;
+package nodes.arithmetic;
 
 import compiler.CodeBlock;
 import exceptions.DividedByZeroException;
 import exceptions.NullTypecheckException;
+import nodes.ASTExpression;
 import types.NumberType;
-import values.NumberValue;
 import values.IValue;
+import values.NumberValue;
 
 public class ASTDivision extends ASTArithmetic {
 	public final static String operator = "/";

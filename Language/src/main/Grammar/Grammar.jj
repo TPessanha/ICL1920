@@ -10,6 +10,8 @@ package parser;
 
 import nodes.*;
 import nodes.primitives.*;
+import nodes.arithmetic.*;
+import nodes.relation.*;
 import state.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ SKIP :
 | "\t"
 | "\r"
 | "\n"
-//|  <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
-//|  <"/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/">
+|  <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+|  <"/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/">
 }
 
 TOKEN :
@@ -169,10 +171,10 @@ ASTExpression Equality() :
 switch(op.kind)
    		{
    			case EQEQ:
-   				node = new ASTEqual(node,node2);
+   				node = new nodes.relation.ASTEqual(node,node2);
    				break;
    		    case EXCL_EQUALS:
-   		    	node = new ASTNotEqual(node,node2);
+   		    	node = new nodes.relation.ASTNotEqual(node,node2);
    		    	break;
    		}
    	}
@@ -199,9 +201,9 @@ ASTExpression addSubExpression() :
 {
     node = multDivExpression() (( op=<ADD> | op=<SUB> )  node2=multDivExpression()
                      { if (op.kind == ADD)
-                             node = new ASTAddition(node,node2);
-                       else  node = new ASTSubtraction(node,node2);
-                     }
+        node = new nodes.arithmetic.ASTAddition(node,node2);
+  else  node = new nodes.arithmetic.ASTSubtraction(node,node2);
+}
                )*
      { return node; }
 }
@@ -214,9 +216,9 @@ ASTExpression multDivExpression() :
 {
     node = Cast() (( op=<MULT> | op=<DIV> ) node2=Cast()
                   { if (op.kind == MULT)
-                          node = new ASTMultiplication(node,node2);
-                    else  node = new ASTDivision(node,node2);
-                  }
+        node = new nodes.arithmetic.ASTMultiplication(node,node2);
+  else  node = new nodes.arithmetic.ASTDivision(node,node2);
+}
            ) *
     { return node; }
 }
