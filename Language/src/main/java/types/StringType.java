@@ -4,7 +4,7 @@ public class StringType implements IType {
 	public final static StringType value = new StringType();
 
 	@Override
-	public String getTypeName() {
+	public String getName() {
 		return "String";
 	}
 
@@ -14,7 +14,7 @@ public class StringType implements IType {
 	}
 
 	@Override
-	public String getJVMType() {
+	public String getJVMName() {
 		return "Ljava/lang/String;";
 	}
 }

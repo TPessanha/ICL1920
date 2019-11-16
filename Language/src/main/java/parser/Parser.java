@@ -3,7 +3,12 @@
 package parser;
 
 import nodes.*;
+import nodes.arithmetic.ASTAddition;
+import nodes.arithmetic.ASTDivision;
+import nodes.arithmetic.ASTMultiplication;
+import nodes.arithmetic.ASTSubtraction;
 import nodes.logic.ASTAnd;
+import nodes.logic.ASTNot;
 import nodes.logic.ASTOr;
 import nodes.primitives.ASTBoolean;
 import nodes.primitives.ASTFloat;
@@ -34,7 +39,7 @@ public class Parser implements ParserConstants {
       break;
       }
     case SUB:
-    case EXCL:
+    case TILDE:
     case LPAR:
     case LCUR:
     case LET:
@@ -232,8 +237,9 @@ switch(op.kind)
       }
       node2 = multDivExpression();
 if (op.kind == ADD)
-        node = new nodes.arithmetic.ASTAddition(node,node2);
-  else  node = new nodes.arithmetic.ASTSubtraction(node,node2);
+          node = new ASTAddition(node,node2);
+     else
+      node = new ASTSubtraction(node,node2);
     }
 {if ("" != null) return node;}
     throw new IllegalStateException ("Missing return statement in function");
@@ -269,8 +275,9 @@ if (op.kind == ADD)
       }
       node2 = Cast();
 if (op.kind == MULT)
-        node = new nodes.arithmetic.ASTMultiplication(node,node2);
-  else  node = new nodes.arithmetic.ASTDivision(node,node2);
+          node = new ASTMultiplication(node,node2);
+   else
+    node = new ASTDivision(node,node2);
     }
 {if ("" != null) return node;}
     throw new IllegalStateException ("Missing return statement in function");
@@ -322,8 +329,8 @@ if (type==null)
       t = jj_consume_token(SUB);
       break;
       }
-    case EXCL:{
-      t = jj_consume_token(EXCL);
+    case TILDE:{
+      t = jj_consume_token(TILDE);
       break;
       }
     default:
@@ -339,7 +346,7 @@ if (type==null)
     ASTExpression node;
     switch (jj_ntk == -1 ? jj_ntk_f() : jj_ntk) {
     case SUB:
-    case EXCL:{
+    case TILDE:{
       op = UnaryOperator();
       break;
       }
@@ -355,8 +362,8 @@ if (op==null)
         case SUB:
             node = new ASTNegate(node);
             break;
-        case EXCL:
-            node = new nodes.logic.ASTNot(node);
+        case TILDE:
+            node = new ASTNot(node);
             break;
     }
     {if ("" != null) return node;}
@@ -523,10 +530,10 @@ list.add(d);
 	   jj_la1_init_1();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x54002400,0x8000,0x4000,0x60000,0x60000,0x780000,0x780000,0x600,0x600,0x1800,0x1800,0x0,0x10000000,0x2400,0x2400,0x44000000,0x100,0x100,0x0,};
+	   jj_la1_0 = new int[] {0xa8004400,0x10000,0x8000,0xc0000,0xc0000,0xf00000,0xf00000,0x600,0x600,0x1800,0x1800,0x0,0x20000000,0x4400,0x4400,0x88000000,0x100,0x100,0x0,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x1e6,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x18,0x0,0x0,0x0,0x1c6,0x100,0x0,0x6,};
+	   jj_la1_1 = new int[] {0x3cc,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x30,0x0,0x0,0x0,0x38c,0x200,0x0,0xc,};
 	}
 
   /**
@@ -671,7 +678,7 @@ list.add(d);
    */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[43];
+    boolean[] la1tokens = new boolean[44];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -688,7 +695,7 @@ list.add(d);
         }
       }
     }
-    for (int i = 0; i < 43; i++) {
+    for (int i = 0; i < 44; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

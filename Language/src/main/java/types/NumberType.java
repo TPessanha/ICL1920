@@ -2,7 +2,7 @@ package types;
 
 public abstract class NumberType implements IType {
 	@Override
-	public abstract String getTypeName();
+	public abstract String getName();
 
 	@Override
 	public abstract NumberType getType();

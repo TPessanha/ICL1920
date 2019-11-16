@@ -4,7 +4,7 @@ public class IntType extends NumberType{
 	public final static IntType value = new IntType();
 
 	@Override
-	public String getTypeName() {
+	public String getName() {
 		return "int";
 	}
 
@@ -19,7 +19,7 @@ public class IntType extends NumberType{
 	}
 
 	@Override
-	public String getJVMType() {
+	public String getJVMName() {
 		return "I";
 	}
 

@@ -52,7 +52,7 @@ public abstract class ASTRelation extends ASTBinaryOperation {
 	@Override
 	public CodeBlock emitOperation() throws NullTypecheckException {
 		CodeBlock code = new CodeBlock();
-		switch (lNode.getType().getTypeName()) {
+		switch (lNode.getType().getName()) {
 			case "int":
 			case "boolean":
 				code.appendCodeBlock(integerCompare());

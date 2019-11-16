@@ -31,7 +31,7 @@ public class ASTCast extends ASTExpression {
 		IType type = expression.getType();
 		IValue retValue = expression.eval(environment);
 
-		if (!type.getTypeName().equals(toType))
+		if (!type.getName().equals(toType))
 			switch (toType) {
 				case "float":
 					return new FloatValue(((Number) retValue.getValue()).floatValue());
@@ -46,11 +46,11 @@ public class ASTCast extends ASTExpression {
 		IType from = expression.getType();
 
 		if (!(from instanceof NumberType))
-			throw new IllegalCastException(from.getTypeName(), toType);
+			throw new IllegalCastException(from.getName(), toType);
 
 		CodeBlock code = expression.compile(environment);
 
-		if (!from.getTypeName().equals(toType))
+		if (!from.getName().equals(toType))
 			switch (toType) {
 				case "float":
 					code.emit_convert(((NumberType) from).getConversionLiteral(), "f");

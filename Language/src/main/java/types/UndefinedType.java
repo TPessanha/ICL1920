@@ -4,7 +4,7 @@ public class UndefinedType implements IType {
 	public final static UndefinedType value = new UndefinedType();
 
 	@Override
-	public String getTypeName() {
+	public String getName() {
 		return "undefined";
 	}
 
@@ -14,7 +14,7 @@ public class UndefinedType implements IType {
 	}
 
 	@Override
-	public String getJVMType() {
+	public String getJVMName() {
 		return null;
 	}
 }

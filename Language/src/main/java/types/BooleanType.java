@@ -4,7 +4,7 @@ public class BooleanType implements IType {
 	public final static BooleanType value = new BooleanType();
 
 	@Override
-	public String getTypeName() {
+	public String getName() {
 		return "boolean";
 	}
 
@@ -14,7 +14,7 @@ public class BooleanType implements IType {
 	}
 
 	@Override
-	public String getJVMType() {
+	public String getJVMName() {
 		return "Z";
 	}
 }

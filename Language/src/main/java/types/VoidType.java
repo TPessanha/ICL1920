@@ -4,7 +4,7 @@ public class VoidType implements IType {
 	public final static VoidType value = new VoidType();
 
 	@Override
-	public String getTypeName() {
+	public String getName() {
 		return "void";
 	}
 
@@ -14,7 +14,7 @@ public class VoidType implements IType {
 	}
 
 	@Override
-	public String getJVMType() {
+	public String getJVMName() {
 		return "V";
 	}
 }

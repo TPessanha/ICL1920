@@ -21,7 +21,7 @@ public abstract class ASTBinaryOperation extends ASTExpression {
 		IType t2 = rNode.getType();
 
 		if (this.getType() instanceof UndefinedType)
-			throw new IllegalOperatorException(operator, t1.getTypeName(), t2.getTypeName());
+			throw new IllegalOperatorException(operator, t1.getName(), t2.getName());
 
 		if (!t1.equals(t2)) {
 			if (t1 instanceof NumberType && t2 instanceof NumberType) {

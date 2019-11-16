@@ -45,7 +45,7 @@ public class ASTLet extends ASTExpression {
 			Binding d = this.bindings.get(i);
 
 			IdentifierDetails details =
-				new IdentifierDetails(d.getExpression().typecheck(new Environment<>()).getJVMType(), newEnv.getLevel(), "x_" + i);
+				new IdentifierDetails(d.getExpression().typecheck(new Environment<>()).getJVMName(), newEnv.getLevel(), "x_" + i);
 			newEnv.associate(this.bindings.get(i).getIdentifier(), details);
 		}
 

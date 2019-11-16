@@ -49,6 +49,8 @@ TOKEN :
   |
   < EXCL : "!" >
   |
+  < TILDE : "~" >
+  |
   < CONJ : "&&" >
   |
   < DISJ : "||" >
@@ -226,12 +228,14 @@ ASTExpression addSubExpression() :
 }
 {
     node = multDivExpression() (( op=<ADD> | op=<SUB> )  node2=multDivExpression()
-                     { if (op.kind == ADD)
-        node = new nodes.arithmetic.ASTAddition(node,node2);
-  else  node = new nodes.arithmetic.ASTSubtraction(node,node2);
-}
-               )*
-     { return node; }
+    	{
+			if (op.kind == ADD)
+        		node = new ASTAddition(node,node2);
+  			else
+  				node = new ASTSubtraction(node,node2);
+		}
+    )*
+    { return node; }
 }
 
 ASTExpression multDivExpression() :
@@ -241,11 +245,13 @@ ASTExpression multDivExpression() :
 }
 {
     node = Cast() (( op=<MULT> | op=<DIV> ) node2=Cast()
-                  { if (op.kind == MULT)
-        node = new nodes.arithmetic.ASTMultiplication(node,node2);
-  else  node = new nodes.arithmetic.ASTDivision(node,node2);
-}
-           ) *
+		{
+			if (op.kind == MULT)
+    	    	node = new ASTMultiplication(node,node2);
+			else
+				node = new ASTDivision(node,node2);
+		}
+    )*
     { return node; }
 }
 
@@ -279,7 +285,7 @@ Token UnaryOperator() :
     Token t;
 }
 {
-    ( t = <SUB> | t =<EXCL>)
+    ( t = <SUB> | t =<TILDE>)
     {return t;}
 }
 
@@ -298,8 +304,8 @@ ASTExpression Unary():
         case SUB:
             node = new ASTNegate(node);
             break;
-        case EXCL:
-            node = new nodes.logic.ASTNot(node);
+        case TILDE:
+            node = new ASTNot(node);
             break;
     }
     return node;

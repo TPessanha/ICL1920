@@ -29,9 +29,9 @@ public class CompilerTests {
 	@TestFactory
 	Iterable<DynamicTest> runTests() throws URISyntaxException {
 		List<DynamicTest> tests = new ArrayList<>();
-		File dir = new File(this.getClass().getClassLoader().getResource("compilerTests/").toURI());
+		File dir = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("compilerTests/")).toURI());
 
-		for (File f: dir.listFiles())
+		for (File f: Objects.requireNonNull(dir.listFiles()))
 		{
 			DynamicTest t = DynamicTest.dynamicTest(f.getName(),
 				() ->
@@ -80,7 +80,6 @@ public class CompilerTests {
 	}
 
 	private void compileAndAssemble(InputStream in) throws IOException {
-		Compiler compiler = new Compiler();
 		Compiler.run(in);
 		MainAssembler.run();
 	}

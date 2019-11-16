@@ -11,7 +11,7 @@ public class VoidValue implements IValue<VoidType> {
 
 	@Override
 	public String getTypeName() {
-		return VoidType.value.getTypeName();
+		return VoidType.value.getName();
 	}
 
 	@Override

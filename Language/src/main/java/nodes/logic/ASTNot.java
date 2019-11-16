@@ -23,7 +23,7 @@ public class ASTNot extends ASTExpression {
 
 		if (v instanceof BooleanValue)
 			return ((BooleanValue) v).not();
-		throw new IllegalOperatorException("!", v.getTypeName());
+		throw new IllegalOperatorException("~", v.getTypeName());
 	}
 
 	@Override

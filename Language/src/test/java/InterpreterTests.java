@@ -164,7 +164,7 @@ class InterpreterTests {
 
 	@Test
 	void test_boolean_3() throws Exception {
-		Parser parser = getParser("!false;");
+		Parser parser = getParser("~false;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof BooleanValue);
