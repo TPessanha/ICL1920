@@ -10,7 +10,7 @@ import java.util.List;
 import static utils.PropertiesUtils.getAssembledPath;
 import static utils.PropertiesUtils.getCompiledPath;
 
-public class Assembler {
+public class MainAssembler {
 
 	private static Main jasmin = null;
 	private static File outputDir = null;
@@ -26,11 +26,11 @@ public class Assembler {
 	}
 
 	public static void setOutputDir(File outputDir) {
-		Assembler.outputDir = outputDir;
+		MainAssembler.outputDir = outputDir;
 	}
 
 	public static void run() throws IOException {
-		if (Assembler.outputDir == null)
+		if (MainAssembler.outputDir == null)
 			setOutputDir(new File(getAssembledPath().toAbsolutePath().toString()));
 		File inputDir = new File(getCompiledPath().toAbsolutePath().toString());
 

@@ -2,9 +2,9 @@ public class RandomTests {
 
 	public static void main(String[] args) throws Exception {
 
-		boolean f = false;
-		int x = 5;
-
+		boolean x = true;
+		boolean x2 = false;
+		boolean t = x && x2;
 
 //        Environment<Value> scope = new Environment();
 //        scope.declareVariable("test", new Int(5));

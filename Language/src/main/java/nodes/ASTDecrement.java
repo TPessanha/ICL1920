@@ -7,7 +7,7 @@ import state.Environment;
 import types.IType;
 import values.IntValue;
 import values.NumberValue;
-import values.Value;
+import values.IValue;
 
 public class ASTDecrement implements ASTNode {
 
@@ -19,11 +19,11 @@ public class ASTDecrement implements ASTNode {
     }
 
     @Override
-    public Value<?> eval(Environment<Value<?>> environment) throws Exception {
-        Value value = node.eval(environment);
+    public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
+        IValue value = node.eval(environment);
 
         if (value instanceof NumberValue)
-            return (NumberValue)((NumberValue) value).Subtract(new IntValue(1));
+            return (NumberValue)((NumberValue) value).subtract(new IntValue(1));
         throw new IllegalOperatorException("++",value.getTypeName());
     }
 
@@ -33,7 +33,7 @@ public class ASTDecrement implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() throws Exception {
+	public IType typecheck(Environment<IType> environment) {
 		return null;
 	}
 }

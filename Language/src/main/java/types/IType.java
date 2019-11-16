@@ -1,7 +1,9 @@
 package types;
 
 public interface IType {
-	String getTypeName();
+	String getName();
 
 	IType getType();
+
+	String getJVMName();
 }

@@ -5,7 +5,7 @@ import types.IType;
 /**
  * Description:
  */
-public interface Value<T> extends Comparable<Value<T>> {
+public interface IValue<T> extends Comparable<IValue<T>> {
     T getValue();
 
     String getTypeName();
@@ -14,7 +14,5 @@ public interface Value<T> extends Comparable<Value<T>> {
 
     String toString();
 
-    Value<T> negate();
-
-    boolean equals(Value<T> value);
+    boolean equals(IValue value);
 }

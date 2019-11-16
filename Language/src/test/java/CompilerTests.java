@@ -1,36 +1,21 @@
-import main.Assembler;
-import main.Compiler;
+import compiler.Compiler;
+import main.MainAssembler;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.TestFactory;
 import utils.PropertiesUtils;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CompilerTests {
-	SummaryGeneratingListener listener = new SummaryGeneratingListener();
-	private Properties properties = new Properties();
-
-	@AfterEach
-	void cleanup() throws IOException {
-		File dir =
-			new File(Paths.get(PropertiesUtils.getCompiledPath().toString()).toString());
-
-		System.out.println("Delete: " + dir.getAbsolutePath());
-		for (File f: Objects.requireNonNull(dir.listFiles()))
-		{
-			f.delete();
-		}
-	}
-
 	@AfterAll
 	static void finish() throws IOException {
 		File dir =
@@ -41,48 +26,62 @@ public class CompilerTests {
 		}
 	}
 
-	@Test
-	void test_basic_1() throws Exception {
-		String fileName = "test_basic_1.icl";
-		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
-		try {
-			compileAndAssemble(in);
-			List outputs = runClass();
-			assertEquals(outputs.get(0), "5");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	@TestFactory
+	Iterable<DynamicTest> runTests() throws URISyntaxException {
+		List<DynamicTest> tests = new ArrayList<>();
+		File dir = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("compilerTests/")).toURI());
+
+		for (File f: Objects.requireNonNull(dir.listFiles()))
+		{
+			DynamicTest t = DynamicTest.dynamicTest(f.getName(),
+				() ->
+				{
+					runSingleTest(f.getName());
+				});
+			tests.add(t);
+		}
+
+		return tests;
+	}
+
+	void cleanup() throws IOException {
+		File dir =
+			new File(Paths.get(PropertiesUtils.getCompiledPath().toString()).toString());
+
+		System.out.println("Delete: " + dir.getAbsolutePath());
+		for (File f : Objects.requireNonNull(dir.listFiles())) {
+			f.delete();
 		}
 	}
 
-	@Test
-	void test_let_1() throws Exception {
-		String fileName = "test_let_1.icl";
+	private void runSingleTest(String fileName) throws Exception {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
+		String[] expected = getResultCheck(in).split(":");
+
+
+		in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		try {
 			compileAndAssemble(in);
 			List outputs = runClass();
-			assertEquals(outputs.get(0), "15");
+			assertEquals(expected[0], outputs.get(0));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
+		cleanup();
 	}
 
-	@Test
-	void test_let_2() throws Exception {
-		String fileName = "test_let_2.icl";
-		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
-		try {
-			compileAndAssemble(in);
-			List outputs = runClass();
-			assertEquals(outputs.get(0), "16");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	private String getResultCheck(InputStream in)
+	{
+		Scanner reader = new Scanner(in);
+		reader.reset();
+		String check = reader.nextLine().substring(2);
+		return check;
 	}
 
 	private void compileAndAssemble(InputStream in) throws IOException {
 		Compiler.run(in);
-		Assembler.run();
+		MainAssembler.run();
 	}
 
 	private List<String> runClass() throws Exception {

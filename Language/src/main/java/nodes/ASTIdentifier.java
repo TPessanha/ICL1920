@@ -6,9 +6,9 @@ import compiler.IdentifierDetails;
 import exceptions.UndeclaredException;
 import state.Environment;
 import types.IType;
-import values.Value;
+import values.IValue;
 
-public class ASTIdentifier implements ASTNode {
+public class ASTIdentifier extends ASTExpression {
 	private final String name;
 
 	public ASTIdentifier(String name) {
@@ -16,7 +16,7 @@ public class ASTIdentifier implements ASTNode {
 	}
 
 	@Override
-	public Value<?> eval(Environment<Value<?>> env) throws Exception {
+	public IValue<?> eval(Environment<IValue<?>> env) throws Exception {
 		return env.find(name);
 	}
 
@@ -42,7 +42,7 @@ public class ASTIdentifier implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() throws Exception {
-		return null;
+	public IType typecheck(Environment<IType> environment) throws UndeclaredException {
+		return setType(environment.find(name));
 	}
 }

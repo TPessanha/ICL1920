@@ -5,11 +5,10 @@ import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
 import state.Environment;
 import types.IType;
+import values.IValue;
 import values.NumberValue;
-import values.Value;
 
-public class ASTNegate implements ASTNode{
-
+public class ASTNegate extends ASTExpression{
     private ASTNode node;
 
     public ASTNegate(ASTNode node)
@@ -18,11 +17,11 @@ public class ASTNegate implements ASTNode{
     }
 
     @Override
-    public Value<?> eval(Environment<Value<?>> environment) throws Exception {
-        Value v = node.eval(environment);
+    public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
+        IValue v = node.eval(environment);
 
         if (v instanceof NumberValue)
-            return (NumberValue) v.negate();
+            return ((NumberValue) v).negate();
         else
             throw new IllegalOperatorException("-", v.getTypeName());
     }
@@ -36,7 +35,7 @@ public class ASTNegate implements ASTNode{
 	}
 
 	@Override
-	public IType typecheck() throws Exception {
-		return null;
+	public IType typecheck(Environment<IType> environment) throws Exception {
+		return setType(node.typecheck(environment));
 	}
 }

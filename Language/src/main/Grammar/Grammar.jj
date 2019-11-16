@@ -9,6 +9,10 @@ PARSER_BEGIN(Parser)
 package parser;
 
 import nodes.*;
+import nodes.primitives.*;
+import nodes.arithmetic.*;
+import nodes.relation.*;
+import nodes.logic.*;
 import state.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -25,36 +29,32 @@ SKIP :
 | "\t"
 | "\r"
 | "\n"
-//|  <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
-//|  <"/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/">
+|  <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+|  <"/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/">
 }
 
 TOKEN :
 {
-  < DOT :  ".">
+  < DOT :  "." >
   |
   < COMA : "," >
   |
   < ADD : "+" >
   |
-  < SUB : "-">
+  < SUB : "-" >
   |
-  < MULT : "*">
+  < MULT : "*" >
   |
-  < DIV : "/">
+  < DIV : "/" >
   |
-  < EXCL : "!">
-//  |
-//  < DECR : "--">
-//  |
-//  < INCR : "++">
+  < EXCL : "!" >
   |
-  < CONJ : "&&">
+  < TILDE : "~" >
   |
-  < DISJ : "||">
+  < CONJ : "&&" >
   |
-//  < NL: "\n" | "\r" ("\n")? >
-//  |
+  < DISJ : "||" >
+  |
   < EQUALS : "=" >
   |
   < EQEQ : "==" >
@@ -79,21 +79,32 @@ TOKEN :
   |
   < RPAR : ")" >
   |
-  < END: "end" >
+  < LCUR : "{" >
   |
-  < LET: "let" >
-  |
-  < IN: "in" >
-  |
+  < RCUR : "}" >
+//  |
 //  < STAT_ENDS: (<SEMICOLON> | <NL>)>
 //  |
-  < NUMBER: (<DIGIT>) + >
+}
+
+//Reserved words
+TOKEN : {
+	< LET: "let" > |
+	< END: "end" > |
+	< IN: "in" > |
+	< TRUE: "true" > |
+   	< FALSE: "false" > |
+   	< INT: "int" > |
+   	< FLOAT: "float" >|
+   	< PRINTLN: "println" >
 }
 
 TOKEN : {
- <IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*>
-|  <#LETTER: ["a"-"z","A"-"Z","_"]>
-|  <#DIGIT: ["0"-"9"]>
+	< INTEGER_LITERAL: (<DIGIT>) + > |
+	< FLOAT_LITERAL: (<DIGIT>)+ "." (<DIGIT>)+ > |
+	< IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*> |
+	< #LETTER: ["a"-"z","A"-"Z","_"]> |
+	< #DIGIT: ["0"-"9"]>
 }
 
 ASTNode Start():
@@ -115,88 +126,158 @@ ASTNode Statment() :
  ASTNode node;
 }
 {
-     node = Expression() <SEMICOLON>
+	(
+		node = Println() <SEMICOLON>
+		|
+		node = Expression() <SEMICOLON>
+	)
     { return node; }
 }
 
 // EXPERIMENTAL -==-----------------------------------
-ASTNode Expression() :
+ASTExpression Expression() :
 {
-    ASTNode node;
+    ASTExpression node;
 }
 {
-    node=Equality()
+    node=Disjunction()
     { return node; }
 }
 
 
-//ASTNode Disjunction() :
-//{
-//    ASTNode node;
-//}
-//{
-//    node = Conjunction() ((<NL>)* <DISJ> (<NL>)* Conjunction())*
-//    { return node; }
-//}
-//
-//ASTNode Conjunction() :
-//{
-//    ASTNode node;
-//}
-//{
-//    node = Equality() ((<NL>)* <CONJ> (<NL>)* Equality())*
-//    { return node; }
-//}
-
-ASTNode Equality() :
+ASTExpression Disjunction() :
 {
-    Token op;
-    ASTNode node;
+    ASTExpression node,node2;
 }
 {
-    node = Comparison() (( op=<EQEQ> | op=<EXCL_EQUALS> )  Comparison())*
+    node = Conjunction() ( <DISJ> node2 = Conjunction()
+    	{
+        	node = new ASTOr(node,node2);
+        }
+    )*
     { return node; }
 }
 
-ASTNode Comparison() :
+ASTExpression Conjunction() :
 {
-    Token op;
-    ASTNode node;
+    ASTExpression node,node2;
 }
 {
-    node = addSubExpression() (( op=<GREATER> | op=<LESS> | op=<GR_EQUALS> | op=<LE_EQUALS> )
-      addSubExpression())?
-     { return node; }
+    node = Equality() (<CONJ> node2 = Equality()
+    	{
+    		node = new ASTAnd(node,node2);
+    	}
+    )*
+    { return node; }
 }
 
-ASTNode addSubExpression() :
+ASTExpression Equality() :
 {
     Token op;
-    ASTNode node, node2;
+    ASTExpression node,node2;
+}
+{
+    node = Comparison() (( op=<EQEQ> | op=<EXCL_EQUALS> )  node2=Comparison()
+    	{
+			switch(op.kind)
+   			{
+   				case EQEQ:
+   					node = new ASTEqual(node,node2);
+   					break;
+   			    case EXCL_EQUALS:
+   			    	node = new ASTNotEqual(node,node2);
+   			    	break;
+   			}
+   		}
+    )*
+    { return node; }
+}
+
+ASTExpression Comparison() :
+{
+    Token op;
+    ASTExpression node,node2;
+}
+{
+    node = addSubExpression() (( op=<GREATER> | op=<LESS> | op=<GR_EQUALS> | op=<LE_EQUALS> )  node2=addSubExpression()
+    	{
+			switch(op.kind)
+   			{
+   				case GREATER:
+   					node = new ASTGreater(node,node2);
+   					break;
+   				case GR_EQUALS:
+   					node = new ASTGreaterEqual(node,node2);
+   					break;
+   			    case LESS:
+   			    	node = new ASTLess(node,node2);
+   			    	break;
+   			    case LE_EQUALS:
+   			    	node = new ASTLessEqual(node,node2);
+   			    	break;
+   			}
+   		}
+    )?
+    { return node; }
+}
+
+ASTExpression addSubExpression() :
+{
+    Token op;
+    ASTExpression node, node2;
 }
 {
     node = multDivExpression() (( op=<ADD> | op=<SUB> )  node2=multDivExpression()
-                     { if (op.kind == ADD)
-                             node = new ASTAddition(node,node2);
-                       else  node = new ASTSubtraction(node,node2);
-                     }
-               )*
-     { return node; }
+    	{
+			if (op.kind == ADD)
+        		node = new ASTAddition(node,node2);
+  			else
+  				node = new ASTSubtraction(node,node2);
+		}
+    )*
+    { return node; }
 }
 
-ASTNode multDivExpression() :
+ASTExpression multDivExpression() :
 {
     Token op;
-    ASTNode node, node2;
+    ASTExpression node, node2;
 }
 {
-    node = Unary() (( op=<MULT> | op=<DIV> ) node2=Unary()
-                  { if (op.kind == MULT)
-                          node = new ASTMultiplication(node,node2);
-                    else  node = new ASTDivision(node,node2);
-                  }
-           ) *
-     { return node; }
+    node = Cast() (( op=<MULT> | op=<DIV> ) node2=Cast()
+		{
+			if (op.kind == MULT)
+    	    	node = new ASTMultiplication(node,node2);
+			else
+				node = new ASTDivision(node,node2);
+		}
+    )*
+    { return node; }
+}
+
+Token PrimitiveType() :
+{
+	Token t;
+}
+{
+	( t = <FLOAT> | t = <INT> )
+    {return t;}
+}
+
+
+ASTExpression Cast() :
+{
+	Token type = null;
+    ASTExpression node;
+}
+{
+	(<LCUR> type = PrimitiveType() <RCUR> )? node = Unary()
+	{
+		if (type==null)
+        	return node;
+        else
+	        return new ASTCast(node,type.image);
+	}
 }
 
 Token UnaryOperator() :
@@ -204,56 +285,61 @@ Token UnaryOperator() :
     Token t;
 }
 {
-    ( t = <SUB> | t =<EXCL> )
+    ( t = <SUB> | t =<TILDE>)
     {return t;}
 }
 
-ASTNode Unary():
+ASTExpression Unary():
 {
     Token op = null;
-    ASTNode node;
+    ASTExpression node;
 }
 {
     (op=UnaryOperator())? node = Fact()
     {
-        if (op==null)
-            return node;
-        switch(op.kind)
-        {
-            case SUB:
-                node = new ASTNegate(node);
-                break;
-            case EXCL:
-                node = new ASTNegate(node);
-                break;
-        }
+    if (op==null)
         return node;
+    switch(op.kind)
+    {
+        case SUB:
+            node = new ASTNegate(node);
+            break;
+        case TILDE:
+            node = new ASTNot(node);
+            break;
     }
+    return node;
+}
 }
 
-ASTNode Fact() :
+
+ASTExpression Fact() :
 {
-    ASTNode node;
+    ASTExpression node;
 }
 {
     (
+    	node = Boolean()
+    	|
         node = Identifier()
         |
         node = Let()
         |
         node = parenthesizedExpression()
         |
-        node = Number()
+        node = Float()
+        |
+        node = Integer()
     )
     {
         return node;
     }
 }
 
-ASTNode Identifier() :
+ASTExpression Identifier() :
 {
     Token id;
-    ASTNode node;
+    ASTExpression node;
 }
 {
     id = <IDENTIFIER>
@@ -263,51 +349,80 @@ ASTNode Identifier() :
     }
 }
 
-Declaration Declaration() :
+Binding Binding() :
 {
     Token id;
-    ASTNode exp;
+    ASTExpression exp;
 }
 {
-    id=<IDENTIFIER> <EQUALS> exp=Expression() { return new Declaration(id.image,exp); }
+    id=<IDENTIFIER> <EQUALS> exp=Expression()
+    { return new Binding(id.image,exp); }
 }
 
-List<Declaration> DeclarationsList() :
+List<Binding> BindingsList() :
 {
-    Declaration d;
-    List<Declaration> list = new ArrayList<>();
+    Binding d;
+    List<Binding> list = new ArrayList<>();
 }
 {
-    d=Declaration() {list.add(d);} ((<COMA>)? d= Declaration() {list.add(d);})*
+    d=Binding() {list.add(d);} ((<COMA>)? d= Binding() {list.add(d);})*
     {return list;}
 
 }
 
-ASTNode Let() :
+ASTExpression Let() :
 {
-    List<Declaration> list;
-    ASTNode body;
+    List<Binding> list;
+    ASTExpression body;
 }
 {
     <LET>
-        list = DeclarationsList()
+        list = BindingsList()
     <IN>
         body = Expression()
     <END>
-    { return new nodes.ASTLet(list,body); }
+    { return new ASTLet(list,body); }
 }
 
-ASTNode Number() :
+ASTExpression Integer() :
 {
     Token num;
 }
 {
-   num = <NUMBER> { return new ASTNumber(Integer.parseInt(num.image)); }
+   num = <INTEGER_LITERAL>
+   { return new ASTInteger(Integer.parseInt(num.image)); }
 }
 
-ASTNode parenthesizedExpression() :
+ASTExpression Float() :
 {
-    ASTNode node;
+    Token num;
+}
+{
+   num = <FLOAT_LITERAL>
+   { return new ASTFloat(Float.parseFloat(num.image)); }
+}
+
+ASTExpression Boolean() :
+{
+    Token value;
+}
+{
+   (value = <TRUE> | value = <FALSE> )
+   { return new ASTBoolean(Boolean.parseBoolean(value.image)); }
+}
+
+ASTNode Println() :
+{
+    ASTExpression exp;
+}
+{
+	<PRINTLN> <LPAR> exp = Expression() <RPAR>
+   { return new ASTPrintln(exp); }
+}
+
+ASTExpression parenthesizedExpression() :
+{
+    ASTExpression node;
 }
 {
     <LPAR>  node=Expression()  <RPAR> { return node; }

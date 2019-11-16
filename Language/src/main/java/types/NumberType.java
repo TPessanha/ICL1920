@@ -1,15 +1,13 @@
 package types;
 
-public class NumberType implements IType {
-	public final static NumberType value = new NumberType();
+public abstract class NumberType implements IType {
+	@Override
+	public abstract String getName();
 
 	@Override
-	public String getTypeName() {
-		return "number";
-	}
+	public abstract NumberType getType();
 
-	@Override
-	public NumberType getType() {
-		return value;
-	}
+	public abstract int getPriorityLevel();
+
+	public abstract String getConversionLiteral();
 }

@@ -2,10 +2,9 @@ package nodes;
 
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
-import compiler.IdentifierDetails;
 import state.Environment;
 import types.IType;
-import values.Value;
+import values.IValue;
 
 public class ASTAssignment implements ASTNode {
     private final String identifier;
@@ -17,8 +16,8 @@ public class ASTAssignment implements ASTNode {
     }
 
     @Override
-    public Value<?> eval(Environment<Value<?>> environment) throws Exception {
-        return environment.assignVariable(identifier,expression.eval(environment));
+    public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
+        return environment.assign(identifier,expression.eval(environment));
     }
 
 	@Override
@@ -27,7 +26,7 @@ public class ASTAssignment implements ASTNode {
 	}
 
 	@Override
-	public IType typecheck() throws Exception {
+	public IType typecheck(Environment<IType> environment) {
 		return null;
 	}
 }
