@@ -1,7 +1,5 @@
 package main;
 
-import java.nio.charset.Charset;
-
 import exceptions.TypeMismatchException;
 import nodes.ASTNode;
 import parser.ParseException;
@@ -11,9 +9,11 @@ import parser.StreamProvider;
 import state.Environment;
 import values.IValue;
 
+import java.nio.charset.Charset;
+
 public class MainInterpreter {
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		Provider provider = new StreamProvider(System.in, Charset.defaultCharset());
 		Parser parser = new Parser(provider);
 

@@ -3,15 +3,12 @@ package nodes;
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
-import exceptions.TypeMismatchException;
-import exceptions.UndeclaredException;
 import state.Environment;
 import types.IType;
-import values.NumberValue;
 import values.IValue;
+import values.NumberValue;
 
 public class ASTNegate extends ASTExpression{
-
     private ASTNode node;
 
     public ASTNegate(ASTNode node)

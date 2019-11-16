@@ -1,8 +1,6 @@
 package nodes.relation;
 
 import compiler.CodeBlock;
-import compiler.Compiler;
-import exceptions.NullTypecheckException;
 import nodes.ASTExpression;
 import values.BooleanValue;
 import values.IValue;
@@ -15,48 +13,18 @@ public class ASTNotEqual extends ASTRelation {
 		super(lNode, rNode, operator);
 	}
 
+
 	@Override
-	public CodeBlock emitOperation() throws NullTypecheckException {
+	protected CodeBlock floatJumpCondition(String label) {
 		CodeBlock code = new CodeBlock();
-		switch (lNode.getType().getTypeName()) {
-			case "int":
-				code.appendCodeBlock(integerCompare());
-				break;
-			case "float":
-				code.appendCodeBlock(floatCompare());
-				break;
-		}
-
+		code.emit_if_equal(label);
 		return code;
 	}
 
-	private CodeBlock floatCompare() {
-		String l1 = Compiler.generateUniqueLabel();
-		String l2 = Compiler.generateUniqueLabel();
-
+	@Override
+	protected CodeBlock intJumpCondition(String label) {
 		CodeBlock code = new CodeBlock();
-		code.emit_float_compare();
-		code.emit_if_equal(l1);
-		code.emit_boolean(true);
-		code.emit_goto(l2);
-		code.emit_label(l1);
-		code.emit_boolean(false);
-		code.emit_label(l2);
-
-		return code;
-	}
-
-	private CodeBlock integerCompare() {
-		String l1 = Compiler.generateUniqueLabel();
-		String l2 = Compiler.generateUniqueLabel();
-
-		CodeBlock code = new CodeBlock();
-		code.emit_int_compare_equal(l1);
-		code.emit_boolean(true);
-		code.emit_goto(l2);
-		code.emit_label(l1);
-		code.emit_boolean(false);
-		code.emit_label(l2);
+		code.emit_int_compare_equal(label);
 		return code;
 	}
 

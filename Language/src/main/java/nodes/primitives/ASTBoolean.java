@@ -5,8 +5,6 @@ import compiler.CompilerEnvironment;
 import values.BooleanValue;
 
 public class ASTBoolean extends ASTPrimitive<BooleanValue> {
-	private BooleanValue value;
-
 	public ASTBoolean(boolean value) {
 		super(new BooleanValue(value));
 	}

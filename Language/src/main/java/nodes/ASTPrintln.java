@@ -6,7 +6,7 @@ import state.Environment;
 import types.IType;
 import values.IValue;
 
-public class ASTPrintln implements ASTNode {
+public class ASTPrintln extends ASTExpression {
 	private ASTExpression expression;
 
 	public ASTPrintln(ASTExpression expression) {
@@ -23,12 +23,12 @@ public class ASTPrintln implements ASTNode {
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		CodeBlock code = expression.compile(environment);
-		code.emit_println(expression.typecheck(new Environment<>()).getJVMType());
+		code.emit_println(getType().getJVMType());
 		return code;
 	}
 
 	@Override
 	public IType typecheck(Environment<IType> environment) throws Exception {
-		return expression.typecheck(environment);
+		return setType(expression.typecheck(environment));
 	}
 }

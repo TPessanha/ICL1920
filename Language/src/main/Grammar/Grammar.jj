@@ -12,6 +12,7 @@ import nodes.*;
 import nodes.primitives.*;
 import nodes.arithmetic.*;
 import nodes.relation.*;
+import nodes.logic.*;
 import state.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -137,28 +138,36 @@ ASTExpression Expression() :
     ASTExpression node;
 }
 {
-    node=Equality()
+    node=Disjunction()
     { return node; }
 }
 
 
-//ASTNode Disjunction() :
-//{
-//    ASTNode node;
-//}
-//{
-//    node = Conjunction() ((<NL>)* <DISJ> (<NL>)* Conjunction())*
-//    { return node; }
-//}
-//
-//ASTNode Conjunction() :
-//{
-//    ASTNode node;
-//}
-//{
-//    node = Equality() ((<NL>)* <CONJ> (<NL>)* Equality())*
-//    { return node; }
-//}
+ASTExpression Disjunction() :
+{
+    ASTExpression node,node2;
+}
+{
+    node = Conjunction() ( <DISJ> node2 = Conjunction()
+    	{
+        	node = new ASTOr(node,node2);
+        }
+    )*
+    { return node; }
+}
+
+ASTExpression Conjunction() :
+{
+    ASTExpression node,node2;
+}
+{
+    node = Equality() (<CONJ> node2 = Equality()
+    	{
+    		node = new ASTAnd(node,node2);
+    	}
+    )*
+    { return node; }
+}
 
 ASTExpression Equality() :
 {
@@ -167,30 +176,47 @@ ASTExpression Equality() :
 }
 {
     node = Comparison() (( op=<EQEQ> | op=<EXCL_EQUALS> )  node2=Comparison()
-    		{
-switch(op.kind)
-   		{
-   			case EQEQ:
-   				node = new nodes.relation.ASTEqual(node,node2);
-   				break;
-   		    case EXCL_EQUALS:
-   		    	node = new nodes.relation.ASTNotEqual(node,node2);
-   		    	break;
+    	{
+			switch(op.kind)
+   			{
+   				case EQEQ:
+   					node = new ASTEqual(node,node2);
+   					break;
+   			    case EXCL_EQUALS:
+   			    	node = new ASTNotEqual(node,node2);
+   			    	break;
+   			}
    		}
-   	}
-        )*
+    )*
     { return node; }
 }
 
 ASTExpression Comparison() :
 {
     Token op;
-    ASTExpression node;
+    ASTExpression node,node2;
 }
 {
-    node = addSubExpression() (( op=<GREATER> | op=<LESS> | op=<GR_EQUALS> | op=<LE_EQUALS> )
-      addSubExpression())?
-     { return node; }
+    node = addSubExpression() (( op=<GREATER> | op=<LESS> | op=<GR_EQUALS> | op=<LE_EQUALS> )  node2=addSubExpression()
+    	{
+			switch(op.kind)
+   			{
+   				case GREATER:
+   					node = new ASTGreater(node,node2);
+   					break;
+   				case GR_EQUALS:
+   					node = new ASTGreaterEqual(node,node2);
+   					break;
+   			    case LESS:
+   			    	node = new ASTLess(node,node2);
+   			    	break;
+   			    case LE_EQUALS:
+   			    	node = new ASTLessEqual(node,node2);
+   			    	break;
+   			}
+   		}
+    )?
+    { return node; }
 }
 
 ASTExpression addSubExpression() :
@@ -265,19 +291,19 @@ ASTExpression Unary():
 {
     (op=UnaryOperator())? node = Fact()
     {
-        if (op==null)
-            return node;
-        switch(op.kind)
-        {
-            case SUB:
-                node = new ASTNegate(node);
-                break;
-            case EXCL:
-                node = new ASTNot(node);
-                break;
-        }
+    if (op==null)
         return node;
+    switch(op.kind)
+    {
+        case SUB:
+            node = new ASTNegate(node);
+            break;
+        case EXCL:
+            node = new nodes.logic.ASTNot(node);
+            break;
     }
+    return node;
+}
 }
 
 

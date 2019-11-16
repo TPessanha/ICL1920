@@ -150,7 +150,7 @@ class InterpreterTests {
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof BooleanValue);
-		assertEquals(true, (Boolean) result.getValue());
+		assertEquals(true, result.getValue());
 	}
 
 	@Test
@@ -159,7 +159,7 @@ class InterpreterTests {
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof BooleanValue);
-		assertEquals(false, (Boolean) result.getValue());
+		assertEquals(false, result.getValue());
 	}
 
 	@Test
@@ -168,7 +168,7 @@ class InterpreterTests {
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof BooleanValue);
-		assertEquals(true, (Boolean) result.getValue());
+		assertEquals(true, result.getValue());
 	}
 
 	@Test
@@ -177,7 +177,7 @@ class InterpreterTests {
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof BooleanValue);
-		assertEquals(false, (Boolean) result.getValue());
+		assertEquals(false, result.getValue());
 	}
 
 	@Test

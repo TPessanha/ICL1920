@@ -2,11 +2,9 @@ package nodes.primitives;
 
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
-import nodes.primitives.ASTPrimitive;
 import values.IntValue;
 
 public class ASTInteger extends ASTPrimitive<IntValue> {
-
 	public ASTInteger(int value) {
 		super(new IntValue(value));
 	}

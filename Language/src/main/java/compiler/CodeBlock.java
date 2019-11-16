@@ -1,7 +1,5 @@
 package compiler;
 
-import types.StringType;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,19 +69,17 @@ public class CodeBlock {
 		appendCodeLine(type + "sub");
 	}
 
-	public void emit_optimize_int(int value)
-	{
-		if (value>=0 && value<=5)
+	public void emit_optimize_int(int value) {
+		if (value >= 0 && value <= 5)
 			emit_iconst(value);
-		else if (value==-1)
+		else if (value == -1)
 			appendCodeLine("iconst_m1");
-		else if (value>=-128 && value<=127)
+		else if (value >= -128 && value <= 127)
 			emit_bint(value);
-		else if (value>= -32768 && value<= 32767)
+		else if (value >= -32768 && value <= 32767)
 			emit_sint(value);
 		else
 			appendCodeLine("ldc " + value);
-
 	}
 
 	public void emit_mul(String type) {
@@ -96,6 +92,10 @@ public class CodeBlock {
 
 	public void emit_int_compare_not_equal(String label) {
 		appendCodeLine("if_icmpne " + label);
+	}
+
+	public void emit_int_compare_less_or_equal(String label) {
+		appendCodeLine("if_icmple " + label);
 	}
 
 	public void emit_int_compare_equal(String label) {
@@ -178,12 +178,15 @@ public class CodeBlock {
 		appendCodeLine("ldc " + value);
 	}
 
-	public void emit_ixor() {
-		appendCodeLine("ixor");
+	public void emit_optimize_float(float value) {
+		if (value == 0 || value == 1 || value == 2) {
+			appendCodeLine("fconst_" + (int) value);
+		} else
+			appendCodeLine("ldc " + value);
 	}
 
-	public void emit_int_compare(int mem) {
-		appendCodeLine("if_icmpne");
+	public void emit_ixor() {
+		appendCodeLine("ixor");
 	}
 
 	public void emit_label(String name) {
@@ -206,6 +209,10 @@ public class CodeBlock {
 		appendCodeLine("ifne " + label);
 	}
 
+	public void emit_if_less_equal(String label) {
+		appendCodeLine("ifle " + label);
+	}
+
 	public void emit_if_equal(String label) {
 		appendCodeLine("ifeq " + label);
 	}
@@ -219,5 +226,37 @@ public class CodeBlock {
 		appendCodeLine("invokestatic java/lang/String/valueOf(" + jvmType + ")Ljava/lang/String;");
 		appendCodeLine("; call println");
 		appendCodeLine("invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+	}
+
+	public void emit_if_greater_equal(String label) {
+		appendCodeLine("ifge " + label);
+	}
+
+	public void emit_int_compare_greater_or_equal(String label) {
+		appendCodeLine("if_icmpge " + label);
+	}
+
+	public void emit_if_less(String label) {
+		appendCodeLine("ifle " + label);
+	}
+
+	public void emit_int_compare_less(String label) {
+		appendCodeLine("if_icmplt " + label);
+	}
+
+	public void emit_if_greater(String label) {
+		appendCodeLine("ifgt " + label);
+	}
+
+	public void emit_int_compare_greater(String label) {
+		appendCodeLine("if_icmpgt " + label);
+	}
+
+	public void emit_iand() {
+		appendCodeLine("iand");
+	}
+
+	public void emit_ior() {
+		appendCodeLine("ior");
 	}
 }

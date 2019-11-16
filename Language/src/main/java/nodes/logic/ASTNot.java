@@ -1,13 +1,14 @@
-package nodes;
+package nodes.logic;
 
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
+import nodes.ASTExpression;
+import nodes.ASTNode;
 import state.Environment;
 import types.IType;
 import values.BooleanValue;
 import values.IValue;
-import values.NumberValue;
 
 public class ASTNot extends ASTExpression {
 	private ASTNode node;

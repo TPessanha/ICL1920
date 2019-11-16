@@ -3,20 +3,19 @@ import main.MainAssembler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
-import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import utils.PropertiesUtils;
 
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CompilerTests {
-	SummaryGeneratingListener listener = new SummaryGeneratingListener();
-	private Properties properties = new Properties();
-
 	@AfterAll
 	static void finish() throws IOException {
 		File dir =
@@ -45,6 +44,16 @@ public class CompilerTests {
 		return tests;
 	}
 
+	void cleanup() throws IOException {
+		File dir =
+			new File(Paths.get(PropertiesUtils.getCompiledPath().toString()).toString());
+
+		System.out.println("Delete: " + dir.getAbsolutePath());
+		for (File f : Objects.requireNonNull(dir.listFiles())) {
+			f.delete();
+		}
+	}
+
 	private void runSingleTest(String fileName) throws Exception {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		String[] expected = getResultCheck(in).split(":");
@@ -54,10 +63,12 @@ public class CompilerTests {
 		try {
 			compileAndAssemble(in);
 			List outputs = runClass();
-			assertEquals(outputs.get(0), expected[0]);
+			assertEquals(expected[0], outputs.get(0));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
+		cleanup();
 	}
 
 	private String getResultCheck(InputStream in)
@@ -70,7 +81,7 @@ public class CompilerTests {
 
 	private void compileAndAssemble(InputStream in) throws IOException {
 		Compiler compiler = new Compiler();
-		compiler.run(in);
+		Compiler.run(in);
 		MainAssembler.run();
 	}
 

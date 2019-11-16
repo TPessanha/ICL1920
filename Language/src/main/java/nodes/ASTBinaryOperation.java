@@ -13,7 +13,7 @@ import values.IValue;
 import values.NumberValue;
 
 public abstract class ASTBinaryOperation extends ASTExpression {
-	public final String operator;
+	protected final String operator;
 	protected ASTExpression lNode, rNode;
 
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
@@ -40,7 +40,7 @@ public abstract class ASTBinaryOperation extends ASTExpression {
 		return code;
 	}
 
-	public IValue doOperation(IValue v1, IValue v2) throws Exception {
+	protected IValue doOperation(IValue v1, IValue v2) throws Exception {
 		if (v1.getType().equals(v2.getType()) || v1 instanceof NumberValue && v2 instanceof NumberValue) {
 			int priority1 = ((NumberType) v1.getType()).getPriorityLevel();
 			int priority2 = ((NumberType) v2.getType()).getPriorityLevel();
