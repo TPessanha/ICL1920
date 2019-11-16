@@ -15,7 +15,7 @@ public class ASTInteger extends ASTPrimitive<IntValue> {
 	public CodeBlock compile(CompilerEnvironment environment) {
 		CodeBlock instructions = new CodeBlock();
 
-		instructions.emit_sint(value.getValue());
+		instructions.emit_optimize_int(value.getValue());
 
 		return instructions;
 	}

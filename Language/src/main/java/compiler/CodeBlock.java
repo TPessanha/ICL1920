@@ -71,6 +71,21 @@ public class CodeBlock {
 		appendCodeLine(type + "sub");
 	}
 
+	public void emit_optimize_int(int value)
+	{
+		if (value>=0 && value<=5)
+			emit_iconst(value);
+		else if (value==-1)
+			appendCodeLine("iconst_m1");
+		else if (value>=-128 && value<=127)
+			emit_bint(value);
+		else if (value>= -32768 && value<= 32767)
+			emit_sint(value);
+		else
+			appendCodeLine("ldc " + value);
+
+	}
+
 	public void emit_mul(String type) {
 		appendCodeLine(type + "mul");
 	}
