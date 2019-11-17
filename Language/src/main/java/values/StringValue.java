@@ -3,7 +3,7 @@ package values;
 import types.IType;
 import types.StringType;
 
-public class StringValue implements IValue<String> {
+public class StringValue implements IValue<String>, Comparable<IValue<String>> {
 	private final String value;
 
 	public StringValue(String value) {

@@ -4,31 +4,32 @@ import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import state.Environment;
 import types.IType;
+import types.ReferenceType;
 import values.IValue;
+import values.ReferenceValue;
 
-public class ASTPrintln extends ASTExpression {
-	private ASTExpression expression;
+public class ASTDereference extends ASTExpression {
+	private final ASTNode reference;
 
-	public ASTPrintln(ASTExpression expression) {
-		this.expression = expression;
+	public ASTDereference(ASTNode reference) {
+		this.reference = reference;
 	}
 
 	@Override
 	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
-		IValue value = expression.eval(environment);
-		System.out.println(value.getValue());
-		return value;
+		ReferenceValue r = (ReferenceValue) reference.eval(environment);
+		return r.getValue();
 	}
 
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
-		CodeBlock code = expression.compile(environment);
-		code.emit_println(getType().getJVMClass());
-		return code;
+		return null;
 	}
 
 	@Override
 	public IType typecheck(Environment<IType> environment) throws Exception {
-		return setType(expression.typecheck(environment));
+		IType t = reference.typecheck(environment);
+
+		return ((ReferenceType) t).getReferenceType();
 	}
 }

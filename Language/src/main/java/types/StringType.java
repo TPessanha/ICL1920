@@ -14,7 +14,7 @@ public class StringType implements IType {
 	}
 
 	@Override
-	public String getJVMName() {
+	public String getJVMClass() {
 		return "Ljava/lang/String;";
 	}
 }

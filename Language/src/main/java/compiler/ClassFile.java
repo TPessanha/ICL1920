@@ -46,9 +46,9 @@ public class ClassFile {
 		code.appendCodeLine(".class public " + className);
 		code.appendCodeLine(".super java/lang/Object");
 		if (this instanceof StackFrameFile)
-			code.appendCodeLine(".field public sl L" + superName + ";");
+			code.appendCodeLine(".field public sl " + superName);
 		for (IdentifierDetails details : fields)
-			code.appendCodeLine(".field public " + details.getName() + " " + details.getType());
+			code.appendCodeLine(".field public " + details.getName() + " " + details.getType().getJVMClass());
 		code.appendCodeLine("");
 	}
 

@@ -14,7 +14,7 @@ public class UndefinedType implements IType {
 	}
 
 	@Override
-	public String getJVMName() {
+	public String getJVMClass() {
 		return null;
 	}
 }

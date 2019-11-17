@@ -5,5 +5,5 @@ public interface IType {
 
 	IType getType();
 
-	String getJVMName();
+	String getJVMClass();
 }

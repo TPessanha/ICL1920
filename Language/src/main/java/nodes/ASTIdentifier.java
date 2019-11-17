@@ -36,7 +36,7 @@ public class ASTIdentifier extends ASTExpression {
 		for (i = level; i > details.getLevel(); i--) {
 			code.emit_getField("frame_" + i + "/sl", "Lframe_" + (i-1) + ";");
 		}
-		code.emit_getField("frame_" + i + "/" + details.getName(), details.getType());
+		code.emit_getField("frame_" + i + "/" + details.getName(), details.getType().getJVMClass());
 		code.emit_blank();
 		return code;
 	}

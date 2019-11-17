@@ -40,7 +40,7 @@ public class FloatValue extends NumberValue<Float> {
 
 	@Override
 	public String getTypeName() {
-		return "float";
+		return getType().getName();
 	}
 
 	@Override

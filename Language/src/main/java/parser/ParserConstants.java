@@ -73,17 +73,19 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int FLOAT = 37;
   /** RegularExpression Id. */
-  int PRINTLN = 38;
+  int NEW = 38;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 39;
+  int PRINTLN = 39;
   /** RegularExpression Id. */
-  int FLOAT_LITERAL = 40;
+  int INTEGER_LITERAL = 40;
   /** RegularExpression Id. */
-  int IDENTIFIER = 41;
+  int FLOAT_LITERAL = 41;
   /** RegularExpression Id. */
-  int LETTER = 42;
+  int IDENTIFIER = 42;
   /** RegularExpression Id. */
-  int DIGIT = 43;
+  int LETTER = 43;
+  /** RegularExpression Id. */
+  int DIGIT = 44;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -128,6 +130,7 @@ public interface ParserConstants {
     "\"false\"",
     "\"int\"",
     "\"float\"",
+    "\"new\"",
     "\"println\"",
     "<INTEGER_LITERAL>",
     "<FLOAT_LITERAL>",

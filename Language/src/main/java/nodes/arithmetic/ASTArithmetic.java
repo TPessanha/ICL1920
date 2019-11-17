@@ -26,7 +26,6 @@ public abstract class ASTArithmetic extends ASTBinaryOperation {
 				return setType(t1.getType());
 			return setType(t2.getType());
 		} else
-//			throw new IllegalOperatorException(operator,t1.getTypeName(),t2.getTypeName());
 			return setType(UndefinedType.value);
 	}
 

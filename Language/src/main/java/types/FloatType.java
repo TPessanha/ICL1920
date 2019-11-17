@@ -24,7 +24,7 @@ public class FloatType extends NumberType {
 	}
 
 	@Override
-	public String getJVMName() {
+	public String getJVMClass() {
 		return "F";
 	}
 }

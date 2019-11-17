@@ -1,8 +1,6 @@
 package compiler;
 
-import java.io.PrintStream;
 import java.util.Collection;
-import java.util.List;
 
 public class StackFrameFile extends ClassFile {
 
@@ -23,11 +21,11 @@ public class StackFrameFile extends ClassFile {
 		int level = env.getLevel();
 		if (level==0)
 		{
-			this.superName = "java/lang/Object";
+			this.superName = "Ljava/lang/Object;";
 		}
 		else
 		{
-			this.superName = "frame_"+(level-1);
+			this.superName = "Lframe_"+(level-1)+";";
 		}
 		initialize();
 	}
