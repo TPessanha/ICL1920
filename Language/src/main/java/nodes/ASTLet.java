@@ -1,9 +1,10 @@
 package nodes;
 
 import compiler.CodeBlock;
+import compiler.Compiler;
 import compiler.CompilerEnvironment;
 import compiler.IdentifierDetails;
-import compiler.StackFrameFile;
+import compiler.classes.StackFrame;
 import state.Binding;
 import state.Environment;
 import types.IType;
@@ -11,8 +12,6 @@ import values.IValue;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static utils.PropertiesUtils.getCompiledPath;
 
 /**
  * Description:
@@ -47,16 +46,17 @@ public class ASTLet extends ASTExpression {
 			IdentifierDetails details =
 				new IdentifierDetails(((ASTExpression)d.getExpression()).getType(), newEnv.getLevel(), "x_" + i);
 			newEnv.associate(this.bindings.get(i).getIdentifier(), details);
+			newEnv.getFrame().addField(details);
 		}
 
-		StackFrameFile stackFrameFile = new StackFrameFile(newEnv);
-		stackFrameFile.dump(getCompiledPath());
+		Compiler.addClassFile(newEnv.getFrame());
 
 		CodeBlock code = new CodeBlock();
 		int SL = environment.getSL();
 		int level = newEnv.getLevel();
-		String className = "frame_" + level;
-		String parentName = "frame_" + (level - 1);
+		StackFrame frame = newEnv.getFrame();
+		String className = frame.getClassName();
+		String parentName = environment.getFrame().getClassName();
 
 		code.emit_comment("LET CODE START --------------------------------");
 		code.emit_blank();

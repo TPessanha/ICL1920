@@ -13,6 +13,10 @@ public class IdentifierDetails {
 		this.name = name;
 	}
 
+	public IdentifierDetails(IType type, String name) {
+		this(type,0,name);
+	}
+
 	public IType getType() {
 		return type;
 	}

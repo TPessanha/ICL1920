@@ -1,19 +1,16 @@
-package compiler;
+package compiler.classes;
 
-import java.io.*;
-import java.nio.file.Paths;
-
-public class MainClassFile extends ClassFile {
+public class MainClass extends ClassFile {
 	protected int SL;
 
-	public MainClassFile(int stackSize, int localsSize, String className, int SL) {
+	public MainClass(int stackSize, int localsSize, String className, int SL) {
 		super(className);
 		this.SL = SL;
 		initialize();
 		writeMain(localsSize, stackSize);
 	}
 
-	public MainClassFile(int stackSize, int localsSize, String className) {
+	public MainClass(int stackSize, int localsSize, String className) {
 		this(stackSize, localsSize, className, 4);
 	}
 

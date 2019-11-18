@@ -12,8 +12,7 @@ import values.FloatValue;
 import values.IValue;
 import values.NumberValue;
 
-public abstract class ASTBinaryOperation extends ASTExpression {
-	protected final String operator;
+public abstract class ASTBinaryOperation extends ASTOperation {
 	protected ASTExpression lNode, rNode;
 
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
@@ -55,9 +54,9 @@ public abstract class ASTBinaryOperation extends ASTExpression {
 	}
 
 	public ASTBinaryOperation(ASTExpression lNode, ASTExpression rNode, String operator) {
+		super(operator);
 		this.lNode = lNode;
 		this.rNode = rNode;
-		this.operator = operator;
 	}
 
 	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {

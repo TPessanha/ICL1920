@@ -23,6 +23,11 @@ public class IntType extends NumberType{
 		return "I";
 	}
 
+	@Override
+	public String getClassName() {
+		return "I";
+	}
+
 	public String getConversionLiteral(){
 		return "i";
 	}

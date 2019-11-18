@@ -23,4 +23,9 @@ public class VoidValue implements IValue<VoidType> {
 	public boolean equals(IValue value) {
 		return value.getValue() == null;
 	}
+
+	@Override
+	public String toString(){
+		return "void";
+	}
 }

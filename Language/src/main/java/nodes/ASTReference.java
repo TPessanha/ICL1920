@@ -1,7 +1,9 @@
 package nodes;
 
 import compiler.CodeBlock;
+import compiler.Compiler;
 import compiler.CompilerEnvironment;
+import compiler.classes.ReferenceClass;
 import state.Environment;
 import types.IType;
 import types.ReferenceType;
@@ -9,7 +11,7 @@ import values.IValue;
 import values.ReferenceValue;
 
 public class ASTReference extends ASTExpression {
-	private final ASTNode referenceTo;
+	private final ASTExpression referenceTo;
 
 	public ASTReference(ASTExpression referenceTo) {
 		this.referenceTo = referenceTo;
@@ -22,7 +24,19 @@ public class ASTReference extends ASTExpression {
 
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
-		return null;
+		ReferenceClass refClass = new ReferenceClass((ReferenceType) getType());
+		Compiler.addClassFile(refClass);
+
+		CodeBlock code = new CodeBlock();
+		code.emit_comment("Reference");
+		code.emit_new(refClass.getClassName());
+		code.emit_duplicate();
+		code.emit_invokeSpecial(refClass.getClassName() + "/<init>()V");
+		code.emit_duplicate();
+		code.appendCodeBlock(referenceTo.compile(environment));
+		code.emit_putField(refClass.getClassName() + "/value", referenceTo.getType().getJVMClass());
+		code.emit_blank();
+		return code;
 	}
 
 	@Override

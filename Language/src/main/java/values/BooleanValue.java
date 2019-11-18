@@ -32,7 +32,7 @@ public class BooleanValue implements IValue<Boolean>, Comparable<IValue<Boolean>
 
 	@Override
     public String toString() {
-        return java.lang.Boolean.toString(value);
+        return Boolean.toString(value);
     }
 
     @Override

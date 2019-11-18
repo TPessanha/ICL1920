@@ -34,6 +34,11 @@ public class FloatValue extends NumberValue<Float> {
 	}
 
 	@Override
+	public String toString() {
+		return Float.toString(value.floatValue());
+	}
+
+	@Override
 	public Float getValue() {
 		return value.floatValue();
 	}

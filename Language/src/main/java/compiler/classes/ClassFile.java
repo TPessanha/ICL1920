@@ -1,4 +1,7 @@
-package compiler;
+package compiler.classes;
+
+import compiler.CodeBlock;
+import compiler.IdentifierDetails;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,19 +9,19 @@ import java.io.PrintStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class ClassFile {
 	protected CodeBlock code;
 	protected String className;
 	protected String superName;
-	protected Collection<IdentifierDetails> fields;
+	protected List<IdentifierDetails> fields;
 
 	private String[] parentStructuresStart = {".method", "; tabify"};
 	private String[] parentStructuresEnd = {".end method", "; detabify"};
 
-	public ClassFile(String className, String superName, Collection<IdentifierDetails> fields) {
+	public ClassFile(String className, String superName, List<IdentifierDetails> fields) {
 		code = new CodeBlock();
 		this.className = className;
 		this.superName = superName;
@@ -30,7 +33,11 @@ public class ClassFile {
 		writeDefaultConstructor();
 	}
 
-	public ClassFile(String className, Collection<IdentifierDetails> fields) {
+	public String getClassName() {
+		return className;
+	}
+
+	public ClassFile(String className, List<IdentifierDetails> fields) {
 		this(className, "java/lang/Object", fields);
 	}
 
@@ -43,9 +50,9 @@ public class ClassFile {
 	}
 
 	private void writeHeader() {
-		code.appendCodeLine(".class public " + className);
+		code.appendCodeLine(".class public " + getClassName());
 		code.appendCodeLine(".super java/lang/Object");
-		if (this instanceof StackFrameFile)
+		if (this instanceof StackFrame)
 			code.appendCodeLine(".field public sl " + superName);
 		for (IdentifierDetails details : fields)
 			code.appendCodeLine(".field public " + details.getName() + " " + details.getType().getJVMClass());
@@ -63,7 +70,7 @@ public class ClassFile {
 	}
 
 	public String getFileName() {
-		return className + ".j";
+		return getClassName() + ".j";
 	}
 
 	public void dump(PrintStream out, boolean prettify) {

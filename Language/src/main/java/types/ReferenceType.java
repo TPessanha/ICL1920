@@ -13,16 +13,21 @@ public class ReferenceType<type extends IType> implements IType {
 
 	@Override
 	public String getName() {
-		return "reference@"+ referenceTo.getName().split("@")[0];
+		return "reference2" + referenceTo.getName().split("2")[0];
 	}
 
 	@Override
 	public ReferenceType getType() {
-		return new ReferenceType<>(referenceTo);
+		return this;
 	}
 
 	@Override
 	public String getJVMClass() {
-		return "Lref_" + referenceTo.getName() + ";";
+		return ObjectType.value.getJVMClass();
+	}
+
+	@Override
+	public String getClassName() {
+		return getName();
 	}
 }

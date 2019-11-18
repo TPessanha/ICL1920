@@ -3,6 +3,7 @@ package state;
 import exceptions.DuplicatedIdentifierException;
 import exceptions.UndeclaredException;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class Environment<T> {
 		throw new UndeclaredException("Variable '" + identifier + "' is not declared");
 	}
 
-	public Environment<T> beginScope() {
+	public Environment<T> beginScope() throws IOException {
 		return new Environment<>(this,compiler);
 	}
 
@@ -76,7 +77,7 @@ public class Environment<T> {
 		throw new UndeclaredException("Variable '" + identifier + "' is not declared");
 	}
 
-	protected Environment<T> getParent() {
+	public Environment<T> getParent() {
 		return parent;
 	}
 

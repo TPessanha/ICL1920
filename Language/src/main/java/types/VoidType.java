@@ -17,4 +17,9 @@ public class VoidType implements IType {
 	public String getJVMClass() {
 		return "V";
 	}
+
+	@Override
+	public String getClassName() {
+		return "V";
+	}
 }

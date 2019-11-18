@@ -2,6 +2,7 @@ import compiler.Compiler;
 import main.MainAssembler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import utils.PropertiesUtils;
 
@@ -54,6 +55,11 @@ public class CompilerTests {
 		}
 	}
 
+	@Test
+	public void runSingleTest() throws Exception {
+		runSingleTest("test_let_1.icl");
+	}
+
 	private void runSingleTest(String fileName) throws Exception {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		String[] expected = getResultCheck(in).split(":");
@@ -80,6 +86,7 @@ public class CompilerTests {
 	}
 
 	private void compileAndAssemble(InputStream in) throws IOException {
+		Compiler.reset();
 		Compiler.run(in);
 		MainAssembler.run();
 	}
