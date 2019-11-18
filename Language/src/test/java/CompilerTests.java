@@ -2,7 +2,6 @@ import compiler.Compiler;
 import main.MainAssembler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import utils.PropertiesUtils;
 
@@ -28,7 +27,7 @@ public class CompilerTests {
 	}
 
 	@TestFactory
-	Iterable<DynamicTest> runTests() throws URISyntaxException {
+	public Iterable<DynamicTest> runTests() throws URISyntaxException {
 		List<DynamicTest> tests = new ArrayList<>();
 		File dir = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("compilerTests/")).toURI());
 
@@ -54,11 +53,11 @@ public class CompilerTests {
 			f.delete();
 		}
 	}
-
-	@Test
-	public void runSingleTest() throws Exception {
-		runSingleTest("test_let_1.icl");
-	}
+//
+//	@Test
+//	public void runSingleTest() throws Exception {
+//		runSingleTest("test_let_1.icl");
+//	}
 
 	private void runSingleTest(String fileName) throws Exception {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
