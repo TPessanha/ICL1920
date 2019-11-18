@@ -33,7 +33,7 @@ public class CodeBlock {
 			appendCodeLine(line);
 	}
 
-	List<String> getCode() {
+	public List<String> getCode() {
 		return code;
 	}
 
@@ -258,5 +258,9 @@ public class CodeBlock {
 
 	public void emit_ior() {
 		appendCodeLine("ior");
+	}
+
+	public void emit_checkcast(String className) {
+		appendCodeLine("checkcast " + className);
 	}
 }

@@ -39,12 +39,14 @@ public class Parser implements ParserConstants {
       break;
       }
     case SUB:
+    case EXCL:
     case TILDE:
     case LPAR:
     case LCUR:
     case LET:
     case TRUE:
     case FALSE:
+    case NEW:
     case INTEGER_LITERAL:
     case FLOAT_LITERAL:
     case IDENTIFIER:{
@@ -377,10 +379,6 @@ if (op==null)
       node = Boolean();
       break;
       }
-    case IDENTIFIER:{
-      node = Identifier();
-      break;
-      }
     case LET:{
       node = Let();
       break;
@@ -397,12 +395,38 @@ if (op==null)
       node = Integer();
       break;
       }
+    case IDENTIFIER:{
+      node = Identifier();
+      break;
+      }
+    case NEW:{
+      node = Reference();
+      break;
+      }
+    case EXCL:{
+      node = Dereference();
+      break;
+      }
     default:
       jj_la1[15] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
 {if ("" != null) return node;}
+    throw new IllegalStateException ("Missing return statement in function");
+}
+
+  final public ASTExpression Reference() throws ParseException {ASTExpression exp;
+    jj_consume_token(NEW);
+    exp = Fact();
+{if ("" != null) return new ASTReference(exp);}
+    throw new IllegalStateException ("Missing return statement in function");
+}
+
+  final public ASTExpression Dereference() throws ParseException {ASTExpression exp;
+    jj_consume_token(EXCL);
+    exp = Fact();
+{if ("" != null) return new ASTDereference(exp);}
     throw new IllegalStateException ("Missing return statement in function");
 }
 
@@ -530,10 +554,10 @@ list.add(d);
 	   jj_la1_init_1();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0xa8004400,0x10000,0x8000,0xc0000,0xc0000,0xf00000,0xf00000,0x600,0x600,0x1800,0x1800,0x0,0x20000000,0x4400,0x4400,0x88000000,0x100,0x100,0x0,};
+	   jj_la1_0 = new int[] {0xa8006400,0x10000,0x8000,0xc0000,0xc0000,0xf00000,0xf00000,0x600,0x600,0x1800,0x1800,0x0,0x20000000,0x4400,0x4400,0x88002000,0x100,0x100,0x0,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x3cc,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x30,0x0,0x0,0x0,0x38c,0x200,0x0,0xc,};
+	   jj_la1_1 = new int[] {0x7cc,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x30,0x0,0x0,0x0,0x74c,0x400,0x0,0xc,};
 	}
 
   /**
@@ -678,7 +702,7 @@ list.add(d);
    */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[44];
+    boolean[] la1tokens = new boolean[45];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -695,7 +719,7 @@ list.add(d);
         }
       }
     }
-    for (int i = 0; i < 44; i++) {
+    for (int i = 0; i < 45; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

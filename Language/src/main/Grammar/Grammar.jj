@@ -35,52 +35,29 @@ SKIP :
 
 TOKEN :
 {
-  < DOT :  "." >
-  |
-  < COMA : "," >
-  |
-  < ADD : "+" >
-  |
-  < SUB : "-" >
-  |
-  < MULT : "*" >
-  |
-  < DIV : "/" >
-  |
-  < EXCL : "!" >
-  |
-  < TILDE : "~" >
-  |
-  < CONJ : "&&" >
-  |
-  < DISJ : "||" >
-  |
-  < EQUALS : "=" >
-  |
-  < EQEQ : "==" >
-  |
-  < EXCL_EQUALS : "!=" >
-  |
-  < GREATER : ">" >
-  |
-  < LESS : "<" >
-  |
-  < GR_EQUALS : ">=" >
-  |
-  < LE_EQUALS : "<=" >
-  |
-  < ARROW : "->" >
-  |
-  < SEMICOLON: ";" >
-  |
-  < COLON: ":" >
-  |
-  < LPAR : "(" >
-  |
-  < RPAR : ")" >
-  |
-  < LCUR : "{" >
-  |
+  < DOT :  "." > |
+  < COMA : "," > |
+  < ADD : "+" > |
+  < SUB : "-" > |
+  < MULT : "*" > |
+  < DIV : "/" > |
+  < EXCL : "!" > |
+  < TILDE : "~" > |
+  < CONJ : "&&" > |
+  < DISJ : "||" > |
+  < EQUALS : "=" > |
+  < EQEQ : "==" > |
+  < EXCL_EQUALS : "!=" > |
+  < GREATER : ">" > |
+  < LESS : "<" > |
+  < GR_EQUALS : ">=" > |
+  < LE_EQUALS : "<=" > |
+  < ARROW : "->" > |
+  < SEMICOLON: ";" > |
+  < COLON: ":" > |
+  < LPAR : "(" > |
+  < RPAR : ")" > |
+  < LCUR : "{" > |
   < RCUR : "}" >
 //  |
 //  < STAT_ENDS: (<SEMICOLON> | <NL>)>
@@ -95,7 +72,8 @@ TOKEN : {
 	< TRUE: "true" > |
    	< FALSE: "false" > |
    	< INT: "int" > |
-   	< FLOAT: "float" >|
+   	< FLOAT: "float" > |
+   	< NEW: "new" > |
    	< PRINTLN: "println" >
 }
 
@@ -321,8 +299,6 @@ ASTExpression Fact() :
     (
     	node = Boolean()
     	|
-        node = Identifier()
-        |
         node = Let()
         |
         node = parenthesizedExpression()
@@ -330,10 +306,34 @@ ASTExpression Fact() :
         node = Float()
         |
         node = Integer()
+        |
+        node = Identifier()
+        |
+        node = Reference()
+        |
+        node = Dereference()
     )
     {
         return node;
     }
+}
+
+ASTExpression Reference() :
+{
+	ASTExpression exp;
+}
+{
+	<NEW> exp = Fact()
+	{return new ASTReference(exp);}
+}
+
+ASTExpression Dereference() :
+{
+	ASTExpression exp;
+}
+{
+	<EXCL> exp = Fact()
+	{return new ASTDereference(exp);}
 }
 
 ASTExpression Identifier() :

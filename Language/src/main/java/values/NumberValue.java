@@ -5,7 +5,7 @@ import exceptions.DividedByZeroException;
 /**
  * Description:
  */
-public abstract class NumberValue<T> implements IValue<T> {
+public abstract class NumberValue<T> implements IValue<T>, Comparable<IValue<T>> {
     protected java.lang.Number value;
 
     public abstract NumberValue add(NumberValue number);

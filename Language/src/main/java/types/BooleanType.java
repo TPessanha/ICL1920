@@ -14,7 +14,12 @@ public class BooleanType implements IType {
 	}
 
 	@Override
-	public String getJVMName() {
+	public String getJVMClass() {
+		return "Z";
+	}
+
+	@Override
+	public String getClassName() {
 		return "Z";
 	}
 }

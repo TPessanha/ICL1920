@@ -3,27 +3,29 @@ package nodes.logic;
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
-import nodes.ASTExpression;
 import nodes.ASTNode;
+import nodes.ASTOperation;
 import state.Environment;
 import types.IType;
 import values.BooleanValue;
 import values.IValue;
 
-public class ASTNot extends ASTExpression {
+public class ASTNot extends ASTOperation {
+	private static final String operator = "~";
 	private ASTNode node;
 
-	public ASTNot(ASTNode node) {
+	public ASTNot(ASTNode node)
+	{
+		super(operator);
 		this.node = node;
 	}
-
 	@Override
 	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
 		IValue v = node.eval(environment);
 
 		if (v instanceof BooleanValue)
 			return ((BooleanValue) v).not();
-		throw new IllegalOperatorException("~", v.getTypeName());
+		throw new IllegalOperatorException(operator, v.getTypeName());
 	}
 
 	@Override

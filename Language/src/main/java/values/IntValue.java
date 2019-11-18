@@ -19,7 +19,7 @@ public class IntValue extends NumberValue<Integer> {
 
     @Override
     public String getTypeName() {
-        return "int";
+        return getType().getName();
     }
 
 	@Override

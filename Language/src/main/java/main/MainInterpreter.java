@@ -22,7 +22,7 @@ public class MainInterpreter {
 				ASTNode exp = parser.Start();
 				System.out.println("Expected type: " + exp.typecheck(new Environment<>(false)).getName());
 				IValue<?> out = exp.eval(new Environment<>(false));
-				System.out.println(out.getValue());
+				System.out.println(out);
 			} catch (ParseException e) {
 				System.out.println("Syntax Error!");
 				System.out.println(e.getMessage());

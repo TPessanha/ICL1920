@@ -1,5 +1,7 @@
 package compiler;
 
+import compiler.classes.ClassFile;
+import compiler.classes.MainClass;
 import nodes.ASTNode;
 import parser.*;
 import state.Environment;
@@ -8,29 +10,37 @@ import types.IType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.HashSet;
 
 import static utils.PropertiesUtils.getCompiledPath;
 
 public class Compiler {
 	private static final int SL = 4;
 	private static int nLabel;
+	private static int nScope;
+	private static HashSet<String> compiledClasses = new HashSet<>();
 
 	public static String generateUniqueLabel() {
 		return "L" + nLabel++;
+	}
+
+	public static String generateUniqueScope() {
+		return "frame_" + nScope++;
 	}
 
 	public static void run(Parser parser) {
 		ASTNode exp;
 
 		try {
+			Compiler.reset();
 			exp = parser.Start();
-			MainClassFile mainClassFile = new MainClassFile(256, 10, "Main");
+			MainClass mainClass = new MainClass(256, 10, "Main");
 			IType type = exp.typecheck(new Environment<>());
 			CodeBlock code = exp.compile(new CompilerEnvironment(SL));
-			mainClassFile.emitCodeBlock(code);
-			mainClassFile.writeFooter();
+			mainClass.emitCodeBlock(code);
+			mainClass.writeFooter();
 
-			mainClassFile.dump(getCompiledPath());
+			mainClass.dump(getCompiledPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Could not find output path");
@@ -54,7 +64,21 @@ public class Compiler {
 		run(parser);
 	}
 
-	public static void initialize() {
+	public static void reset() {
 		nLabel = 0;
+		nScope = 0;
+		compiledClasses.clear();
+	}
+
+	public static void addClassFile(ClassFile file) throws IOException {
+		if (!compiledClasses.contains(file.getClassName())) {
+			file.initialize();
+			file.dump(getCompiledPath());
+			compiledClasses.add(file.getClassName());
+		}
+	}
+
+	public static boolean isClassFileCompiled(String className) {
+		return compiledClasses.contains(className);
 	}
 }

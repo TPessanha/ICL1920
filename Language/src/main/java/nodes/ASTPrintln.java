@@ -23,7 +23,7 @@ public class ASTPrintln extends ASTExpression {
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		CodeBlock code = expression.compile(environment);
-		code.emit_println(getType().getJVMName());
+		code.emit_println(getType().getJVMClass());
 		return code;
 	}
 

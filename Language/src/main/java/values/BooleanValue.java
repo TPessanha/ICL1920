@@ -6,7 +6,7 @@ import types.IType;
 /**
  * Description:
  */
-public class BooleanValue implements IValue<Boolean> {
+public class BooleanValue implements IValue<Boolean>, Comparable<IValue<Boolean>> {
     private final boolean value;
     public final static BooleanValue FALSE = new BooleanValue(false);
     public final static BooleanValue TRUE = new BooleanValue(true);
@@ -22,7 +22,7 @@ public class BooleanValue implements IValue<Boolean> {
 
     @Override
     public String getTypeName() {
-        return "boolean";
+    	return getType().getName();
     }
 
 	@Override
@@ -32,7 +32,7 @@ public class BooleanValue implements IValue<Boolean> {
 
 	@Override
     public String toString() {
-        return java.lang.Boolean.toString(value);
+        return Boolean.toString(value);
     }
 
     @Override

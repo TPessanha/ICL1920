@@ -27,7 +27,7 @@ public class CompilerTests {
 	}
 
 	@TestFactory
-	Iterable<DynamicTest> runTests() throws URISyntaxException {
+	public Iterable<DynamicTest> runTests() throws URISyntaxException {
 		List<DynamicTest> tests = new ArrayList<>();
 		File dir = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("compilerTests/")).toURI());
 
@@ -53,6 +53,11 @@ public class CompilerTests {
 			f.delete();
 		}
 	}
+//
+//	@Test
+//	public void runSingleTest() throws Exception {
+//		runSingleTest("test_let_1.icl");
+//	}
 
 	private void runSingleTest(String fileName) throws Exception {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
@@ -80,6 +85,7 @@ public class CompilerTests {
 	}
 
 	private void compileAndAssemble(InputStream in) throws IOException {
+		Compiler.reset();
 		Compiler.run(in);
 		MainAssembler.run();
 	}

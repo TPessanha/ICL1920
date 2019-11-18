@@ -1,7 +1,10 @@
 package main;
 
 import compiler.Compiler;
-import parser.*;
+import parser.Parser;
+import parser.Provider;
+import parser.StreamProvider;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +15,7 @@ public class MainCompiler {
 	public static void main(String[] args) throws IOException {
 		Provider provider;
 		Parser parser;
-		Compiler.initialize();
+		Compiler.reset();
 
 		boolean assemble = false;
 		String filePath = null;

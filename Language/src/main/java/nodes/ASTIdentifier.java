@@ -29,14 +29,18 @@ public class ASTIdentifier extends ASTExpression {
 		int level = environment.getLevel();
 		int SL = environment.getSL();
 
-		code.emit_comment("Identifier "+ name);
+		code.emit_comment("Identifier " + name);
 		code.emit_aload(SL);
 
 		int i;
+		CompilerEnvironment curr = environment;
+		CompilerEnvironment parent = (CompilerEnvironment) curr.getParent();
 		for (i = level; i > details.getLevel(); i--) {
-			code.emit_getField("frame_" + i + "/sl", "Lframe_" + (i-1) + ";");
+			code.emit_getField(curr.getFrame().getClassName() + "/sl", "L" + parent.getFrame().getClassName() + ";");
+			curr=parent;
+			parent= (CompilerEnvironment) parent.getParent();
 		}
-		code.emit_getField("frame_" + i + "/" + details.getName(), details.getType());
+		code.emit_getField(curr.getFrame().getClassName() + "/" + details.getName(), details.getType().getJVMClass());
 		code.emit_blank();
 		return code;
 	}

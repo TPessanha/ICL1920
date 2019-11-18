@@ -11,10 +11,11 @@ public class ASTBoolean extends ASTPrimitive<BooleanValue> {
 
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) {
-		CodeBlock instructions = new CodeBlock();
+		CodeBlock code = new CodeBlock();
 
-		instructions.emit_boolean(value.getValue());
+		code.emit_boolean(value.getValue());
+		code.emit_blank();
 
-		return instructions;
+		return code;
 	}
 }

@@ -25,7 +25,7 @@ public class VoidValue implements IValue<VoidType> {
 	}
 
 	@Override
-	public int compareTo(IValue<VoidType> o) {
-		return -1;
+	public String toString(){
+		return "void";
 	}
 }

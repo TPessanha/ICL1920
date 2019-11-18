@@ -1,11 +1,11 @@
 package types;
 
-public class StringType implements IType {
-	public final static StringType value = new StringType();
+public class ObjectType implements IType {
+	public static final ObjectType value = new ObjectType();
 
 	@Override
 	public String getName() {
-		return "String";
+		return "object";
 	}
 
 	@Override
@@ -20,6 +20,6 @@ public class StringType implements IType {
 
 	@Override
 	public String getClassName() {
-		return "java/lang/String";
+		return "java/lang/Object";
 	}
 }

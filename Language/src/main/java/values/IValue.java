@@ -5,7 +5,7 @@ import types.IType;
 /**
  * Description:
  */
-public interface IValue<T> extends Comparable<IValue<T>> {
+public interface IValue<T> {
     T getValue();
 
     String getTypeName();

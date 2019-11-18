@@ -11,10 +11,11 @@ public class ASTInteger extends ASTPrimitive<IntValue> {
 
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) {
-		CodeBlock instructions = new CodeBlock();
+		CodeBlock code = new CodeBlock();
 
-		instructions.emit_optimize_int(value.getValue());
+		code.emit_optimize_int(value.getValue());
+		code.emit_blank();
 
-		return instructions;
+		return code;
 	}
 }
