@@ -1,8 +1,10 @@
-package nodes;
+package nodes.references;
 
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
+import nodes.ASTNode;
+import nodes.ASTOperation;
 import state.Environment;
 import types.IType;
 import types.ReferenceType;
