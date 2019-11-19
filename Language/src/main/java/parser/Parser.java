@@ -13,6 +13,8 @@ import nodes.logic.ASTOr;
 import nodes.primitives.ASTBoolean;
 import nodes.primitives.ASTFloat;
 import nodes.primitives.ASTInteger;
+import nodes.references.ASTDereference;
+import nodes.references.ASTReference;
 import nodes.relation.*;
 import state.Binding;
 
@@ -554,10 +556,10 @@ list.add(d);
 	   jj_la1_init_1();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0xa8006400,0x10000,0x8000,0xc0000,0xc0000,0xf00000,0xf00000,0x600,0x600,0x1800,0x1800,0x0,0x20000000,0x4400,0x4400,0x88002000,0x100,0x100,0x0,};
+	   jj_la1_0 = new int[] {0x50006400,0x10000,0x8000,0x180000,0x180000,0x1e00000,0x1e00000,0x600,0x600,0x1800,0x1800,0x0,0x40000000,0x4400,0x4400,0x10002000,0x100,0x100,0x0,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x7cc,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x30,0x0,0x0,0x0,0x74c,0x400,0x0,0xc,};
+	   jj_la1_1 = new int[] {0xf99,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x60,0x0,0x0,0x0,0xe99,0x800,0x0,0x18,};
 	}
 
   /**
@@ -702,7 +704,7 @@ list.add(d);
    */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[45];
+    boolean[] la1tokens = new boolean[46];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -719,7 +721,7 @@ list.add(d);
         }
       }
     }
-    for (int i = 0; i < 45; i++) {
+    for (int i = 0; i < 46; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

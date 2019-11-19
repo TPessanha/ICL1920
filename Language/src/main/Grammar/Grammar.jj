@@ -12,6 +12,7 @@ import nodes.*;
 import nodes.primitives.*;
 import nodes.arithmetic.*;
 import nodes.relation.*;
+import nodes.references.*;
 import nodes.logic.*;
 import state.*;
 import java.util.List;
@@ -46,6 +47,7 @@ TOKEN :
   < CONJ : "&&" > |
   < DISJ : "||" > |
   < EQUALS : "=" > |
+  < COLON_EQ : ":=" > |
   < EQEQ : "==" > |
   < EXCL_EQUALS : "!=" > |
   < GREATER : ">" > |
