@@ -24,7 +24,9 @@ public class ASTPrintln extends ASTNode {
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		CodeBlock code = new CodeBlock();
 		code.emit_getstatic("java/lang/System/out","Ljava/io/PrintStream;");
+		code.tabify();
 		code.appendCodeBlock(expression.compile(environment));
+		code.detabify();
 		code.emit_invoke_println(getType());
 		code.emit_blank();
 		return code;

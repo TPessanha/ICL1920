@@ -51,45 +51,49 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int SEMICOLON = 26;
   /** RegularExpression Id. */
-  int COLON = 27;
+  int SCSC = 27;
   /** RegularExpression Id. */
-  int LPAR = 28;
+  int COLON = 28;
   /** RegularExpression Id. */
-  int RPAR = 29;
+  int LPAR = 29;
   /** RegularExpression Id. */
-  int LCUR = 30;
+  int RPAR = 30;
   /** RegularExpression Id. */
-  int RCUR = 31;
+  int LCUR = 31;
   /** RegularExpression Id. */
-  int LET = 32;
+  int RCUR = 32;
   /** RegularExpression Id. */
-  int END = 33;
+  int LET = 33;
   /** RegularExpression Id. */
-  int IN = 34;
+  int END = 34;
   /** RegularExpression Id. */
-  int TRUE = 35;
+  int IN = 35;
   /** RegularExpression Id. */
-  int FALSE = 36;
+  int TRUE = 36;
   /** RegularExpression Id. */
-  int INT = 37;
+  int FALSE = 37;
   /** RegularExpression Id. */
-  int FLOAT = 38;
+  int INT = 38;
   /** RegularExpression Id. */
-  int NEW = 39;
+  int FLOAT = 39;
   /** RegularExpression Id. */
-  int AS = 40;
+  int NEW = 40;
   /** RegularExpression Id. */
-  int PRINTLN = 41;
+  int AS = 41;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 42;
+  int PRINTLN = 42;
   /** RegularExpression Id. */
-  int FLOAT_LITERAL = 43;
+  int PRINT = 43;
   /** RegularExpression Id. */
-  int IDENTIFIER = 44;
+  int INTEGER_LITERAL = 44;
   /** RegularExpression Id. */
-  int LETTER = 45;
+  int FLOAT_LITERAL = 45;
   /** RegularExpression Id. */
-  int DIGIT = 46;
+  int IDENTIFIER = 46;
+  /** RegularExpression Id. */
+  int LETTER = 47;
+  /** RegularExpression Id. */
+  int DIGIT = 48;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -123,6 +127,7 @@ public interface ParserConstants {
     "\"<=\"",
     "\"->\"",
     "\";\"",
+    "\";;\"",
     "\":\"",
     "\"(\"",
     "\")\"",
@@ -138,6 +143,7 @@ public interface ParserConstants {
     "\"new\"",
     "\"as\"",
     "\"println\"",
+    "\"print\"",
     "<INTEGER_LITERAL>",
     "<FLOAT_LITERAL>",
     "<IDENTIFIER>",

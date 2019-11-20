@@ -5,6 +5,7 @@ import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
 import exceptions.NullTypecheckException;
 import state.Environment;
+import types.FloatType;
 import types.IType;
 import types.NumberType;
 import types.UndefinedType;
@@ -27,9 +28,9 @@ public abstract class ASTBinaryOperation extends ASTBinaryNode implements ASTOpe
 				int priority1 = ((NumberType) t1).getPriorityLevel();
 				int priority2 = ((NumberType) t2).getPriorityLevel();
 				if (priority1 > priority2)
-					rNode = new ASTAsType(rNode, "float");
+					rNode = new ASTAsType(rNode, FloatType.value);
 				else
-					lNode = new ASTAsType(lNode, "float");
+					lNode = new ASTAsType(lNode, FloatType.value);
 			}
 		}
 

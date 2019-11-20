@@ -280,4 +280,8 @@ public class CodeBlock {
 	{
 		emit_invokevirtual("java/io/PrintStream/println(" + type.getJVMClass() + ")V");
 	}
+
+	public void emit_invoke_println(String type) {
+		emit_invokevirtual("java/io/PrintStream/println(" + type + ")V");
+	}
 }

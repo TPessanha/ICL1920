@@ -7,6 +7,7 @@ import parser.Parser;
 import parser.Provider;
 import parser.StreamProvider;
 import state.Environment;
+import types.IType;
 import values.IValue;
 
 import java.nio.charset.Charset;
@@ -20,7 +21,9 @@ public class MainInterpreter {
 		while (true) {
 			try {
 				Node exp = parser.Start();
-				System.out.println("Expected type: " + exp.typecheck(new Environment<>(false)).getName());
+				IType resultType = exp.typecheck(new Environment<>(false));
+				System.out.println("Expected type: " + resultType.getName());
+
 				IValue<?> out = exp.eval(new Environment<>(false));
 				System.out.println(out);
 			} catch (ParseException e) {

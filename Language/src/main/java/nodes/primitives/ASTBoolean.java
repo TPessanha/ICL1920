@@ -14,7 +14,6 @@ public class ASTBoolean extends ASTPrimitive<BooleanValue> {
 		CodeBlock code = new CodeBlock();
 
 		code.emit_boolean(value.getValue());
-		code.emit_blank();
 
 		return code;
 	}
