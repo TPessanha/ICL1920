@@ -1,14 +1,14 @@
 package nodes.relation;
 
 import compiler.CodeBlock;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import values.BooleanValue;
 import values.IValue;
 
 public class ASTLess extends ASTRelation {
 	private static final String operator = "<";
 
-	public ASTLess(ASTExpression lNode, ASTExpression rNode) {
+	public ASTLess(ASTNode lNode, ASTNode rNode) {
 		super(lNode, rNode, operator);
 	}
 

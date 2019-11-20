@@ -1,7 +1,7 @@
 package nodes.relation;
 
 import compiler.CodeBlock;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import values.BooleanValue;
 import values.IValue;
 import values.NumberValue;
@@ -9,7 +9,7 @@ import values.NumberValue;
 public class ASTNotEqual extends ASTRelation {
 	public final static String operator = "!=";
 
-	public ASTNotEqual(ASTExpression lNode, ASTExpression rNode) {
+	public ASTNotEqual(ASTNode lNode, ASTNode rNode) {
 		super(lNode, rNode, operator);
 	}
 

@@ -1,2 +1,2 @@
 //true:boolean
-println(5>=5);
+println(5>=5);;

@@ -9,11 +9,12 @@ import values.FloatValue;
 import values.IValue;
 import values.IntValue;
 
-public class ASTCast extends ASTExpression {
-	private ASTExpression expression;
+public class ASTAsType extends ASTNode implements ASTOperation {
+	private static final String operator = "as";
+	private ASTNode expression;
 	private String toType;
 
-	public ASTCast(ASTExpression expression, String toType) {
+	public ASTAsType(ASTNode expression, String toType) {
 		this.expression = expression;
 		this.toType = toType;
 		switch (toType) {
@@ -22,6 +23,9 @@ public class ASTCast extends ASTExpression {
 				break;
 			case "int":
 				setType(IntType.value);
+				break;
+			default:
+				setType(UndefinedType.value);
 				break;
 		}
 	}
@@ -64,12 +68,12 @@ public class ASTCast extends ASTExpression {
 
 	@Override
 	public IType typecheck(Environment<IType> environment) throws Exception {
-		switch (toType) {
-			case "float":
-				return setType(FloatType.value);
-			case "int":
-				return setType(IntType.value);
-		}
-		return setType(UndefinedType.value);
+		expression.typecheck(environment);
+		return getType();
+	}
+
+	@Override
+	public String getOperator() {
+		return operator;
 	}
 }

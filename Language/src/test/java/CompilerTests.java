@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -61,27 +60,23 @@ public class CompilerTests {
 
 	private void runSingleTest(String fileName) throws Exception {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
-		String[] expected = getResultCheck(in).split(":");
+		List<TypedResult> expected = testUtil.getResultCheck(in);
 
 
 		in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		try {
 			compileAndAssemble(in);
-			List outputs = runClass();
-			assertEquals(expected[0], outputs.get(0));
+			List<String> outputs = runClass();
+
+			for (int i = 0; i < outputs.size(); i++) {
+
+				assertEquals(expected.get(i).getValue(), outputs.get(i));
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
 		cleanup();
-	}
-
-	private String getResultCheck(InputStream in)
-	{
-		Scanner reader = new Scanner(in);
-		reader.reset();
-		String check = reader.nextLine().substring(2);
-		return check;
 	}
 
 	private void compileAndAssemble(InputStream in) throws IOException {

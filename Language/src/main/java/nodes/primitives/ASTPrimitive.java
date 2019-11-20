@@ -1,12 +1,12 @@
 package nodes.primitives;
 
 import exceptions.NullTypecheckException;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import state.Environment;
 import types.IType;
 import values.IValue;
 
-public abstract class ASTPrimitive<v extends IValue> extends ASTExpression {
+public abstract class ASTPrimitive<v extends IValue> extends ASTNode {
 	protected final v value;
 
 	protected ASTPrimitive(v value) {

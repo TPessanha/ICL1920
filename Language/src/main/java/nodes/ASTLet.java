@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Description:
  */
-public class ASTLet extends ASTExpression {
+public class ASTLet extends ASTNode {
 
 	private final List<Binding> bindings;
 	private final ASTNode body;
@@ -44,7 +44,7 @@ public class ASTLet extends ASTExpression {
 			Binding d = this.bindings.get(i);
 
 			IdentifierDetails details =
-				new IdentifierDetails(((ASTExpression)d.getExpression()).getType(), newEnv.getLevel(), "x_" + i);
+				new IdentifierDetails(((ASTNode)d.getExpression()).getType(), newEnv.getLevel(), "x_" + i);
 			newEnv.associate(this.bindings.get(i).getIdentifier(), details);
 			newEnv.getFrame().addField(details);
 		}

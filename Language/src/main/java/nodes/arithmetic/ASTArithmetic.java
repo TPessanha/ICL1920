@@ -2,7 +2,7 @@ package nodes.arithmetic;
 
 import exceptions.DividedByZeroException;
 import nodes.ASTBinaryOperation;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import state.Environment;
 import types.IType;
 import types.NumberType;
@@ -10,7 +10,7 @@ import types.UndefinedType;
 import values.IValue;
 
 public abstract class ASTArithmetic extends ASTBinaryOperation {
-	protected ASTArithmetic(ASTExpression lNode, ASTExpression rNode, String operator) {
+	protected ASTArithmetic(ASTNode lNode, ASTNode rNode, String operator) {
 		super(lNode, rNode, operator);
 	}
 
@@ -30,4 +30,5 @@ public abstract class ASTArithmetic extends ASTBinaryOperation {
 	}
 
 	public abstract IValue basicOperation(IValue v1, IValue v2) throws DividedByZeroException;
+
 }

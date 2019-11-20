@@ -1,2 +1,2 @@
 //true:boolean
-println(true && true || false && true || false && false);
+println(true && true || false && true || false && false);;

@@ -6,10 +6,10 @@ import state.Environment;
 import types.IType;
 import values.IValue;
 
-public class ASTPrintln extends ASTExpression {
-	private ASTExpression expression;
+public class ASTPrintln extends ASTNode {
+	private ASTNode expression;
 
-	public ASTPrintln(ASTExpression expression) {
+	public ASTPrintln(ASTNode expression) {
 		this.expression = expression;
 	}
 
@@ -22,8 +22,11 @@ public class ASTPrintln extends ASTExpression {
 
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
-		CodeBlock code = expression.compile(environment);
-		code.emit_println(getType().getJVMClass());
+		CodeBlock code = new CodeBlock();
+		code.emit_getstatic("java/lang/System/out","Ljava/io/PrintStream;");
+		code.appendCodeBlock(expression.compile(environment));
+		code.emit_invoke_println(getType());
+		code.emit_blank();
 		return code;
 	}
 

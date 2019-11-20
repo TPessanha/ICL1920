@@ -1,2 +1,2 @@
 //5:int
-println(5);
+println(5);;

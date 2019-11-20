@@ -1,2 +1,2 @@
 //1.0:float
-println({float}1);
+println(1 as float);;

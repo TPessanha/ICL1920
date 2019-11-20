@@ -22,9 +22,6 @@ public class MainClass extends ClassFile {
 		code.appendCodeLine("");
 		code.appendCodeLine("; setup local variables:");
 		code.appendCodeLine("");
-		code.appendCodeLine("; 1 - the PrintStream object held in java.lang.System.out");
-		code.appendCodeLine("getstatic java/lang/System/out Ljava/io/PrintStream;");
-		code.appendCodeLine("");
 		code.appendCodeLine("; START =================================================");
 		code.appendCodeLine("");
 		code.appendCodeLine("; initialize frame pointer SL stored in local #SL to null");

@@ -4,10 +4,10 @@ import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import state.Environment;
 import types.IType;
-import values.IntValue;
 import values.IValue;
+import values.IntValue;
 
-public class ASTDeclaration implements ASTNode {
+public class ASTDeclaration implements Node {
     private final String identifier;
 
     public ASTDeclaration(String identifier) {

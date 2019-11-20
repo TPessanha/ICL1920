@@ -19,7 +19,6 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,7 +37,7 @@ class InterpreterTests {
 
 	@Test
 	void test_1_plus_1() throws Exception {
-		Parser parser = getParser("1+1;");
+		Parser parser = getParser("1+1;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -47,7 +46,7 @@ class InterpreterTests {
 
 	@Test
 	void test_1_minus_1() throws Exception {
-		Parser parser = getParser("1-1;");
+		Parser parser = getParser("1-1;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -56,7 +55,7 @@ class InterpreterTests {
 
 	@Test
 	void test_1_mult_1() throws Exception {
-		Parser parser = getParser("1*1;");
+		Parser parser = getParser("1*1;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -65,7 +64,7 @@ class InterpreterTests {
 
 	@Test
 	void test_1_div_1() throws Exception {
-		Parser parser = getParser("1/1;");
+		Parser parser = getParser("1/1;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -74,7 +73,7 @@ class InterpreterTests {
 
 	@Test
 	void test_parenthesis() throws Exception {
-		Parser parser = getParser("2*(1+1);");
+		Parser parser = getParser("2*(1+1);;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -83,7 +82,7 @@ class InterpreterTests {
 
 	@Test
 	void test_let_1() throws Exception {
-		Parser parser = getParser("let x=5 in x end;");
+		Parser parser = getParser("let x=5 in x end;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -92,7 +91,7 @@ class InterpreterTests {
 
 	@Test
 	void test_let_2() throws Exception {
-		Parser parser = getParser("let x=5 in x+5 end;");
+		Parser parser = getParser("let x=5 in x+5 end;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -101,7 +100,7 @@ class InterpreterTests {
 
 	@Test
 	void test_let_3() throws Exception {
-		Parser parser = getParser("let x=2 in (let x=5 in x+1 end) + x end;");
+		Parser parser = getParser("let x=2 in (let x=5 in x+1 end) + x end;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -110,7 +109,7 @@ class InterpreterTests {
 
 	@Test
 	void test_let_list_1() throws Exception {
-		Parser parser = getParser("let x=2,y=4 in x + y end;");
+		Parser parser = getParser("let x=2,y=4 in x + y end;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -119,7 +118,7 @@ class InterpreterTests {
 
 	@Test
 	void test_unary_op_1() throws Exception {
-		Parser parser = getParser("-3;");
+		Parser parser = getParser("-3;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -128,7 +127,7 @@ class InterpreterTests {
 
 	@Test
 	void test_unary_op_2() throws Exception {
-		Parser parser = getParser("-(-3);");
+		Parser parser = getParser("-(-3);;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -137,7 +136,7 @@ class InterpreterTests {
 
 	@Test
 	void test_unary_op_3() throws Exception {
-		Parser parser = getParser("3--3;");
+		Parser parser = getParser("3--3;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof IntValue);
@@ -146,7 +145,7 @@ class InterpreterTests {
 
 	@Test
 	void test_boolean_1() throws Exception {
-		Parser parser = getParser("true;");
+		Parser parser = getParser("true;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof BooleanValue);
@@ -155,7 +154,7 @@ class InterpreterTests {
 
 	@Test
 	void test_boolean_2() throws Exception {
-		Parser parser = getParser("false;");
+		Parser parser = getParser("false;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof BooleanValue);
@@ -164,7 +163,7 @@ class InterpreterTests {
 
 	@Test
 	void test_boolean_3() throws Exception {
-		Parser parser = getParser("~false;");
+		Parser parser = getParser("~false;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof BooleanValue);
@@ -173,7 +172,7 @@ class InterpreterTests {
 
 	@Test
 	void test_let_with_boolean_1() throws Exception {
-		Parser parser = getParser("let x=false in x end;");
+		Parser parser = getParser("let x=false in x end;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof BooleanValue);
@@ -182,7 +181,7 @@ class InterpreterTests {
 
 	@Test
 	void test_conversion_1() throws Exception {
-		Parser parser = getParser("3+3.1;");
+		Parser parser = getParser("3+3.1;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof FloatValue);
@@ -191,7 +190,7 @@ class InterpreterTests {
 
 	@Test
 	void test_conversion_2() throws Exception {
-		Parser parser = getParser("3.1+3;");
+		Parser parser = getParser("3.1+3;;");
 		IValue result = parser.Start().eval(new Environment<>());
 
 		assertTrue(result instanceof FloatValue);
@@ -200,7 +199,7 @@ class InterpreterTests {
 
 	@Test
 	void test_erro_1() throws Exception {
-		Parser parser = getParser("5*false;");
+		Parser parser = getParser("5*false;;");
 
 		assertThrows(
 			IllegalOperatorException.class,
@@ -211,7 +210,7 @@ class InterpreterTests {
 
 	@Test
 	void test_erro_2() throws Exception {
-		Parser parser = getParser("let x=1 in y end;");
+		Parser parser = getParser("let x=1 in y end;;");
 
 		assertThrows(
 			UndeclaredException.class,
@@ -222,7 +221,7 @@ class InterpreterTests {
 
 	@Test
 	void test_erro_3() throws Exception {
-		Parser parser = getParser("let x=1 x=5 in x end;");
+		Parser parser = getParser("let x=1 x=5 in x end;;");
 
 		assertThrows(
 			DuplicatedIdentifierException.class,
@@ -252,26 +251,19 @@ class InterpreterTests {
 
 	private void runSingleTest(String fileName) throws Exception {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
-		String expected = getResultCheck(in);
+		List<TypedResult> resultCheck = testUtil.getResultCheck(in);
 
-		String[] info = expected.split(":");
 
 		in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		try {
 			Parser parser = getParser(in);
 			IValue result = parser.Start().eval(new Environment<>());
 
-			assertTrue(result.getTypeName().equals(info[1]));
-			assertEquals(info[0], result.getValue().toString());
+			TypedResult expected = resultCheck.get(resultCheck.size() - 1);
+			assertTrue(expected.getType().equals(result.getTypeName()));
+			assertEquals(expected.getValue(), result.getValue().toString());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-
-
-	private String getResultCheck(InputStream in) {
-		Scanner reader = new Scanner(in);
-		String check = reader.nextLine().substring(2);
-		return check;
 	}
 }

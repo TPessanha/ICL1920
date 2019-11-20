@@ -33,7 +33,7 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int EQUALS = 17;
   /** RegularExpression Id. */
-  int COLON_EQ = 18;
+  int ASSIGNMENT = 18;
   /** RegularExpression Id. */
   int EQEQ = 19;
   /** RegularExpression Id. */
@@ -77,17 +77,19 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int NEW = 39;
   /** RegularExpression Id. */
-  int PRINTLN = 40;
+  int AS = 40;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 41;
+  int PRINTLN = 41;
   /** RegularExpression Id. */
-  int FLOAT_LITERAL = 42;
+  int INTEGER_LITERAL = 42;
   /** RegularExpression Id. */
-  int IDENTIFIER = 43;
+  int FLOAT_LITERAL = 43;
   /** RegularExpression Id. */
-  int LETTER = 44;
+  int IDENTIFIER = 44;
   /** RegularExpression Id. */
-  int DIGIT = 45;
+  int LETTER = 45;
+  /** RegularExpression Id. */
+  int DIGIT = 46;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -134,6 +136,7 @@ public interface ParserConstants {
     "\"int\"",
     "\"float\"",
     "\"new\"",
+    "\"as\"",
     "\"println\"",
     "<INTEGER_LITERAL>",
     "<FLOAT_LITERAL>",

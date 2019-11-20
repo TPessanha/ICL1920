@@ -4,17 +4,17 @@ import compiler.CodeBlock;
 import compiler.Compiler;
 import compiler.CompilerEnvironment;
 import compiler.classes.ReferenceClass;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import state.Environment;
 import types.IType;
 import types.ReferenceType;
 import values.IValue;
 import values.ReferenceValue;
 
-public class ASTReference extends ASTExpression {
-	private final ASTExpression referenceTo;
+public class ASTReference extends ASTNode {
+	private final ASTNode referenceTo;
 
-	public ASTReference(ASTExpression referenceTo) {
+	public ASTReference(ASTNode referenceTo) {
 		this.referenceTo = referenceTo;
 	}
 

@@ -1,7 +1,7 @@
 package main;
 
 import exceptions.TypeMismatchException;
-import nodes.ASTNode;
+import nodes.Node;
 import parser.ParseException;
 import parser.Parser;
 import parser.Provider;
@@ -19,7 +19,7 @@ public class MainInterpreter {
 
 		while (true) {
 			try {
-				ASTNode exp = parser.Start();
+				Node exp = parser.Start();
 				System.out.println("Expected type: " + exp.typecheck(new Environment<>(false)).getName());
 				IValue<?> out = exp.eval(new Environment<>(false));
 				System.out.println(out);

@@ -1,14 +1,14 @@
 package nodes.logic;
 
 import compiler.CodeBlock;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import values.BooleanValue;
 import values.IValue;
 
 public class ASTAnd extends ASTLogic {
 	private static final String operator = "&&";
 
-	public ASTAnd(ASTExpression lNode, ASTExpression rNode) {
+	public ASTAnd(ASTNode lNode, ASTNode rNode) {
 		super(lNode, rNode, operator);
 	}
 

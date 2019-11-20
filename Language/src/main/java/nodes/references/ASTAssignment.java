@@ -4,7 +4,7 @@ import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.NullTypecheckException;
 import nodes.ASTBinaryOperation;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import state.Environment;
 import types.IType;
 import values.IValue;
@@ -12,7 +12,7 @@ import values.IValue;
 public class ASTAssignment extends ASTBinaryOperation {
     private static final String operator = ":=";
 
-    public ASTAssignment(ASTExpression reference, ASTExpression expression) {
+    public ASTAssignment(ASTNode reference, ASTNode expression) {
     	super(reference, expression, operator);
     }
 
