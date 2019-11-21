@@ -274,7 +274,7 @@ if (op.kind == ADD)
 
   final public ASTNode Term() throws ParseException {ASTNode node;
  Token op;
-    node = asType();
+    node = AsType();
     switch (jj_ntk == -1 ? jj_ntk_f() : jj_ntk) {
     case ASSIGNMENT:{
       node = Assignment(node);
@@ -346,7 +346,7 @@ t = IntType.value;
     throw new IllegalStateException ("Missing return statement in function");
 }
 
-  final public ASTNode asType() throws ParseException {IType type = null;
+  final public ASTNode AsType() throws ParseException {IType type = null;
     ASTNode node;
     node = Unary();
     switch (jj_ntk == -1 ? jj_ntk_f() : jj_ntk) {
@@ -466,7 +466,7 @@ if (op==null)
 
   final public ASTNode NewReference() throws ParseException {ASTNode exp;
     jj_consume_token(NEW);
-    exp = Fact();
+    exp = AsType();
 {if ("" != null) return new ASTReference(exp);}
     throw new IllegalStateException ("Missing return statement in function");
 }

@@ -241,7 +241,7 @@ ASTNode Term() :
 	Token op;
 }
 {
-	node = asType()
+	node = AsType()
 	(
 		node = Assignment(node)
 		|
@@ -281,7 +281,7 @@ IType NumberType() :
 }
 
 
-ASTNode asType() :
+ASTNode AsType() :
 {
 	IType type = null;
     ASTNode node;
@@ -371,7 +371,7 @@ ASTNode NewReference() :
 	ASTNode exp;
 }
 {
-	<NEW> exp = Fact()
+	<NEW> exp = AsType()
 	{return new ASTReference(exp);}
 }
 

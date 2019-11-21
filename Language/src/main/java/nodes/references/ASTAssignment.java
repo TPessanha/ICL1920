@@ -34,7 +34,7 @@ public class ASTAssignment extends ASTBinaryNode implements ASTOperation {
 		IType t1 = lNode.getType();
 		IType t2 = rNode.getType();
 
-		if (this.getType() instanceof UndefinedType || !((ReferenceType) t1).getReferenceType().equals(t2))
+		if (this.getType() instanceof UndefinedType || !((ReferenceType) t1).getReferenceType().getName().equals(t2.getName()))
 			throw new IllegalOperatorException(getOperator(), t1.getName(), t2.getName());
 
 		CodeBlock code = lNode.compile(environment);
