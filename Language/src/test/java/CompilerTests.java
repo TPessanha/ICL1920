@@ -68,7 +68,7 @@ public class CompilerTests {
 			compileAndAssemble(in);
 			List<String> outputs = runClass();
 
-			for (int i = 0; i < outputs.size(); i++) {
+			for (int i = 0; i < expected.size(); i++) {
 
 				assertEquals(expected.get(i).getValue(), outputs.get(i));
 			}
@@ -98,15 +98,15 @@ public class CompilerTests {
 			InputStream in = proc.getInputStream();
 			BufferedReader errorOutput = new BufferedReader(new InputStreamReader(errin));
 			BufferedReader output = new BufferedReader(new InputStreamReader(in));
-			String line1 = null;
-			String line2 = null;
+			String errorLine = null;
+			String outputLine = null;
 			try {
-				while ((line1 = errorOutput.readLine()) != null ||
-					(line2 = output.readLine()) != null) {
-					if (line1 != null) System.out.print(line1);
-					if (line2 != null) {
-						outputs.add(line2);
-						System.out.println(line2);
+				while ((errorLine = errorOutput.readLine()) != null ||
+					(outputLine = output.readLine()) != null) {
+					if (errorLine != null) System.out.print(errorLine);
+					if (outputLine != null) {
+						outputs.add(outputLine);
+						System.out.println(outputLine);
 					}
 				}
 				errorOutput.close();

@@ -16,7 +16,7 @@ public class ASTPrintln extends ASTNode {
 	@Override
 	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
 		IValue value = expression.eval(environment);
-		System.out.println(value.getValue());
+		System.out.println(value);
 		return value;
 	}
 
