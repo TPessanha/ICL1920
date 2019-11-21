@@ -23,12 +23,8 @@ public class ASTAddition extends ASTArithmetic {
 	}
 
 	@Override
-	public IValue basicOperation(IValue v1, IValue v2) {
+	public IValue doOperation(IValue v1, IValue v2) {
 		return ((NumberValue) v1).add((NumberValue) v2);
 	}
 
-	@Override
-	public String getOperator() {
-		return operator;
-	}
 }

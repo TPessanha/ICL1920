@@ -4,17 +4,14 @@ import compiler.CodeBlock;
 import compiler.Compiler;
 import exceptions.IllegalOperatorException;
 import exceptions.NullTypecheckException;
+import nodes.ASTAsType;
 import nodes.ASTBinaryOperation;
 import nodes.ASTNode;
 import state.Environment;
 import types.BooleanType;
 import types.IType;
 import types.NumberType;
-import types.UndefinedType;
-import values.BooleanValue;
-import values.FloatValue;
 import values.IValue;
-import values.NumberValue;
 
 public abstract class ASTRelation extends ASTBinaryOperation {
 	ASTRelation(ASTNode lNode, ASTNode rNode, String operator) {
@@ -26,28 +23,23 @@ public abstract class ASTRelation extends ASTBinaryOperation {
 		IType t1 = lNode.typecheck(environment);
 		IType t2 = rNode.typecheck(environment);
 
-		if (t1.equals(t2) || t1 instanceof NumberType && t2 instanceof NumberType)
+		if (t1 instanceof NumberType && t2 instanceof NumberType) {
+			int priority1 = ((NumberType) t1).getPriorityLevel();
+			int priority2 = ((NumberType) t2).getPriorityLevel();
+
+			if (priority1 > priority2) {
+				rNode = new ASTAsType(rNode, lNode.getType());
+			} else {
+				lNode = new ASTAsType(lNode, rNode.getType());
+			}
 			return setType(BooleanType.value);
-		return setType(UndefinedType.value);
+		} else if (t1.equals(t2))
+			return setType(BooleanType.value);
+		throw new IllegalOperatorException(operator, t1.getName(), t2.getName());
 	}
 
 	@Override
-	public IValue doOperation(IValue v1, IValue v2) throws Exception {
-		if (v1 instanceof NumberValue && v2 instanceof NumberValue) {
-			int priority1 = ((NumberType) v1.getType()).getPriorityLevel();
-			int priority2 = ((NumberType) v2.getType()).getPriorityLevel();
-			if (priority1 < priority2)
-				v1 = new FloatValue(((Number) v1.getValue()).floatValue());
-			else if (priority1 > priority2)
-				v2 = new FloatValue(((Number) v2.getValue()).floatValue());
-
-			return basicOperation(v1, v2);
-		} else if (v1.getType().equals(v2.getType()) && operator.equals("==") || operator.equals("!="))
-			return basicOperation(v1, v2);
-		throw new IllegalOperatorException(operator, v1.getTypeName(), v2.getTypeName());
-	}
-
-	public abstract BooleanValue basicOperation(IValue v1, IValue v2);
+	public abstract IValue doOperation(IValue v1, IValue v2) throws Exception;
 
 	@Override
 	public CodeBlock emitOperation() throws NullTypecheckException {
@@ -65,7 +57,7 @@ public abstract class ASTRelation extends ASTBinaryOperation {
 		return code;
 	}
 
-	private CodeBlock floatCompare(){
+	private CodeBlock floatCompare() {
 		String l1 = Compiler.generateUniqueLabel();
 		String l2 = Compiler.generateUniqueLabel();
 
@@ -81,7 +73,7 @@ public abstract class ASTRelation extends ASTBinaryOperation {
 		return code;
 	}
 
-	private CodeBlock integerCompare(){
+	private CodeBlock integerCompare() {
 		String l1 = Compiler.generateUniqueLabel();
 		String l2 = Compiler.generateUniqueLabel();
 
@@ -96,6 +88,6 @@ public abstract class ASTRelation extends ASTBinaryOperation {
 	}
 
 	protected abstract CodeBlock floatJumpCondition(String label);
-	protected abstract CodeBlock intJumpCondition(String label);
 
+	protected abstract CodeBlock intJumpCondition(String label);
 }

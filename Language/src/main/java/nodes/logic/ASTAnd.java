@@ -21,7 +21,7 @@ public class ASTAnd extends ASTLogic {
 	}
 
 	@Override
-	public IValue basicOperation(IValue v1, IValue v2) throws Exception {
+	public IValue doOperation(IValue v1, IValue v2) {
 		boolean b1 = ((BooleanValue) v1).getValue();
 		boolean b2 = ((BooleanValue) v2).getValue();
 

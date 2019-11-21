@@ -466,6 +466,12 @@ private int jjMoveNfa_0(int startState, int curPos)
             switch(jjstateSet[--i])
             {
                case 0:
+                  if ((0x7fffffe07fffffeL & l) == 0x0L)
+                     break;
+                  if (kind > 46)
+                     kind = 46;
+                  { jjCheckNAdd(1); }
+                  break;
                case 1:
                   if ((0x7fffffe87fffffeL & l) == 0x0L)
                      break;

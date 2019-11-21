@@ -14,6 +14,7 @@ import java.util.List;
 
 public class ClassFile {
 	protected CodeBlock code;
+	protected CodeBlock body;
 	protected String className;
 	protected String superName;
 	protected List<IdentifierDetails> fields;
@@ -26,11 +27,13 @@ public class ClassFile {
 		this.className = className;
 		this.superName = superName;
 		this.fields = fields;
+		body = new CodeBlock();
 	}
 
-	public void initialize() {
+	public void close() {
 		writeHeader();
 		writeDefaultConstructor();
+		code.appendCodeBlock(body);
 	}
 
 	public String getClassName() {
@@ -49,7 +52,7 @@ public class ClassFile {
 		this(className, "java/lang/Object", Collections.emptyList());
 	}
 
-	private void writeHeader() {
+	protected void writeHeader() {
 		code.appendCodeLine(".class public " + getClassName());
 		code.appendCodeLine(".super java/lang/Object");
 		if (this instanceof StackFrame)
@@ -59,7 +62,7 @@ public class ClassFile {
 		code.appendCodeLine("");
 	}
 
-	private void writeDefaultConstructor() {
+	protected void writeDefaultConstructor() {
 		code.appendCodeLine("; standard initializer");
 		code.appendCodeLine(".method public <init>()V");
 		code.appendCodeLine("aload_0");

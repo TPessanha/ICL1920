@@ -108,7 +108,7 @@ node = new ASTSequence(node,node2);
         break label_2;
       }
       jj_consume_token(DISJ);
-      node2 = Disjunction();
+      node2 = Conjunction();
 node = new ASTOr(node,node2);
     }
 {if ("" != null) return node;}
@@ -128,7 +128,7 @@ node = new ASTOr(node,node2);
         break label_3;
       }
       jj_consume_token(CONJ);
-      node2 = Conjunction();
+      node2 = Equality();
 node = new ASTAnd(node,node2);
     }
 {if ("" != null) return node;}
@@ -163,7 +163,7 @@ node = new ASTAnd(node,node2);
         jj_consume_token(-1);
         throw new ParseException();
       }
-      node2 = Equality();
+      node2 = Comparison();
 switch(op.kind)
       {
        case EQEQ:
@@ -262,7 +262,7 @@ switch(op.kind)
         jj_consume_token(-1);
         throw new ParseException();
       }
-      node2 = AddSubExpression();
+      node2 = Term();
 if (op.kind == ADD)
           node = new ASTAddition(node,node2);
      else

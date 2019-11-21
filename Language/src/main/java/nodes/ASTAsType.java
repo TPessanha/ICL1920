@@ -17,8 +17,7 @@ public class ASTAsType extends ASTNode implements ASTOperation {
 
 	public ASTAsType(ASTNode expression, IType toType) {
 		this.expression = expression;
-		this.toType = toType;
-		setType(toType);
+		this.toType = setType(toType);
 	}
 
 	@Override

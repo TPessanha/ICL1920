@@ -37,10 +37,9 @@ public class Compiler {
 			MainClass mainClass = new MainClass(256, 10, "Main");
 			IType type = exp.typecheck(new Environment<>());
 			CodeBlock code = exp.compile(new CompilerEnvironment(SL));
-			mainClass.emitCodeBlock(code);
-			mainClass.writeFooter();
+			mainClass.setBody(code);
 
-			mainClass.dump(getCompiledPath());
+			Compiler.addClassFile(mainClass);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Could not find output path");
@@ -72,7 +71,7 @@ public class Compiler {
 
 	public static void addClassFile(ClassFile file) throws IOException {
 		if (!compiledClasses.contains(file.getClassName())) {
-			file.initialize();
+			file.close();
 			file.dump(getCompiledPath());
 			compiledClasses.add(file.getClassName());
 		}

@@ -2,6 +2,7 @@
 options
 {
     DEBUG_PARSER=false;
+    DEBUG_TOKEN_MANAGER=false;
 }
 
 PARSER_BEGIN(Parser)
@@ -86,8 +87,8 @@ TOKEN : {
 TOKEN : {
 	< INTEGER_LITERAL: (<DIGIT>) + > |
 	< FLOAT_LITERAL: (<DIGIT>)+ "." (<DIGIT>)+ > |
-	< IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*> |
-	< #LETTER: ["a"-"z","A"-"Z","_"]> |
+	< IDENTIFIER: <LETTER> (<LETTER> | <DIGIT> | "_")*> |
+	< #LETTER: ["a"-"z","A"-"Z"]> |
 	< #DIGIT: ["0"-"9"]>
 }
 
@@ -147,7 +148,7 @@ ASTNode Disjunction() :
     ASTNode node,node2;
 }
 {
-    node = Conjunction() ( <DISJ> node2 = Disjunction()
+    node = Conjunction() ( <DISJ> node2 = Conjunction()
     	{
         	node = new ASTOr(node,node2);
         }
@@ -160,7 +161,7 @@ ASTNode Conjunction() :
     ASTNode node,node2;
 }
 {
-    node = Equality() (<CONJ> node2 = Conjunction()
+    node = Equality() (<CONJ> node2 = Equality()
     	{
     		node = new ASTAnd(node,node2);
     	}
@@ -174,7 +175,7 @@ ASTNode Equality() :
     ASTNode node,node2;
 }
 {
-    node = Comparison() (( op=<EQEQ> | op=<EXCL_EQUALS> )  node2=Equality()
+    node = Comparison() (( op=<EQEQ> | op=<EXCL_EQUALS> )  node2=Comparison()
     	{
 			switch(op.kind)
    			{
@@ -224,7 +225,7 @@ ASTNode AddSubExpression() :
     ASTNode node, node2;
 }
 {
-    node = Term() (( op=<ADD> | op=<SUB> )  node2=AddSubExpression()
+    node = Term() (( op=<ADD> | op=<SUB> )  node2=Term()
     	{
 			if (op.kind == ADD)
         		node = new ASTAddition(node,node2);

@@ -24,7 +24,7 @@ public class ASTDivision extends ASTArithmetic {
 	}
 
 	@Override
-	public IValue basicOperation(IValue v1, IValue v2) throws DividedByZeroException {
+	public IValue doOperation(IValue v1, IValue v2) throws DividedByZeroException {
 		return ((NumberValue) v1).divide((NumberValue) v2);
 	}
 }

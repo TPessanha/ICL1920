@@ -1,13 +1,31 @@
 package compiler.classes;
 
+import compiler.CodeBlock;
+
 public class MainClass extends ClassFile {
 	protected int SL;
+	private int stackSize, localsSize;
 
 	public MainClass(int stackSize, int localsSize, String className, int SL) {
 		super(className);
 		this.SL = SL;
-		initialize();
+		this.stackSize=stackSize;
+		this.localsSize=localsSize;
+
+	}
+
+	public void setBody(CodeBlock body)
+	{
+		this.body=body;
+	}
+
+	@Override
+	public void close() {
+		writeHeader();
+		writeDefaultConstructor();
 		writeMain(localsSize, stackSize);
+		code.appendCodeBlock(body);
+		writeMainFooter();
 	}
 
 	public MainClass(int stackSize, int localsSize, String className) {
@@ -39,7 +57,7 @@ public class MainClass extends ClassFile {
 		code.appendCodeLine("");
 	}
 
-	public void writeFooter() {
+	public void writeMainFooter() {
 		code.appendCodeLine("");
 		code.appendCodeLine("; END ===================================================");
 		code.appendCodeLine("");

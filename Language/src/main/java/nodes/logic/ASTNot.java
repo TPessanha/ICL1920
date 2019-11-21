@@ -7,6 +7,7 @@ import nodes.ASTNode;
 import nodes.ASTOperation;
 import nodes.Node;
 import state.Environment;
+import types.BooleanType;
 import types.IType;
 import values.BooleanValue;
 import values.IValue;
@@ -15,18 +16,16 @@ public class ASTNot extends ASTNode implements ASTOperation {
 	private static final String operator = "~";
 	private Node node;
 
-	public ASTNot(Node node)
-	{
+	public ASTNot(Node node) {
 		super();
 		this.node = node;
 	}
+
 	@Override
 	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
 		IValue v = node.eval(environment);
 
-		if (v instanceof BooleanValue)
-			return ((BooleanValue) v).not();
-		throw new IllegalOperatorException(operator, v.getTypeName());
+		return ((BooleanValue) v).not();
 	}
 
 	@Override
@@ -40,7 +39,11 @@ public class ASTNot extends ASTNode implements ASTOperation {
 
 	@Override
 	public IType typecheck(Environment<IType> environment) throws Exception {
-		return setType(node.typecheck(environment));
+		IType t1 = node.typecheck(environment);
+
+		if (t1 instanceof BooleanType)
+			return setType(BooleanType.value);
+		throw new IllegalOperatorException(t1.getName(), getOperator());
 	}
 
 	@Override

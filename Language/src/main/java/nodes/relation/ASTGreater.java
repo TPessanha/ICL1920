@@ -13,7 +13,7 @@ public class ASTGreater extends ASTRelation {
 	}
 
 	@Override
-	public BooleanValue basicOperation(IValue v1, IValue v2) {
+	public BooleanValue doOperation(IValue v1, IValue v2) {
 		float f1 = ((Number) v1.getValue()).floatValue();
 		float f2 = ((Number) v2.getValue()).floatValue();
 

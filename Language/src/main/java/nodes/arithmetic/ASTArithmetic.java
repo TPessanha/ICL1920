@@ -1,12 +1,12 @@
 package nodes.arithmetic;
 
-import exceptions.DividedByZeroException;
+import exceptions.IllegalOperatorException;
+import nodes.ASTAsType;
 import nodes.ASTBinaryOperation;
 import nodes.ASTNode;
 import state.Environment;
 import types.IType;
 import types.NumberType;
-import types.UndefinedType;
 import values.IValue;
 
 public abstract class ASTArithmetic extends ASTBinaryOperation {
@@ -22,13 +22,17 @@ public abstract class ASTArithmetic extends ASTBinaryOperation {
 			int priority1 = ((NumberType) t1).getPriorityLevel();
 			int priority2 = ((NumberType) t2).getPriorityLevel();
 
-			if (priority1 > priority2)
+			if (priority1 > priority2) {
+				rNode = new ASTAsType(rNode, lNode.getType());
 				return setType(t1.getType());
-			return setType(t2.getType());
+			} else {
+				lNode = new ASTAsType(lNode, rNode.getType());
+				return setType(t2.getType());
+			}
 		} else
-			return setType(UndefinedType.value);
+			throw new IllegalOperatorException(getOperator(), t1.getName(), t2.getName());
 	}
 
-	public abstract IValue basicOperation(IValue v1, IValue v2) throws DividedByZeroException;
-
+	@Override
+	protected abstract IValue doOperation(IValue v1, IValue v2) throws Exception;
 }
