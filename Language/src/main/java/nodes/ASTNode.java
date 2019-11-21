@@ -1,15 +1,19 @@
 package nodes;
 
-import compiler.CodeBlock;
-import compiler.CompilerEnvironment;
-import state.Environment;
+import exceptions.NullTypecheckException;
 import types.IType;
-import values.IValue;
 
-public interface ASTNode {
-    IValue<?> eval(Environment<IValue<?>> environment) throws Exception;
+public abstract class ASTNode implements Node {
+	private IType type;
 
-    CodeBlock compile(CompilerEnvironment environment) throws Exception;
+	protected IType setType(IType type) {
+		this.type = type;
+		return type;
+	}
 
-    IType typecheck(Environment<IType> environment) throws Exception;
+	public IType getType() throws NullTypecheckException {
+		if (type==null)
+			throw new NullTypecheckException();
+		return type;
+	}
 }

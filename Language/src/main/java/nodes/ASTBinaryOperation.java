@@ -5,6 +5,7 @@ import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
 import exceptions.NullTypecheckException;
 import state.Environment;
+import types.FloatType;
 import types.IType;
 import types.NumberType;
 import types.UndefinedType;
@@ -12,24 +13,24 @@ import values.FloatValue;
 import values.IValue;
 import values.NumberValue;
 
-public abstract class ASTBinaryOperation extends ASTOperation {
-	protected ASTExpression lNode, rNode;
+public abstract class ASTBinaryOperation extends ASTBinaryNode implements ASTOperation {
+	protected final String operator;
 
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		IType t1 = lNode.getType();
 		IType t2 = rNode.getType();
 
 		if (this.getType() instanceof UndefinedType)
-			throw new IllegalOperatorException(operator, t1.getName(), t2.getName());
+			throw new IllegalOperatorException(getOperator(), t1.getName(), t2.getName());
 
 		if (!t1.equals(t2)) {
 			if (t1 instanceof NumberType && t2 instanceof NumberType) {
 				int priority1 = ((NumberType) t1).getPriorityLevel();
 				int priority2 = ((NumberType) t2).getPriorityLevel();
 				if (priority1 > priority2)
-					rNode = new ASTCast(rNode, "float");
+					rNode = new ASTAsType(rNode, FloatType.value);
 				else
-					lNode = new ASTCast(lNode, "float");
+					lNode = new ASTAsType(lNode, FloatType.value);
 			}
 		}
 
@@ -50,14 +51,14 @@ public abstract class ASTBinaryOperation extends ASTOperation {
 
 			return basicOperation(v1, v2);
 		}
-		throw new IllegalOperatorException(operator, v1.getTypeName(), v2.getTypeName());
+		throw new IllegalOperatorException(getOperator(), v1.getTypeName(), v2.getTypeName());
 	}
 
-	public ASTBinaryOperation(ASTExpression lNode, ASTExpression rNode, String operator) {
-		super(operator);
-		this.lNode = lNode;
-		this.rNode = rNode;
+	public ASTBinaryOperation(ASTNode lNode, ASTNode rNode, String operator) {
+		super(lNode,rNode);
+		this.operator=operator;
 	}
+
 
 	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
 		IValue v1 = lNode.eval(environment);
@@ -69,4 +70,8 @@ public abstract class ASTBinaryOperation extends ASTOperation {
 	public abstract CodeBlock emitOperation() throws NullTypecheckException;
 
 	public abstract IValue basicOperation(IValue v1, IValue v2) throws Exception;
+
+	public String getOperator(){
+		return operator;
+	}
 }

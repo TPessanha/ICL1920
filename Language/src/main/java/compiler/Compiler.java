@@ -2,7 +2,7 @@ package compiler;
 
 import compiler.classes.ClassFile;
 import compiler.classes.MainClass;
-import nodes.ASTNode;
+import nodes.Node;
 import parser.*;
 import state.Environment;
 import types.IType;
@@ -29,7 +29,7 @@ public class Compiler {
 	}
 
 	public static void run(Parser parser) {
-		ASTNode exp;
+		Node exp;
 
 		try {
 			Compiler.reset();

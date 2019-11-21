@@ -5,7 +5,7 @@ import compiler.Compiler;
 import exceptions.IllegalOperatorException;
 import exceptions.NullTypecheckException;
 import nodes.ASTBinaryOperation;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import state.Environment;
 import types.BooleanType;
 import types.IType;
@@ -17,7 +17,7 @@ import values.IValue;
 import values.NumberValue;
 
 public abstract class ASTRelation extends ASTBinaryOperation {
-	ASTRelation(ASTExpression lNode, ASTExpression rNode, String operator) {
+	ASTRelation(ASTNode lNode, ASTNode rNode, String operator) {
 		super(lNode, rNode, operator);
 	}
 
@@ -28,7 +28,7 @@ public abstract class ASTRelation extends ASTBinaryOperation {
 
 		if (t1.equals(t2) || t1 instanceof NumberType && t2 instanceof NumberType)
 			return setType(BooleanType.value);
-		return UndefinedType.value;
+		return setType(UndefinedType.value);
 	}
 
 	@Override

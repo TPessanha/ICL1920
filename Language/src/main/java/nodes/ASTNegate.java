@@ -8,10 +8,10 @@ import types.IType;
 import values.IValue;
 import values.NumberValue;
 
-public class ASTNegate extends ASTExpression{
-    private ASTNode node;
+public class ASTNegate extends ASTNode {
+    private Node node;
 
-    public ASTNegate(ASTNode node)
+    public ASTNegate(Node node)
     {
         this.node = node;
     }

@@ -2,7 +2,7 @@ package nodes.arithmetic;
 
 import compiler.CodeBlock;
 import exceptions.NullTypecheckException;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import types.NumberType;
 import values.IValue;
 import values.NumberValue;
@@ -10,7 +10,7 @@ import values.NumberValue;
 public class ASTMultiplication extends ASTArithmetic {
 	public final static String operator = "*";
 
-	public ASTMultiplication(ASTExpression lNode, ASTExpression rNode) {
+	public ASTMultiplication(ASTNode lNode, ASTNode rNode) {
 		super(lNode, rNode, operator);
 	}
 

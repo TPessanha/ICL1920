@@ -12,8 +12,10 @@ import nodes.*;
 import nodes.primitives.*;
 import nodes.arithmetic.*;
 import nodes.relation.*;
+import nodes.references.*;
 import nodes.logic.*;
 import state.*;
+import types.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -46,6 +48,7 @@ TOKEN :
   < CONJ : "&&" > |
   < DISJ : "||" > |
   < EQUALS : "=" > |
+  < ASSIGNMENT : ":=" > |
   < EQEQ : "==" > |
   < EXCL_EQUALS : "!=" > |
   < GREATER : ">" > |
@@ -54,6 +57,7 @@ TOKEN :
   < LE_EQUALS : "<=" > |
   < ARROW : "->" > |
   < SEMICOLON: ";" > |
+  < SCSC: ";;" > |
   < COLON: ":" > |
   < LPAR : "(" > |
   < RPAR : ")" > |
@@ -74,7 +78,9 @@ TOKEN : {
    	< INT: "int" > |
    	< FLOAT: "float" > |
    	< NEW: "new" > |
-   	< PRINTLN: "println" >
+   	< AS: "as" > |
+   	< PRINTLN: "println" > |
+   	< PRINT: "print" >
 }
 
 TOKEN : {
@@ -88,34 +94,47 @@ TOKEN : {
 ASTNode Start():
 {
 //	List<ASTNode> nodes = new ArrayList<>();
-	ASTNode node;
+	ASTNode node, node2;
 }
 {
 //   (node = Statment() ((<STAT_ENDS> | <EOF>) Statment())* (<EOF>)?
 //   {return node;}
 //   )?
-    node = Statment()
+    node = Sequence() <SCSC>
     {return node;}
 
 }
 
+ASTNode Sequence() :
+{
+	ASTNode node, node2;
+}
+{
+	node = Statment() ( <SEMICOLON> node2 = Sequence()
+    	{
+        	node = new ASTSequence(node,node2);
+    	}
+    )*
+    {return node;}
+}
+
 ASTNode Statment() :
 {
- ASTNode node;
+	ASTNode node;
 }
 {
 	(
-		node = Println() <SEMICOLON>
+		node = Println()
 		|
-		node = Expression() <SEMICOLON>
+		node = Expression()
 	)
     { return node; }
 }
 
 // EXPERIMENTAL -==-----------------------------------
-ASTExpression Expression() :
+ASTNode Expression() :
 {
-    ASTExpression node;
+    ASTNode node;
 }
 {
     node=Disjunction()
@@ -123,12 +142,12 @@ ASTExpression Expression() :
 }
 
 
-ASTExpression Disjunction() :
+ASTNode Disjunction() :
 {
-    ASTExpression node,node2;
+    ASTNode node,node2;
 }
 {
-    node = Conjunction() ( <DISJ> node2 = Conjunction()
+    node = Conjunction() ( <DISJ> node2 = Disjunction()
     	{
         	node = new ASTOr(node,node2);
         }
@@ -136,12 +155,12 @@ ASTExpression Disjunction() :
     { return node; }
 }
 
-ASTExpression Conjunction() :
+ASTNode Conjunction() :
 {
-    ASTExpression node,node2;
+    ASTNode node,node2;
 }
 {
-    node = Equality() (<CONJ> node2 = Equality()
+    node = Equality() (<CONJ> node2 = Conjunction()
     	{
     		node = new ASTAnd(node,node2);
     	}
@@ -149,13 +168,13 @@ ASTExpression Conjunction() :
     { return node; }
 }
 
-ASTExpression Equality() :
+ASTNode Equality() :
 {
     Token op;
-    ASTExpression node,node2;
+    ASTNode node,node2;
 }
 {
-    node = Comparison() (( op=<EQEQ> | op=<EXCL_EQUALS> )  node2=Comparison()
+    node = Comparison() (( op=<EQEQ> | op=<EXCL_EQUALS> )  node2=Equality()
     	{
 			switch(op.kind)
    			{
@@ -171,13 +190,13 @@ ASTExpression Equality() :
     { return node; }
 }
 
-ASTExpression Comparison() :
+ASTNode Comparison() :
 {
     Token op;
-    ASTExpression node,node2;
+    ASTNode node,node2;
 }
 {
-    node = addSubExpression() (( op=<GREATER> | op=<LESS> | op=<GR_EQUALS> | op=<LE_EQUALS> )  node2=addSubExpression()
+    node = AddSubExpression() (( op=<GREATER> | op=<LESS> | op=<GR_EQUALS> | op=<LE_EQUALS> )  node2=AddSubExpression()
     	{
 			switch(op.kind)
    			{
@@ -199,13 +218,13 @@ ASTExpression Comparison() :
     { return node; }
 }
 
-ASTExpression addSubExpression() :
+ASTNode AddSubExpression() :
 {
     Token op;
-    ASTExpression node, node2;
+    ASTNode node, node2;
 }
 {
-    node = multDivExpression() (( op=<ADD> | op=<SUB> )  node2=multDivExpression()
+    node = Term() (( op=<ADD> | op=<SUB> )  node2=AddSubExpression()
     	{
 			if (op.kind == ADD)
         		node = new ASTAddition(node,node2);
@@ -216,13 +235,28 @@ ASTExpression addSubExpression() :
     { return node; }
 }
 
-ASTExpression multDivExpression() :
+ASTNode Term() :
 {
-    Token op;
-    ASTExpression node, node2;
+	ASTNode node;
+	Token op;
 }
 {
-    node = Cast() (( op=<MULT> | op=<DIV> ) node2=Cast()
+	node = AsType()
+	(
+		node = Assignment(node)
+		|
+		node = MultDivExpression(node)
+	)
+	{ return node; }
+}
+
+ASTNode MultDivExpression(ASTNode node) :
+{
+    Token op;
+    ASTNode node2;
+}
+{
+    (( op=<MULT> | op=<DIV> ) node2 = Term()
 		{
 			if (op.kind == MULT)
     	    	node = new ASTMultiplication(node,node2);
@@ -233,28 +267,32 @@ ASTExpression multDivExpression() :
     { return node; }
 }
 
-Token PrimitiveType() :
+IType NumberType() :
 {
-	Token t;
+	IType t;
 }
 {
-	( t = <FLOAT> | t = <INT> )
-    {return t;}
+	(
+		<FLOAT> { t = FloatType.value; }
+		|
+		<INT> {t = IntType.value; }
+	)
+    { return t; }
 }
 
 
-ASTExpression Cast() :
+ASTNode AsType() :
 {
-	Token type = null;
-    ASTExpression node;
+	IType type = null;
+    ASTNode node;
 }
 {
-	(<LCUR> type = PrimitiveType() <RCUR> )? node = Unary()
+	node = Unary() (<AS> type = NumberType() )?
 	{
 		if (type==null)
-        	return node;
-        else
-	        return new ASTCast(node,type.image);
+    	   	return node;
+		else
+    	    return new ASTAsType(node,type);
 	}
 }
 
@@ -267,10 +305,10 @@ Token UnaryOperator() :
     {return t;}
 }
 
-ASTExpression Unary():
+ASTNode Unary():
 {
     Token op = null;
-    ASTExpression node;
+    ASTNode node;
 }
 {
     (op=UnaryOperator())? node = Fact()
@@ -291,9 +329,19 @@ ASTExpression Unary():
 }
 
 
-ASTExpression Fact() :
+
+ASTNode Assignment(ASTNode ref) :
 {
-    ASTExpression node;
+	ASTNode exp;
+}
+{
+	<ASSIGNMENT> exp = Expression()
+	{ return new ASTAssignment(ref,exp); }
+}
+
+ASTNode Fact() :
+{
+    ASTNode node;
 }
 {
     (
@@ -301,7 +349,7 @@ ASTExpression Fact() :
     	|
         node = Let()
         |
-        node = parenthesizedExpression()
+        node = parenthesizedSequence()
         |
         node = Float()
         |
@@ -309,7 +357,7 @@ ASTExpression Fact() :
         |
         node = Identifier()
         |
-        node = Reference()
+        node = NewReference()
         |
         node = Dereference()
     )
@@ -318,28 +366,28 @@ ASTExpression Fact() :
     }
 }
 
-ASTExpression Reference() :
+ASTNode NewReference() :
 {
-	ASTExpression exp;
+	ASTNode exp;
 }
 {
-	<NEW> exp = Fact()
+	<NEW> exp = AsType()
 	{return new ASTReference(exp);}
 }
 
-ASTExpression Dereference() :
+ASTNode Dereference() :
 {
-	ASTExpression exp;
+	ASTNode exp;
 }
 {
 	<EXCL> exp = Fact()
 	{return new ASTDereference(exp);}
 }
 
-ASTExpression Identifier() :
+ASTNode Identifier() :
 {
     Token id;
-    ASTExpression node;
+    ASTNode node;
 }
 {
     id = <IDENTIFIER>
@@ -352,11 +400,11 @@ ASTExpression Identifier() :
 Binding Binding() :
 {
     Token id;
-    ASTExpression exp;
+    ASTNode sequence;
 }
 {
-    id=<IDENTIFIER> <EQUALS> exp=Expression()
-    { return new Binding(id.image,exp); }
+    id=<IDENTIFIER> <EQUALS> sequence = Sequence()
+    { return new Binding(id.image,sequence); }
 }
 
 List<Binding> BindingsList() :
@@ -370,21 +418,21 @@ List<Binding> BindingsList() :
 
 }
 
-ASTExpression Let() :
+ASTNode Let() :
 {
     List<Binding> list;
-    ASTExpression body;
+    ASTNode body;
 }
 {
     <LET>
         list = BindingsList()
     <IN>
-        body = Expression()
+        body = Sequence()
     <END>
     { return new ASTLet(list,body); }
 }
 
-ASTExpression Integer() :
+ASTNode Integer() :
 {
     Token num;
 }
@@ -393,7 +441,7 @@ ASTExpression Integer() :
    { return new ASTInteger(Integer.parseInt(num.image)); }
 }
 
-ASTExpression Float() :
+ASTNode Float() :
 {
     Token num;
 }
@@ -402,7 +450,7 @@ ASTExpression Float() :
    { return new ASTFloat(Float.parseFloat(num.image)); }
 }
 
-ASTExpression Boolean() :
+ASTNode Boolean() :
 {
     Token value;
 }
@@ -413,17 +461,17 @@ ASTExpression Boolean() :
 
 ASTNode Println() :
 {
-    ASTExpression exp;
+    ASTNode exp;
 }
 {
-	<PRINTLN> <LPAR> exp = Expression() <RPAR>
+	( <PRINTLN> | <PRINT> ) <LPAR> exp = Sequence() <RPAR>
    { return new ASTPrintln(exp); }
 }
 
-ASTExpression parenthesizedExpression() :
+ASTNode parenthesizedSequence() :
 {
-    ASTExpression node;
+    ASTNode node;
 }
 {
-    <LPAR>  node=Expression()  <RPAR> { return node; }
+    <LPAR>  node= Sequence()  <RPAR> { return node; }
 }

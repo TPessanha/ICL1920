@@ -1,6 +1,6 @@
 package exceptions;
 
-public class IllegalOperatorException extends Exception {
+public class IllegalOperatorException extends TypeMismatchException {
     public IllegalOperatorException() {
         super("That operator is invalid");
     }

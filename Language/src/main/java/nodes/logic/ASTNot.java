@@ -5,18 +5,19 @@ import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
 import nodes.ASTNode;
 import nodes.ASTOperation;
+import nodes.Node;
 import state.Environment;
 import types.IType;
 import values.BooleanValue;
 import values.IValue;
 
-public class ASTNot extends ASTOperation {
+public class ASTNot extends ASTNode implements ASTOperation {
 	private static final String operator = "~";
-	private ASTNode node;
+	private Node node;
 
-	public ASTNot(ASTNode node)
+	public ASTNot(Node node)
 	{
-		super(operator);
+		super();
 		this.node = node;
 	}
 	@Override
@@ -40,5 +41,10 @@ public class ASTNot extends ASTOperation {
 	@Override
 	public IType typecheck(Environment<IType> environment) throws Exception {
 		return setType(node.typecheck(environment));
+	}
+
+	@Override
+	public String getOperator() {
+		return operator;
 	}
 }

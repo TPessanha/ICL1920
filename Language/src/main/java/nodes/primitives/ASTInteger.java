@@ -14,7 +14,6 @@ public class ASTInteger extends ASTPrimitive<IntValue> {
 		CodeBlock code = new CodeBlock();
 
 		code.emit_optimize_int(value.getValue());
-		code.emit_blank();
 
 		return code;
 	}

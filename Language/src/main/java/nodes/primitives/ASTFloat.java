@@ -14,7 +14,6 @@ public class ASTFloat extends ASTPrimitive<FloatValue> {
 		CodeBlock code = new CodeBlock();
 
 		code.emit_optimize_float(value.getValue());
-		code.emit_blank();
 
 		return code;
 	}

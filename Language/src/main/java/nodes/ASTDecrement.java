@@ -5,15 +5,15 @@ import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
 import state.Environment;
 import types.IType;
+import values.IValue;
 import values.IntValue;
 import values.NumberValue;
-import values.IValue;
 
-public class ASTDecrement implements ASTNode {
+public class ASTDecrement implements Node {
 
-    private ASTNode node;
+    private Node node;
 
-    public ASTDecrement(ASTNode node) {
+    public ASTDecrement(Node node) {
         this.node = node;
 
     }

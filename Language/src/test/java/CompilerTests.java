@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -61,27 +60,23 @@ public class CompilerTests {
 
 	private void runSingleTest(String fileName) throws Exception {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
-		String[] expected = getResultCheck(in).split(":");
+		List<TypedResult> expected = testUtil.getResultCheck(in);
 
 
 		in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		try {
 			compileAndAssemble(in);
-			List outputs = runClass();
-			assertEquals(expected[0], outputs.get(0));
+			List<String> outputs = runClass();
+
+			for (int i = 0; i < expected.size(); i++) {
+
+				assertEquals(expected.get(i).getValue(), outputs.get(i));
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
 		cleanup();
-	}
-
-	private String getResultCheck(InputStream in)
-	{
-		Scanner reader = new Scanner(in);
-		reader.reset();
-		String check = reader.nextLine().substring(2);
-		return check;
 	}
 
 	private void compileAndAssemble(InputStream in) throws IOException {
@@ -103,15 +98,15 @@ public class CompilerTests {
 			InputStream in = proc.getInputStream();
 			BufferedReader errorOutput = new BufferedReader(new InputStreamReader(errin));
 			BufferedReader output = new BufferedReader(new InputStreamReader(in));
-			String line1 = null;
-			String line2 = null;
+			String errorLine = null;
+			String outputLine = null;
 			try {
-				while ((line1 = errorOutput.readLine()) != null ||
-					(line2 = output.readLine()) != null) {
-					if (line1 != null) System.out.print(line1);
-					if (line2 != null) {
-						outputs.add(line2);
-						System.out.println(line2);
+				while ((errorLine = errorOutput.readLine()) != null ||
+					(outputLine = output.readLine()) != null) {
+					if (errorLine != null) System.out.print(errorLine);
+					if (outputLine != null) {
+						outputs.add(outputLine);
+						System.out.println(outputLine);
 					}
 				}
 				errorOutput.close();

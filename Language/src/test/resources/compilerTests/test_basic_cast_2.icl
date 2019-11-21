@@ -1,2 +1,2 @@
 //1:int
-println({int}1.5);
+println(1.5 as int);;

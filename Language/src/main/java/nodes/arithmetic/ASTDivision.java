@@ -3,7 +3,7 @@ package nodes.arithmetic;
 import compiler.CodeBlock;
 import exceptions.DividedByZeroException;
 import exceptions.NullTypecheckException;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import types.NumberType;
 import values.IValue;
 import values.NumberValue;
@@ -11,7 +11,7 @@ import values.NumberValue;
 public class ASTDivision extends ASTArithmetic {
 	public final static String operator = "/";
 
-	public ASTDivision(ASTExpression lNode, ASTExpression rNode) {
+	public ASTDivision(ASTNode lNode, ASTNode rNode) {
 		super(lNode, rNode, operator);
 	}
 

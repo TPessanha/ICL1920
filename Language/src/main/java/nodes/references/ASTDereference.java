@@ -1,20 +1,23 @@
-package nodes;
+package nodes.references;
 
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
+import nodes.ASTNode;
+import nodes.ASTOperation;
+import nodes.Node;
 import state.Environment;
 import types.IType;
 import types.ReferenceType;
 import values.IValue;
 import values.ReferenceValue;
 
-public class ASTDereference extends ASTOperation {
+public class ASTDereference extends ASTNode implements ASTOperation {
 	private static final String operator = "!";
-	private final ASTNode reference;
+	private final Node reference;
 
-	public ASTDereference(ASTNode reference) {
-		super(operator);
+	public ASTDereference(Node reference) {
+		super();
 		this.reference = reference;
 	}
 
@@ -44,5 +47,10 @@ public class ASTDereference extends ASTOperation {
 			throw new IllegalOperatorException(operator, t.getName());
 
 		return setType(((ReferenceType) t).getReferenceType());
+	}
+
+	@Override
+	public String getOperator() {
+		return operator;
 	}
 }

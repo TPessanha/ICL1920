@@ -1,14 +1,14 @@
 package nodes.relation;
 
 import compiler.CodeBlock;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import values.BooleanValue;
 import values.IValue;
 
 public class ASTGreaterEqual extends ASTRelation {
 	private static final String operator = ">=";
 
-	public ASTGreaterEqual(ASTExpression lNode, ASTExpression rNode) {
+	public ASTGreaterEqual(ASTNode lNode, ASTNode rNode) {
 		super(lNode, rNode, operator);
 	}
 

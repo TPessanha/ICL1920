@@ -2,7 +2,7 @@ package nodes.logic;
 
 import exceptions.IllegalOperatorException;
 import nodes.ASTBinaryOperation;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import state.Environment;
 import types.BooleanType;
 import types.IType;
@@ -11,7 +11,7 @@ import values.BooleanValue;
 import values.IValue;
 
 public abstract class ASTLogic extends ASTBinaryOperation {
-	public ASTLogic(ASTExpression lNode, ASTExpression rNode, String operator) {
+	public ASTLogic(ASTNode lNode, ASTNode rNode, String operator) {
 		super(lNode, rNode, operator);
 	}
 

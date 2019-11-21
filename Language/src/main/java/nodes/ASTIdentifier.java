@@ -8,7 +8,7 @@ import state.Environment;
 import types.IType;
 import values.IValue;
 
-public class ASTIdentifier extends ASTExpression {
+public class ASTIdentifier extends ASTNode {
 	private final String name;
 
 	public ASTIdentifier(String name) {

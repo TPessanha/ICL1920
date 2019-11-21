@@ -1,5 +1,7 @@
 package compiler;
 
+import types.IType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -225,6 +227,7 @@ public class CodeBlock {
 		appendCodeLine("; convert to String;");
 		appendCodeLine("invokestatic java/lang/String/valueOf(" + jvmType + ")Ljava/lang/String;");
 		appendCodeLine("; call println");
+		appendCodeLine("getstatic java/lang/System/out Ljava/io/PrintStream;");
 		appendCodeLine("invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
 	}
 
@@ -262,5 +265,23 @@ public class CodeBlock {
 
 	public void emit_checkcast(String className) {
 		appendCodeLine("checkcast " + className);
+	}
+
+	public void emit_getstatic(String field, String descriptor)
+	{
+		appendCodeLine("getstatic " + field + " " + descriptor);
+	}
+	public void emit_invokevirtual(String method)
+	{
+		appendCodeLine("invokevirtual " + method);
+	}
+
+	public void emit_invoke_println(IType type)
+	{
+		emit_invokevirtual("java/io/PrintStream/println(" + type.getJVMClass() + ")V");
+	}
+
+	public void emit_invoke_println(String type) {
+		emit_invokevirtual("java/io/PrintStream/println(" + type + ")V");
 	}
 }

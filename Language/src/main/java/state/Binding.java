@@ -1,13 +1,12 @@
 package state;
 
-import nodes.ASTNode;
-import values.IValue;
+import nodes.Node;
 
 public class Binding {
     private String identifier;
-    private ASTNode expression;
+    private Node expression;
 
-    public Binding(String identifier, ASTNode expression) {
+    public Binding(String identifier, Node expression) {
         this.identifier = identifier;
         this.expression = expression;
     }
@@ -16,7 +15,7 @@ public class Binding {
         return identifier;
     }
 
-    public ASTNode getExpression() {
+    public Node getExpression() {
         return expression;
     }
 }

@@ -6,24 +6,29 @@ import state.Environment;
 import types.IType;
 import values.IValue;
 
-public class ASTPrintln extends ASTExpression {
-	private ASTExpression expression;
+public class ASTPrintln extends ASTNode {
+	private ASTNode expression;
 
-	public ASTPrintln(ASTExpression expression) {
+	public ASTPrintln(ASTNode expression) {
 		this.expression = expression;
 	}
 
 	@Override
 	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
 		IValue value = expression.eval(environment);
-		System.out.println(value.getValue());
+		System.out.println(value);
 		return value;
 	}
 
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
-		CodeBlock code = expression.compile(environment);
-		code.emit_println(getType().getJVMClass());
+		CodeBlock code = new CodeBlock();
+		code.emit_getstatic("java/lang/System/out","Ljava/io/PrintStream;");
+		code.tabify();
+		code.appendCodeBlock(expression.compile(environment));
+		code.detabify();
+		code.emit_invoke_println(getType());
+		code.emit_blank();
 		return code;
 	}
 

@@ -2,7 +2,7 @@ package nodes.arithmetic;
 
 import compiler.CodeBlock;
 import exceptions.NullTypecheckException;
-import nodes.ASTExpression;
+import nodes.ASTNode;
 import types.NumberType;
 import values.IValue;
 import values.NumberValue;
@@ -10,7 +10,7 @@ import values.NumberValue;
 public class ASTAddition extends ASTArithmetic {
 	public final static String operator = "+";
 
-	public ASTAddition(ASTExpression lNode, ASTExpression rNode) {
+	public ASTAddition(ASTNode lNode, ASTNode rNode) {
 		super(lNode, rNode, operator);
 	}
 
@@ -21,8 +21,14 @@ public class ASTAddition extends ASTArithmetic {
 		code.emit_blank();
 		return code;
 	}
+
 	@Override
 	public IValue basicOperation(IValue v1, IValue v2) {
 		return ((NumberValue) v1).add((NumberValue) v2);
+	}
+
+	@Override
+	public String getOperator() {
+		return operator;
 	}
 }
