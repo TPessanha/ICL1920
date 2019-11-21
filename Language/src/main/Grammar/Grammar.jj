@@ -132,7 +132,6 @@ ASTNode Statment() :
     { return node; }
 }
 
-// EXPERIMENTAL -==-----------------------------------
 ASTNode Expression() :
 {
     ASTNode node;
@@ -346,15 +345,11 @@ ASTNode Fact() :
 }
 {
     (
-    	node = Boolean()
-    	|
+        node = Constant()
+        |
         node = Let()
         |
         node = parenthesizedSequence()
-        |
-        node = Float()
-        |
-        node = Integer()
         |
         node = Identifier()
         |
@@ -365,6 +360,21 @@ ASTNode Fact() :
     {
         return node;
     }
+}
+
+ASTNode Constant() :
+{
+    Token primitive;
+}
+{
+   primitive = <INTEGER_LITERAL>
+   { return new ASTInteger(Integer.parseInt(primitive.image)); }
+   |
+   primitive = <FLOAT_LITERAL>
+   { return new ASTFloat(Float.parseFloat(primitive.image)); }
+   |
+   (primitive = <TRUE> | primitive = <FALSE> )
+   { return new ASTBoolean(Boolean.parseBoolean(primitive.image)); }
 }
 
 ASTNode NewReference() :
@@ -431,33 +441,6 @@ ASTNode Let() :
         body = Sequence()
     <END>
     { return new ASTLet(list,body); }
-}
-
-ASTNode Integer() :
-{
-    Token num;
-}
-{
-   num = <INTEGER_LITERAL>
-   { return new ASTInteger(Integer.parseInt(num.image)); }
-}
-
-ASTNode Float() :
-{
-    Token num;
-}
-{
-   num = <FLOAT_LITERAL>
-   { return new ASTFloat(Float.parseFloat(num.image)); }
-}
-
-ASTNode Boolean() :
-{
-    Token value;
-}
-{
-   (value = <TRUE> | value = <FALSE> )
-   { return new ASTBoolean(Boolean.parseBoolean(value.image)); }
 }
 
 ASTNode Println() :
