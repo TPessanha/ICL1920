@@ -6,18 +6,13 @@ import types.IType;
 /**
  * Description:
  */
-public class BooleanValue implements IValue<Boolean>, Comparable<IValue<Boolean>> {
-    private final boolean value;
+public class BooleanValue extends AnyValue<Boolean> implements Comparable<BooleanValue> {
+//    private final boolean value;
     public final static BooleanValue FALSE = new BooleanValue(false);
     public final static BooleanValue TRUE = new BooleanValue(true);
 
     public BooleanValue(boolean value) {
-        this.value = value;
-    }
-
-    @Override
-    public Boolean getValue() {
-        return value;
+    	super(value);
     }
 
     @Override
@@ -36,16 +31,16 @@ public class BooleanValue implements IValue<Boolean>, Comparable<IValue<Boolean>
     }
 
     @Override
-    public int compareTo(IValue anotherBoolean) {
-        return getValue().compareTo((Boolean) anotherBoolean.getValue());
-    }
-
-    @Override
     public boolean equals(IValue anotherBoolean) {
         return getValue().equals(anotherBoolean.getValue());
     }
 
 	public BooleanValue not() {
 		return new BooleanValue(!value);
+	}
+
+	@Override
+	public int compareTo(BooleanValue anotherBoolean) {
+		return getValue().compareTo(anotherBoolean.getValue());
 	}
 }

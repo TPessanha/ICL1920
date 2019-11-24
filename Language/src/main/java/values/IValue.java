@@ -14,5 +14,5 @@ public interface IValue<T> {
 
     String toString();
 
-    boolean equals(IValue value);
+    boolean equals(IValue<T> value);
 }

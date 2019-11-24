@@ -1,17 +1,17 @@
 package nodes.primitives;
 
 import exceptions.NullTypecheckException;
-import nodes.ASTNode;
+import nodes.ASTExpression;
 import state.Environment;
 import types.IType;
 import values.IValue;
 
-public abstract class ASTPrimitive<v extends IValue> extends ASTNode {
+public abstract class ASTPrimitive<v extends IValue> extends ASTExpression {
 	protected final v value;
 
 	protected ASTPrimitive(v value) {
+		super(value.getType());
 		this.value = value;
-		setType(value.getType());
 	}
 
 	@Override

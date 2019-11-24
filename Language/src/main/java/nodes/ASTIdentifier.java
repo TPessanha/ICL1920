@@ -3,12 +3,13 @@ package nodes;
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import compiler.IdentifierDetails;
+import exceptions.IllegalTypeException;
 import exceptions.UndeclaredException;
 import state.Environment;
 import types.IType;
 import values.IValue;
 
-public class ASTIdentifier extends ASTNode {
+public class ASTIdentifier extends ASTExpression {
 	private final String name;
 
 	public ASTIdentifier(String name) {
@@ -46,7 +47,7 @@ public class ASTIdentifier extends ASTNode {
 	}
 
 	@Override
-	public IType typecheck(Environment<IType> environment) throws UndeclaredException {
+	public IType typecheck(Environment<IType> environment) throws UndeclaredException, IllegalTypeException {
 		return setType(environment.find(name));
 	}
 }

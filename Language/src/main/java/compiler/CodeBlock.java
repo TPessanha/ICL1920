@@ -1,6 +1,7 @@
 package compiler;
 
 import types.IType;
+import types.NumberType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -223,13 +224,17 @@ public class CodeBlock {
 		appendCodeLine(type1 + "2" + type2);
 	}
 
-	public void emit_println(String jvmType) {
-		appendCodeLine("; convert to String;");
-		appendCodeLine("invokestatic java/lang/String/valueOf(" + jvmType + ")Ljava/lang/String;");
-		appendCodeLine("; call println");
-		appendCodeLine("getstatic java/lang/System/out Ljava/io/PrintStream;");
-		appendCodeLine("invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+	public void emit_convert(IType type1, IType type2) {
+		emit_convert(((NumberType) type1).getConversionLiteral(), ((NumberType) type2).getConversionLiteral());
 	}
+
+//	public void emit_println(String jvmType) {
+//		appendCodeLine("; convert to String;");
+//		appendCodeLine("invokestatic java/lang/String/valueOf(" + jvmType + ")Ljava/lang/String;");
+//		appendCodeLine("; call println");
+//		appendCodeLine("getstatic java/lang/System/out Ljava/io/PrintStream;");
+//		appendCodeLine("invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+//	}
 
 	public void emit_if_greater_equal(String label) {
 		appendCodeLine("ifge " + label);
@@ -267,17 +272,24 @@ public class CodeBlock {
 		appendCodeLine("checkcast " + className);
 	}
 
-	public void emit_getstatic(String field, String descriptor)
-	{
+	public void emit_getstatic(String field, String descriptor) {
 		appendCodeLine("getstatic " + field + " " + descriptor);
 	}
-	public void emit_invokevirtual(String method)
-	{
+
+	public void emit_invokevirtual(String method) {
 		appendCodeLine("invokevirtual " + method);
 	}
 
-	public void emit_invoke_println(IType type)
-	{
+	public void emit_invokeStatic(String method) {
+		appendCodeLine("invokestatic " + method);
+	}
+
+	public void emit_valueOf(IType type) {
+		emit_invokeStatic(type.getJavaClass() + "/valueOf(" + type.getJVMClass() + ")" + "L" + type
+			.getJavaClass() + ";");
+	}
+
+	public void emit_invoke_println(IType type) {
 		emit_invokevirtual("java/io/PrintStream/println(" + type.getJVMClass() + ")V");
 	}
 

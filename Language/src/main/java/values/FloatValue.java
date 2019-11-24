@@ -4,30 +4,29 @@ import exceptions.DividedByZeroException;
 import types.FloatType;
 import types.IType;
 
-public class FloatValue extends NumberValue<Float> {
-
+public class FloatValue extends NumberValue implements Comparable<FloatValue> {
 	public FloatValue(float value) {
-		this.value = value;
+		super(value);
 	}
 
 	@Override
 	public FloatValue add(NumberValue number) {
-		return new FloatValue(getValue() + ((Number) number.getValue()).floatValue());
+		return new FloatValue(getValue() + (number.getValue()).floatValue());
 	}
 
 	@Override
 	public FloatValue subtract(NumberValue number) {
-		return new FloatValue(getValue() - ((Number) number.getValue()).floatValue());
+		return new FloatValue(getValue() - (number.getValue()).floatValue());
 	}
 
 	@Override
 	public FloatValue multiply(NumberValue number) {
-		return new FloatValue(getValue() * ((Number) number.getValue()).floatValue());
+		return new FloatValue(getValue() * (number.getValue()).floatValue());
 	}
 
 	@Override
 	public FloatValue divide(NumberValue number) throws DividedByZeroException {
-		float v2 = ((Number) number.getValue()).intValue();
+		float v2 = (number.getValue()).intValue();
 		if (v2 == 0)
 			throw new DividedByZeroException();
 		return new FloatValue(getValue() / v2);
@@ -64,7 +63,7 @@ public class FloatValue extends NumberValue<Float> {
 	}
 
 	@Override
-	public int compareTo(IValue anotherFloat) {
-		return getValue().compareTo((Float) anotherFloat.getValue());
+	public int compareTo(FloatValue anotherFloat) {
+		return getValue().compareTo(anotherFloat.getValue());
 	}
 }

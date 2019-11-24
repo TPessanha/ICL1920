@@ -10,14 +10,13 @@ import values.FloatValue;
 import values.IValue;
 import values.IntValue;
 
-public class ASTAsType extends ASTNode implements ASTOperation {
+public class ASTAsType extends ASTExpression implements ASTOperation {
 	private static final String operator = "as";
 	private ASTNode expression;
-	private IType toType;
 
 	public ASTAsType(ASTNode expression, IType toType) {
+		super(toType);
 		this.expression = expression;
-		this.toType = setType(toType);
 	}
 
 	@Override
@@ -25,8 +24,8 @@ public class ASTAsType extends ASTNode implements ASTOperation {
 		IType type = expression.getType();
 		IValue retValue = expression.eval(environment);
 
-		if (!type.getName().equals(toType))
-			switch (toType.getName()) {
+		if (!type.getName().equals(getType().getName()))
+			switch (getType().getName()) {
 				case "float":
 					return new FloatValue(((Number) retValue.getValue()).floatValue());
 				case "int":
@@ -39,19 +38,21 @@ public class ASTAsType extends ASTNode implements ASTOperation {
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		IType from = expression.getType();
 
-		if (!(from instanceof NumberType))
-			throw new IllegalCastException(from.getName(), toType.getName());
-
 		CodeBlock code = expression.compile(environment);
 
-		if (!from.getName().equals(toType.getName()))
-			code.emit_convert(((NumberType) from).getConversionLiteral(), ((NumberType) toType).getConversionLiteral());
+		if (!from.getName().equals(getType().getName()))
+			code.emit_convert(from, getType());
 
 		return code;
 	}
 
 	@Override
 	public IType typecheck(Environment<IType> environment) throws Exception {
+		IType from = expression.getType();
+
+		if (!(from instanceof NumberType))
+			throw new IllegalCastException(from, getType());
+
 		expression.typecheck(environment);
 		return getType();
 	}

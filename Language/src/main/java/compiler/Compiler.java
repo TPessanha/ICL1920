@@ -2,6 +2,7 @@ package compiler;
 
 import compiler.classes.ClassFile;
 import compiler.classes.MainClass;
+import exceptions.TypeMismatchException;
 import nodes.Node;
 import parser.*;
 import state.Environment;
@@ -41,11 +42,14 @@ public class Compiler {
 
 			Compiler.addClassFile(mainClass);
 		} catch (IOException e) {
-			e.printStackTrace();
 			System.out.println("Could not find output path");
-		} catch (ParseException e) {
 			e.printStackTrace();
+		} catch (ParseException e) {
 			System.out.println("Syntax Error!");
+			e.printStackTrace();
+		} catch (TypeMismatchException e) {
+			System.out.println("Typecheck Error!");
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

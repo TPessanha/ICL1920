@@ -7,6 +7,8 @@ import nodes.arithmetic.ASTAddition;
 import nodes.arithmetic.ASTDivision;
 import nodes.arithmetic.ASTMultiplication;
 import nodes.arithmetic.ASTSubtraction;
+import nodes.conditional.ASTTernary;
+import nodes.conditional.ASTWhile;
 import nodes.logic.ASTAnd;
 import nodes.logic.ASTNot;
 import nodes.logic.ASTOr;
@@ -60,11 +62,6 @@ node = new ASTSequence(node,node2);
 
   final public ASTNode Statment() throws ParseException {ASTNode node;
     switch (jj_ntk == -1 ? jj_ntk_f() : jj_ntk) {
-    case PRINTLN:
-    case PRINT:{
-      node = Println();
-      break;
-      }
     case SUB:
     case EXCL:
     case TILDE:
@@ -73,10 +70,17 @@ node = new ASTSequence(node,node2);
     case TRUE:
     case FALSE:
     case NEW:
+    case IF:
+    case PRINTLN:
+    case PRINT:
     case INTEGER_LITERAL:
     case FLOAT_LITERAL:
     case IDENTIFIER:{
       node = Expression();
+      break;
+      }
+    case WHILE:{
+      node = While();
       break;
       }
     default:
@@ -85,6 +89,16 @@ node = new ASTSequence(node,node2);
       throw new ParseException();
     }
 {if ("" != null) return node;}
+    throw new IllegalStateException ("Missing return statement in function");
+}
+
+  final public ASTNode While() throws ParseException {ASTNode cond, body;
+    jj_consume_token(WHILE);
+    cond = Sequence();
+    jj_consume_token(DO);
+    body = Sequence();
+    jj_consume_token(END);
+{if ("" != null) return new ASTWhile(cond,body);}
     throw new IllegalStateException ("Missing return statement in function");
 }
 
@@ -432,6 +446,10 @@ if (op==null)
       node = Let();
       break;
       }
+    case IF:{
+      node = IfThenElse();
+      break;
+      }
     case LPAR:{
       node = parenthesizedSequence();
       break;
@@ -448,12 +466,29 @@ if (op==null)
       node = Dereference();
       break;
       }
+    case PRINTLN:
+    case PRINT:{
+      node = Println();
+      break;
+      }
     default:
       jj_la1[17] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
 {if ("" != null) return node;}
+    throw new IllegalStateException ("Missing return statement in function");
+}
+
+  final public ASTNode IfThenElse() throws ParseException {ASTNode cond,pos,neg;
+    jj_consume_token(IF);
+    cond = Sequence();
+    jj_consume_token(THEN);
+    pos = Sequence();
+    jj_consume_token(ELSE);
+    neg = Sequence();
+    jj_consume_token(END);
+{if ("" != null) return new ASTTernary(cond,pos,neg);}
     throw new IllegalStateException ("Missing return statement in function");
 }
 
@@ -619,7 +654,7 @@ list.add(d);
 	   jj_la1_0 = new int[] {0x4000000,0x20006400,0x10000,0x8000,0x180000,0x180000,0x1e00000,0x1e00000,0x600,0x600,0x40000,0x1800,0x1800,0x0,0x0,0x4400,0x4400,0x20002000,0x0,0x0,0x100,0x100,0x0,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x0,0x7d32,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xc0,0x200,0x0,0x0,0x7132,0x30,0x3030,0x4000,0x0,0xc00,};
+	   jj_la1_1 = new int[] {0x0,0x1f2532,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xc0,0x200,0x0,0x0,0x1f0532,0x30,0xc0030,0x100000,0x0,0x30000,};
 	}
 
   /**
@@ -764,7 +799,7 @@ list.add(d);
    */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[49];
+    boolean[] la1tokens = new boolean[55];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -781,7 +816,7 @@ list.add(d);
         }
       }
     }
-    for (int i = 0; i < 49; i++) {
+    for (int i = 0; i < 55; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

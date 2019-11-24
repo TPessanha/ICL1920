@@ -22,4 +22,9 @@ public class VoidType implements IType {
 	public String getClassName() {
 		return "V";
 	}
+
+	@Override
+	public String getJavaClass() {
+		return "java/lang/void";
+	}
 }

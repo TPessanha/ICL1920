@@ -3,20 +3,13 @@ package values;
 import types.IType;
 import types.ReferenceType;
 
-public class ReferenceValue<type extends IValue> implements IValue<type> {
-	private type value;
-
+public class ReferenceValue<type extends IValue> extends AnyValue<type> {
 	public ReferenceValue(type value) {
-		this.value = value;
+		super(value);
 	}
 
 	public void setValue(type value) {
 		this.value = value;
-	}
-
-	@Override
-	public type getValue() {
-		return value;
 	}
 
 	@Override

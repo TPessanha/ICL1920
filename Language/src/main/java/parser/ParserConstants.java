@@ -81,19 +81,31 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int AS = 41;
   /** RegularExpression Id. */
-  int PRINTLN = 42;
+  int IF = 42;
   /** RegularExpression Id. */
-  int PRINT = 43;
+  int THEN = 43;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 44;
+  int ELSE = 44;
   /** RegularExpression Id. */
-  int FLOAT_LITERAL = 45;
+  int WHILE = 45;
   /** RegularExpression Id. */
-  int IDENTIFIER = 46;
+  int DO = 46;
   /** RegularExpression Id. */
-  int LETTER = 47;
+  int INSTANCEOF = 47;
   /** RegularExpression Id. */
-  int DIGIT = 48;
+  int PRINTLN = 48;
+  /** RegularExpression Id. */
+  int PRINT = 49;
+  /** RegularExpression Id. */
+  int INTEGER_LITERAL = 50;
+  /** RegularExpression Id. */
+  int FLOAT_LITERAL = 51;
+  /** RegularExpression Id. */
+  int IDENTIFIER = 52;
+  /** RegularExpression Id. */
+  int LETTER = 53;
+  /** RegularExpression Id. */
+  int DIGIT = 54;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -142,6 +154,12 @@ public interface ParserConstants {
     "\"float\"",
     "\"new\"",
     "\"as\"",
+    "\"if\"",
+    "\"then\"",
+    "\"else\"",
+    "\"while\"",
+    "\"do\"",
+    "\"instanceof\"",
     "\"println\"",
     "\"print\"",
     "<INTEGER_LITERAL>",

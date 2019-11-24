@@ -28,6 +28,11 @@ public class IntType extends NumberType{
 		return "I";
 	}
 
+	@Override
+	public String getJavaClass() {
+		return "java/lang/Integer";
+	}
+
 	public String getConversionLiteral(){
 		return "i";
 	}

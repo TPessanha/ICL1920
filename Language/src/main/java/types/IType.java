@@ -8,4 +8,6 @@ public interface IType {
 	String getJVMClass();
 
 	String getClassName();
+
+	String getJavaClass();
 }

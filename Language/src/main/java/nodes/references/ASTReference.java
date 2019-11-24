@@ -4,6 +4,7 @@ import compiler.CodeBlock;
 import compiler.Compiler;
 import compiler.CompilerEnvironment;
 import compiler.classes.ReferenceClass;
+import nodes.ASTExpression;
 import nodes.ASTNode;
 import state.Environment;
 import types.IType;
@@ -11,7 +12,7 @@ import types.ReferenceType;
 import values.IValue;
 import values.ReferenceValue;
 
-public class ASTReference extends ASTNode {
+public class ASTReference extends ASTExpression {
 	private final ASTNode referenceTo;
 
 	public ASTReference(ASTNode referenceTo) {

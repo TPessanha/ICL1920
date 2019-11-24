@@ -3,7 +3,7 @@ package nodes.references;
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
-import nodes.ASTNode;
+import nodes.ASTExpression;
 import nodes.ASTOperation;
 import nodes.Node;
 import state.Environment;
@@ -12,7 +12,7 @@ import types.ReferenceType;
 import values.IValue;
 import values.ReferenceValue;
 
-public class ASTDereference extends ASTNode implements ASTOperation {
+public class ASTDereference extends ASTExpression implements ASTOperation {
 	private static final String operator = "!";
 	private final Node reference;
 
@@ -24,7 +24,7 @@ public class ASTDereference extends ASTNode implements ASTOperation {
 	@Override
 	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
 		ReferenceValue r = (ReferenceValue) reference.eval(environment);
-		return r.getValue();
+		return (IValue<?>) r.getValue();
 	}
 
 	@Override

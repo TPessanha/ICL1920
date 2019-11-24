@@ -22,4 +22,9 @@ public class StringType implements IType {
 	public String getClassName() {
 		return "java/lang/String";
 	}
+
+	@Override
+	public String getJavaClass() {
+		return getClassName();
+	}
 }

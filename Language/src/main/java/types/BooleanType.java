@@ -22,4 +22,9 @@ public class BooleanType implements IType {
 	public String getClassName() {
 		return "Z";
 	}
+
+	@Override
+	public String getJavaClass() {
+		return "java/lang/Boolean";
+	}
 }

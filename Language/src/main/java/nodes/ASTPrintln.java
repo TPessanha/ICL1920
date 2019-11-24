@@ -6,7 +6,7 @@ import state.Environment;
 import types.IType;
 import values.IValue;
 
-public class ASTPrintln extends ASTNode {
+public class ASTPrintln extends ASTExpression {
 	private ASTNode expression;
 
 	public ASTPrintln(ASTNode expression) {

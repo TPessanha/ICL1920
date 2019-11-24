@@ -1,6 +1,6 @@
 package types;
 
-public class ReferenceType<type extends IType> implements IType {
+public class ReferenceType<type extends IType> extends AnyType {
 	private type referenceTo;
 
 	public ReferenceType(type referenceTo) {
@@ -23,11 +23,12 @@ public class ReferenceType<type extends IType> implements IType {
 
 	@Override
 	public String getJVMClass() {
-		return ObjectType.value.getJVMClass();
+		return AnyType.value.getJVMClass();
 	}
 
 	@Override
 	public String getClassName() {
 		return getName();
 	}
+
 }

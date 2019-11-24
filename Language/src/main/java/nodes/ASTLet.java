@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Description:
  */
-public class ASTLet extends ASTNode {
+public class ASTLet extends ASTExpression {
 
 	private final List<Binding> bindings;
 	private final ASTNode body;

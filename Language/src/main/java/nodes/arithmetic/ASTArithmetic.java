@@ -18,6 +18,7 @@ public abstract class ASTArithmetic extends ASTBinaryOperation {
 	public IType typecheck(Environment<IType> environment) throws Exception {
 		IType t1 = lNode.typecheck(environment);
 		IType t2 = rNode.typecheck(environment);
+
 		if (t1 instanceof NumberType && t2 instanceof NumberType) {
 			int priority1 = ((NumberType) t1).getPriorityLevel();
 			int priority2 = ((NumberType) t2).getPriorityLevel();
@@ -25,10 +26,12 @@ public abstract class ASTArithmetic extends ASTBinaryOperation {
 			if (priority1 > priority2) {
 				rNode = new ASTAsType(rNode, lNode.getType());
 				return setType(t1.getType());
-			} else {
+			} else if (priority1 < priority2) {
 				lNode = new ASTAsType(lNode, rNode.getType());
 				return setType(t2.getType());
 			}
+			else
+				return setType(t2.getType());
 		} else
 			throw new IllegalOperatorException(getOperator(), t1.getName(), t2.getName());
 	}

@@ -22,4 +22,9 @@ public class UndefinedType implements IType {
 	public String getClassName() {
 		return null;
 	}
+
+	@Override
+	public String getJavaClass() {
+		return null;
+	}
 }

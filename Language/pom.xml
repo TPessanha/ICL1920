@@ -102,6 +102,16 @@
                             </includes>
                         </configuration>
                     </execution>
+					<execution>
+						<id>javaccDoc</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>jjdoc</goal>
+						</goals>
+						<configuration>
+							<defaultGrammarDirectoryJavaCC>src/main/Grammar</defaultGrammarDirectoryJavaCC>
+						</configuration>
+					</execution>
                 </executions>
                 <configuration>
                     <jdkVersion>1.8</jdkVersion>

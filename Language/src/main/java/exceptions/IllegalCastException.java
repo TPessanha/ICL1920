@@ -1,5 +1,7 @@
 package exceptions;
 
+import types.IType;
+
 public class IllegalCastException extends Exception {
 	public IllegalCastException() {
 		super("Can't cast from type 1 to type 2");
@@ -7,5 +9,9 @@ public class IllegalCastException extends Exception {
 
 	public IllegalCastException(String type1, String type2) {
 		super("Can 't cast from " + type1 + " to " + type2);
+	}
+
+	public IllegalCastException(IType type1, IType type2) {
+		this(type1.getName(),type2.getName());
 	}
 }

@@ -3,7 +3,7 @@ package nodes.logic;
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
-import nodes.ASTNode;
+import nodes.ASTExpression;
 import nodes.ASTOperation;
 import nodes.Node;
 import state.Environment;
@@ -12,12 +12,11 @@ import types.IType;
 import values.BooleanValue;
 import values.IValue;
 
-public class ASTNot extends ASTNode implements ASTOperation {
+public class ASTNot extends ASTExpression implements ASTOperation {
 	private static final String operator = "~";
 	private Node node;
 
 	public ASTNot(Node node) {
-		super();
 		this.node = node;
 	}
 

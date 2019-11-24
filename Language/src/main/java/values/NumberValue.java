@@ -5,10 +5,14 @@ import exceptions.DividedByZeroException;
 /**
  * Description:
  */
-public abstract class NumberValue<T> implements IValue<T>, Comparable<IValue<T>> {
-    protected java.lang.Number value;
+public abstract class NumberValue extends AnyValue<Number> {
+//    protected java.lang.Number value;
 
-    public abstract NumberValue add(NumberValue number);
+	public NumberValue(Number value) {
+		super(value);
+	}
+
+	public abstract NumberValue add(NumberValue number);
 
     public abstract NumberValue subtract(NumberValue number);
 

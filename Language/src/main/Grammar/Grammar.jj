@@ -15,6 +15,7 @@ import nodes.arithmetic.*;
 import nodes.relation.*;
 import nodes.references.*;
 import nodes.logic.*;
+import nodes.conditional.*;
 import state.*;
 import types.*;
 import java.util.List;
@@ -80,6 +81,12 @@ TOKEN : {
    	< FLOAT: "float" > |
    	< NEW: "new" > |
    	< AS: "as" > |
+   	< IF: "if" > |
+   	< THEN: "then" > |
+   	< ELSE: "else" > |
+   	< WHILE: "while" > |
+	< DO: "do" > |
+   	< INSTANCEOF: "instanceof" > |
    	< PRINTLN: "println" > |
    	< PRINT: "print" >
 }
@@ -125,11 +132,20 @@ ASTNode Statment() :
 }
 {
 	(
-		node = Println()
-		|
 		node = Expression()
+		|
+		node = While()
 	)
     { return node; }
+}
+
+ASTNode While() :
+{
+	ASTNode cond, body;
+}
+{
+	<WHILE> cond = Sequence() <DO> body = Sequence() <END>
+	{ return new ASTWhile(cond,body); }
 }
 
 ASTNode Expression() :
@@ -349,6 +365,8 @@ ASTNode Fact() :
         |
         node = Let()
         |
+        node = IfThenElse()
+        |
         node = parenthesizedSequence()
         |
         node = Identifier()
@@ -356,10 +374,21 @@ ASTNode Fact() :
         node = NewReference()
         |
         node = Dereference()
+        |
+        node = Println()
     )
     {
         return node;
     }
+}
+
+ASTNode IfThenElse() :
+{
+	ASTNode cond,pos,neg;
+}
+{
+	<IF> cond = Sequence() <THEN> pos = Sequence() <ELSE> neg = Sequence() <END>
+	{ return new ASTTernary(cond,pos,neg); }
 }
 
 ASTNode Constant() :

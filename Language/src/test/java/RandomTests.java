@@ -6,9 +6,11 @@ public class RandomTests {
 //		boolean x2 = false;
 //		boolean t = x && x2;
 
-		String x = "5";
+		int x = 5;
 
-		System.out.println(x = "24");
+
+		System.out.println((float)x);
+
 
 //        Environment<Value> scope = new Environment();
 //        scope.declareVariable("test", new Int(5));

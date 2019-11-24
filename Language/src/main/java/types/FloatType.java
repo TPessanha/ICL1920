@@ -32,4 +32,9 @@ public class FloatType extends NumberType {
 	public String getClassName() {
 		return "F";
 	}
+
+	@Override
+	public String getJavaClass() {
+		return "java/lang/Float";
+	}
 }
