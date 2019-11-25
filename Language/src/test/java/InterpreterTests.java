@@ -15,11 +15,14 @@ import values.FloatValue;
 import values.IValue;
 import values.IntValue;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,12 +32,21 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class InterpreterTests {
 
+	final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	private PrintStream out = new PrintStream(outputStream);
+
 	private Parser getParser(String cmd) {
-		return new Parser(new StringProvider(cmd));
+		Parser parser = new Parser(new StringProvider(cmd));
+		outputStream.reset();
+		parser.setOutputStream(out);
+		return parser;
 	}
 
 	private Parser getParser(InputStream cmd) {
-		return new Parser(new StreamProvider(cmd, Charset.defaultCharset()));
+		Parser parser = new Parser(new StreamProvider(cmd, Charset.defaultCharset()));
+		outputStream.reset();
+		parser.setOutputStream(out);
+		return parser;
 	}
 
 	private IValue runInterpreter(Parser parser) throws Exception {
@@ -263,19 +275,25 @@ class InterpreterTests {
 
 	private void runSingleTest(String fileName) throws Exception {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
-		List<TypedResult> resultCheck = testUtil.getResultCheck(in);
+		List<TypedResult> expected = testUtil.getResultCheck(in);
 
 		in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		try {
 			Parser parser = getParser(in);
 			IValue result = runInterpreter(parser);
 
+			List outputs = Arrays.asList(outputStream.toString().replace("\r","").split("\n"));
+
+			for (int i = 0; i < expected.size(); i++) {
+				assertEquals(expected.get(i).getValue(), outputs.get(i));
+			}
+
 			if (result.getType().getName().equals("void"))
 				return;
 
-			TypedResult expected = resultCheck.get(resultCheck.size() - 1);
-			assertTrue(expected.getType().equals(result.getTypeName()));
-			assertEquals(expected.getValue(), result.getValue().toString());
+			TypedResult fResult = expected.get(expected.size() - 1);
+			assertTrue(fResult.getType().equals(result.getTypeName()));
+			assertEquals(fResult.getValue(), result.getValue().toString());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -6,17 +6,27 @@ import state.Environment;
 import types.IType;
 import values.IValue;
 
+import java.io.PrintStream;
+
 public class ASTPrintln extends ASTExpression {
 	private ASTNode expression;
+	private PrintStream out;
 
 	public ASTPrintln(ASTNode expression) {
 		this.expression = expression;
+		out = System.out;
+	}
+
+	public ASTPrintln(ASTNode expression, PrintStream out)
+	{
+		this.expression = expression;
+		this.out = out;
 	}
 
 	@Override
 	public IValue<?> eval(Environment<IValue<?>> environment) throws Exception {
 		IValue value = expression.eval(environment);
-		System.out.println(value);
+		out.println(value);
 		return value;
 	}
 

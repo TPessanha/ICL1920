@@ -24,10 +24,18 @@ import types.FloatType;
 import types.IType;
 import types.IntType;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Parser implements ParserConstants {
+ PrintStream out;
+
+ public void setOutputStream(PrintStream out)
+    {
+     this.out = out;
+    }
 
   final public ASTNode Start() throws ParseException {//	List<ASTNode> nodes = new ArrayList<>();
  ASTNode node, node2;
@@ -622,7 +630,7 @@ list.add(d);
     jj_consume_token(LPAR);
     exp = Sequence();
     jj_consume_token(RPAR);
-{if ("" != null) return new ASTPrintln(exp);}
+{if ("" != null) return new ASTPrintln(exp,out);}
     throw new IllegalStateException ("Missing return statement in function");
 }
 

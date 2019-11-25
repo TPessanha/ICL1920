@@ -18,11 +18,18 @@ import nodes.logic.*;
 import nodes.conditional.*;
 import state.*;
 import types.*;
+import java.io.PrintStream;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Parser {
 
+public class Parser {
+	PrintStream out;
+
+	public void setOutputStream(PrintStream out)
+    {
+    	this.out = out;
+    }
 }
 
 PARSER_END(Parser)
@@ -478,7 +485,7 @@ ASTNode Println() :
 }
 {
 	( <PRINTLN> | <PRINT> ) <LPAR> exp = Sequence() <RPAR>
-   { return new ASTPrintln(exp); }
+   { return new ASTPrintln(exp,out); }
 }
 
 ASTNode parenthesizedSequence() :
