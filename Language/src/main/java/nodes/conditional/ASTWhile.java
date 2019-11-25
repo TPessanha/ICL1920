@@ -1,6 +1,7 @@
 package nodes.conditional;
 
 import compiler.CodeBlock;
+import compiler.Compiler;
 import compiler.CompilerEnvironment;
 import exceptions.IncompatibleTypeException;
 import nodes.ASTNode;
@@ -30,7 +31,19 @@ public class ASTWhile extends ASTStatement {
 
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
-		return null;
+		String l1 = Compiler.generateUniqueLabel();
+		String l2 = Compiler.generateUniqueLabel();
+
+		CodeBlock code = new CodeBlock();
+
+		code.emit_label(l1);
+		code.appendCodeBlock(condition.compile(environment));
+		code.emit_if_equal(l2);
+		code.appendCodeBlock(body.compile(environment));
+		code.emit_goto(l1);
+		code.emit_label(l2);
+
+		return code;
 	}
 
 	@Override
@@ -38,7 +51,7 @@ public class ASTWhile extends ASTStatement {
 		IType condType = condition.typecheck(environment);
 
 		if (!(condType instanceof BooleanType))
-			throw new IncompatibleTypeException(BooleanType.value,condType);
+			throw new IncompatibleTypeException(BooleanType.value, condType);
 
 		body.typecheck(environment);
 

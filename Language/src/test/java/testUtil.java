@@ -9,7 +9,9 @@ public class testUtil {
 		ArrayList<TypedResult> results = new ArrayList<>();
 		String[] check = reader.nextLine().substring(2).split(",");
 		for (String r : check) {
-			results.add(new TypedResult(r));
+			TypedResult newResult = new TypedResult(r);
+			if (!newResult.getType().equals("void"))
+				results.add(newResult);
 		}
 		return results;
 	}

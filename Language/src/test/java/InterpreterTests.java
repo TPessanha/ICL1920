@@ -265,11 +265,13 @@ class InterpreterTests {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		List<TypedResult> resultCheck = testUtil.getResultCheck(in);
 
-
 		in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		try {
 			Parser parser = getParser(in);
 			IValue result = runInterpreter(parser);
+
+			if (result.getType().getName().equals("void"))
+				return;
 
 			TypedResult expected = resultCheck.get(resultCheck.size() - 1);
 			assertTrue(expected.getType().equals(result.getTypeName()));

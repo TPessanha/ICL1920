@@ -28,15 +28,17 @@ public class CompilerTests {
 	@TestFactory
 	public Iterable<DynamicTest> runTests() throws URISyntaxException {
 		List<DynamicTest> tests = new ArrayList<>();
-		File dir = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("compilerTests/")).toURI());
+		File dir =
+			new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("compilerTests/")).toURI());
 
-		for (File f: Objects.requireNonNull(dir.listFiles()))
-		{
-			DynamicTest t = DynamicTest.dynamicTest(f.getName(),
+		for (File f : Objects.requireNonNull(dir.listFiles())) {
+			DynamicTest t = DynamicTest.dynamicTest(
+				f.getName(),
 				() ->
 				{
 					runSingleTest(f.getName());
-				});
+				}
+			);
 			tests.add(t);
 		}
 
@@ -62,14 +64,12 @@ public class CompilerTests {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		List<TypedResult> expected = testUtil.getResultCheck(in);
 
-
 		in = this.getClass().getClassLoader().getResourceAsStream("compilerTests/" + fileName);
 		try {
 			compileAndAssemble(in);
 			List<String> outputs = runClass();
 
 			for (int i = 0; i < expected.size(); i++) {
-
 				assertEquals(expected.get(i).getValue(), outputs.get(i));
 			}
 		} catch (InterruptedException e) {
