@@ -15,7 +15,6 @@ public class ASTWhile extends ASTStatement {
 	ASTNode condition, body;
 
 	public ASTWhile(ASTNode condition, ASTNode body) {
-		super();
 		this.condition = condition;
 		this.body = body;
 	}
