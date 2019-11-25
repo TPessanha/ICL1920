@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class RandomTests {
 
 	public static void main(String[] args) throws Exception {
@@ -6,10 +8,10 @@ public class RandomTests {
 //		boolean x2 = false;
 //		boolean t = x && x2;
 
-		int x = 5;
+		boolean x = getRandomBoolean() && getRandomBoolean();
 
 
-		System.out.println((float)x);
+		System.out.println(x);
 
 
 //        Environment<Value> scope = new Environment();
@@ -38,5 +40,15 @@ public class RandomTests {
 
 		//2nd
 //
+	}
+
+	static boolean getRandomBoolean()
+	{
+		Random random = new Random();
+		if (random.nextBoolean())
+			return true;
+		if (random.nextBoolean())
+			return false;
+		return true;
 	}
 }

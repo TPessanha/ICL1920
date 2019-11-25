@@ -292,7 +292,7 @@ class InterpreterTests {
 				return;
 
 			TypedResult fResult = expected.get(expected.size() - 1);
-			assertTrue(fResult.getType().equals(result.getTypeName()));
+			assertEquals(fResult.getType(), result.getTypeName());
 			assertEquals(fResult.getValue(), result.getValue().toString());
 		} catch (InterruptedException e) {
 			e.printStackTrace();

@@ -4,16 +4,12 @@ import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.NullTypecheckException;
 import state.Environment;
-import types.IType;
 import values.IValue;
 
 public abstract class ASTBinaryOperation extends ASTBinaryNode implements ASTOperation {
 	protected final String operator;
 
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
-		IType t1 = lNode.getType();
-		IType t2 = rNode.getType();
-
 		CodeBlock code = lNode.compile(environment);
 		code.appendCodeBlock(rNode.compile(environment));
 		code.appendCodeBlock(emitOperation());

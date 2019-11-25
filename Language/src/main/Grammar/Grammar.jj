@@ -55,7 +55,9 @@ TOKEN :
   < EXCL : "!" > |
   < TILDE : "~" > |
   < CONJ : "&&" > |
+  < EAGER_CONJ : "&" > |
   < DISJ : "||" > |
+  < EAGER_DISJ : "|" > |
   < EQUALS : "=" > |
   < ASSIGNMENT : ":=" > |
   < EQEQ : "==" > |
@@ -146,7 +148,7 @@ ASTNode Statment() :
     { return node; }
 }
 
-ASTNode While() :
+ASTStatement While() :
 {
 	ASTNode cond, body;
 }
@@ -167,26 +169,44 @@ ASTNode Expression() :
 
 ASTNode Disjunction() :
 {
+	Token op;
     ASTNode node,node2;
 }
 {
-    node = Conjunction() ( <DISJ> node2 = Conjunction()
+    node = Conjunction() ((op = <DISJ> | op = <EAGER_DISJ>) node2 = Conjunction()
     	{
-        	node = new ASTOr(node,node2);
-        }
+		 	switch(op.kind)
+         	{
+         		case EAGER_DISJ:
+ 					node = new ASTEagerOr(node,node2);
+ 					break;
+ 				case DISJ:
+ 					node = new ASTOr(node,node2);
+ 					break;
+         	}
+ 		}
     )*
     { return node; }
 }
 
 ASTNode Conjunction() :
 {
+	Token op;
     ASTNode node,node2;
 }
 {
-    node = Equality() (<CONJ> node2 = Equality()
+    node = Equality() ((op = <CONJ> | op = <EAGER_CONJ>) node2 = Equality()
     	{
-    		node = new ASTAnd(node,node2);
-    	}
+		 	switch(op.kind)
+         	{
+         		case EAGER_CONJ:
+ 					node = new ASTEagerAnd(node,node2);
+ 					break;
+ 				case CONJ:
+ 					node = new ASTAnd(node,node2);
+ 					break;
+         	}
+ 		}
     )*
     { return node; }
 }
