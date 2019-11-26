@@ -19,7 +19,7 @@ public class IntType extends NumberType{
 	}
 
 	@Override
-	public String getJVMNType() {
+	public String getJVMType() {
 		return "I";
 	}
 

@@ -14,7 +14,7 @@ public class UndefinedType extends AnyType {
 	}
 
 	@Override
-	public String getJVMNType() {
+	public String getJVMType() {
 		return null;
 	}
 

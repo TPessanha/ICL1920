@@ -14,7 +14,7 @@ public class VoidType extends AnyType {
 	}
 
 	@Override
-	public String getJVMNType() {
+	public String getJVMType() {
 		return "V";
 	}
 

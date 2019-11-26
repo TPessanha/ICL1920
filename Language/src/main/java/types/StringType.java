@@ -14,7 +14,7 @@ public class StringType extends AnyType {
 	}
 
 	@Override
-	public String getJVMNType() {
+	public String getJVMType() {
 		return "L" + getJavaClass() + ";";
 	}
 

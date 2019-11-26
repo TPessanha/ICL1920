@@ -20,7 +20,10 @@ public class ASTPrintln extends ASTExpression {
 	public ASTPrintln(ASTNode expression, PrintStream out)
 	{
 		this.expression = expression;
-		this.out = out;
+		if(out==null)
+			this.out = System.out;
+		else
+			this.out = out;
 	}
 
 	@Override

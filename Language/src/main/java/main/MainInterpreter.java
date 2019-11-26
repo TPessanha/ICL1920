@@ -8,6 +8,7 @@ import parser.Provider;
 import parser.StreamProvider;
 import state.Environment;
 import types.IType;
+import types.VoidType;
 import values.IValue;
 
 import java.nio.charset.Charset;
@@ -25,7 +26,10 @@ public class MainInterpreter {
 				System.out.println("Expected type: " + resultType.getName());
 
 				IValue<?> out = exp.eval(new Environment<>(false));
-				System.out.println(out);
+				if(out.getType() instanceof VoidType)
+					System.out.println("done");
+				else
+					System.out.println(out);
 			} catch (ParseException e) {
 				System.out.println("Syntax Error!");
 				System.out.println(e.getMessage());

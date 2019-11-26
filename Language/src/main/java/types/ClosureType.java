@@ -1,11 +1,11 @@
 package types;
 
-public class AnyType implements IType {
-	public static final AnyType value = new AnyType();
+public class ClosureType implements IType {
+	public final static ClosureType value = new ClosureType();
 
 	@Override
 	public String getName() {
-		return "any";
+		return "closure";
 	}
 
 	@Override
