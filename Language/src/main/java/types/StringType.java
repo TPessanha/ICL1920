@@ -1,6 +1,6 @@
 package types;
 
-public class StringType implements IType {
+public class StringType extends AnyType {
 	public final static StringType value = new StringType();
 
 	@Override
@@ -14,17 +14,17 @@ public class StringType implements IType {
 	}
 
 	@Override
-	public String getJVMClass() {
-		return "L" + getClassName() + ";";
+	public String getJVMName() {
+		return "L" + getJavaClass() + ";";
 	}
 
 	@Override
 	public String getClassName() {
-		return "java/lang/String";
+		return "String";
 	}
 
 	@Override
 	public String getJavaClass() {
-		return getClassName();
+		return "java/lang/String";
 	}
 }

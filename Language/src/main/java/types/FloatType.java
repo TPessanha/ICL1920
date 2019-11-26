@@ -24,13 +24,13 @@ public class FloatType extends NumberType {
 	}
 
 	@Override
-	public String getJVMClass() {
+	public String getJVMName() {
 		return "F";
 	}
 
 	@Override
 	public String getClassName() {
-		return "F";
+		return "Float";
 	}
 
 	@Override

@@ -53,7 +53,6 @@ public class ASTLet extends ASTExpression {
 
 		CodeBlock code = new CodeBlock();
 		int SL = environment.getSL();
-		int level = newEnv.getLevel();
 		StackFrame frame = newEnv.getFrame();
 		String className = frame.getClassName();
 		String parentName = environment.getFrame().getClassName();
@@ -75,6 +74,8 @@ public class ASTLet extends ASTExpression {
 		code.emit_blank();
 
 		//store vars
+		code.tabify();
+
 		List<IdentifierDetails> vars = new ArrayList<>(newEnv.getValues());
 		for (int i = 0; i < vars.size(); i++) {
 			Binding binding = this.bindings.get(i);
@@ -84,10 +85,12 @@ public class ASTLet extends ASTExpression {
 
 			code.emit_aload(SL);
 			code.appendCodeBlock(binding.getExpression().compile(newEnv));
-			code.emit_putField(className + "/x_" + i, details.getType().getJVMClass());
+			code.emit_putField(className + "/x_" + i, details.getType().getJVMName());
 
 			code.emit_blank();
 		}
+
+		code.detabify();
 
 		//Body
 

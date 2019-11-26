@@ -19,13 +19,13 @@ public class IntType extends NumberType{
 	}
 
 	@Override
-	public String getJVMClass() {
+	public String getJVMName() {
 		return "I";
 	}
 
 	@Override
 	public String getClassName() {
-		return "I";
+		return "Integer";
 	}
 
 	@Override

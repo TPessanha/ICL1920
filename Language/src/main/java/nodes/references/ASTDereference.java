@@ -35,7 +35,7 @@ public class ASTDereference extends ASTExpression implements ASTOperation {
 		CodeBlock code = reference.compile(environment);
 		code.emit_comment("Dereference");
 		code.emit_checkcast(className);
-		code.emit_getField(className + "/value", getType().getJVMClass());
+		code.emit_getField(className + "/value", getType().getJVMName());
 		code.emit_blank();
 		return code;
 	}

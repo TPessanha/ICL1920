@@ -14,17 +14,17 @@ public class AnyType implements IType {
 	}
 
 	@Override
-	public String getJVMClass() {
-		return "L" + getClassName() + ";";
+	public String getJVMName() {
+		return "L" + getJavaClass() + ";";
 	}
 
 	@Override
 	public String getClassName() {
-		return "java/lang/Object";
+		return "Object";
 	}
 
 	@Override
 	public String getJavaClass() {
-		return getClassName();
+		return "java/lang/Object";
 	}
 }

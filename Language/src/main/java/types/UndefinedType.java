@@ -1,6 +1,6 @@
 package types;
 
-public class UndefinedType implements IType {
+public class UndefinedType extends AnyType {
 	public final static UndefinedType value = new UndefinedType();
 
 	@Override
@@ -14,7 +14,7 @@ public class UndefinedType implements IType {
 	}
 
 	@Override
-	public String getJVMClass() {
+	public String getJVMName() {
 		return null;
 	}
 

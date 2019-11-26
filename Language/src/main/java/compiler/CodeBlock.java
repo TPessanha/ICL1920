@@ -285,12 +285,12 @@ public class CodeBlock {
 	}
 
 	public void emit_valueOf(IType type) {
-		emit_invokeStatic(type.getJavaClass() + "/valueOf(" + type.getJVMClass() + ")" + "L" + type
+		emit_invokeStatic(type.getJavaClass() + "/valueOf(" + type.getJVMName() + ")" + "L" + type
 			.getJavaClass() + ";");
 	}
 
 	public void emit_invoke_println(IType type) {
-		emit_invokevirtual("java/io/PrintStream/println(" + type.getJVMClass() + ")V");
+		emit_invokevirtual("java/io/PrintStream/println(" + type.getJVMName() + ")V");
 	}
 
 	public void emit_invoke_println(String type) {

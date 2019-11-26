@@ -38,14 +38,22 @@ public class ASTTernary extends ASTExpression {
 
 		CodeBlock code = condition.compile(environment);
 		code.emit_if_equal(l1);
+
+		code.tabify();
 		code.appendCodeBlock(positiveExpression.compile(environment));
 		if (!sameTypeCheck)
 			code.emit_valueOf(positiveExpression.getType());
 		code.emit_goto(l2);
+		code.detabify();
+
 		code.emit_label(l1);
+
+		code.tabify();
 		code.appendCodeBlock(negativeExpression.compile(environment));
 		if (!sameTypeCheck)
 			code.emit_valueOf(negativeExpression.getType());
+		code.detabify();
+
 		code.emit_label(l2);
 		return code;
 	}

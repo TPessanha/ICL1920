@@ -1,6 +1,6 @@
 package types;
 
-public class VoidType implements IType {
+public class VoidType extends AnyType {
 	public final static VoidType value = new VoidType();
 
 	@Override
@@ -14,7 +14,7 @@ public class VoidType implements IType {
 	}
 
 	@Override
-	public String getJVMClass() {
+	public String getJVMName() {
 		return "V";
 	}
 

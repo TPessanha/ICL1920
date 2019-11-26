@@ -40,7 +40,7 @@ public class ASTAssignment extends ASTBinaryNode implements ASTOperation {
 		CodeBlock code = lNode.compile(environment);
 		code.emit_checkcast(t1.getClassName());
 		code.appendCodeBlock(rNode.compile(environment));
-		code.emit_putField(t1.getClassName() + "/value", t2.getJVMClass());
+		code.emit_putField(t1.getClassName() + "/value", t2.getJVMName());
 		code.emit_blank();
 
 		return code;

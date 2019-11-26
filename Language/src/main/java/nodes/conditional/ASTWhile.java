@@ -38,8 +38,12 @@ public class ASTWhile extends ASTStatement {
 		code.emit_label(l1);
 		code.appendCodeBlock(condition.compile(environment));
 		code.emit_if_equal(l2);
+
+		code.tabify();
 		code.appendCodeBlock(body.compile(environment));
 		code.emit_goto(l1);
+		code.detabify();
+
 		code.emit_label(l2);
 
 		return code;

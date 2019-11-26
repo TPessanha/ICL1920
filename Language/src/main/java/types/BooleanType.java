@@ -1,6 +1,6 @@
 package types;
 
-public class BooleanType implements IType {
+public class BooleanType extends AnyType {
 	public final static BooleanType value = new BooleanType();
 
 	@Override
@@ -14,13 +14,13 @@ public class BooleanType implements IType {
 	}
 
 	@Override
-	public String getJVMClass() {
+	public String getJVMName() {
 		return "Z";
 	}
 
 	@Override
 	public String getClassName() {
-		return "Z";
+		return "Boolean";
 	}
 
 	@Override

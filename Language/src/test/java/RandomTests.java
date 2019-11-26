@@ -8,10 +8,9 @@ public class RandomTests {
 //		boolean x2 = false;
 //		boolean t = x && x2;
 
-		boolean x = getRandomBoolean() && getRandomBoolean();
+		boolean x = false;
 
-
-		System.out.println(x);
+		x= !x;
 
 
 //        Environment<Value> scope = new Environment();
