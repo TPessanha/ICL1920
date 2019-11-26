@@ -41,7 +41,7 @@ public class ASTIdentifier extends ASTExpression {
 			curr=parent;
 			parent= (CompilerEnvironment) parent.getParent();
 		}
-		code.emit_getField(curr.getFrame().getClassName() + "/" + details.getName(), details.getType().getJVMName());
+		code.emit_getField(curr.getFrame().getClassName() + "/" + details.getName(), details.getType().getJVMNType());
 		code.emit_blank();
 		return code;
 	}

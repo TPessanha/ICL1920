@@ -22,8 +22,8 @@ public class ReferenceType<type extends IType> extends AnyType {
 	}
 
 	@Override
-	public String getJVMName() {
-		return AnyType.value.getJVMName();
+	public String getJVMNType() {
+		return AnyType.value.getJVMNType();
 	}
 
 	@Override

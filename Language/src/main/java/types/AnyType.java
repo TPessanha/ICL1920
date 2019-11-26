@@ -14,7 +14,7 @@ public class AnyType implements IType {
 	}
 
 	@Override
-	public String getJVMName() {
+	public String getJVMNType() {
 		return "L" + getJavaClass() + ";";
 	}
 

@@ -85,7 +85,7 @@ public class ASTLet extends ASTExpression {
 
 			code.emit_aload(SL);
 			code.appendCodeBlock(binding.getExpression().compile(newEnv));
-			code.emit_putField(className + "/x_" + i, details.getType().getJVMName());
+			code.emit_putField(className + "/x_" + i, details.getType().getJVMNType());
 
 			code.emit_blank();
 		}

@@ -14,7 +14,7 @@ public class BooleanType extends AnyType {
 	}
 
 	@Override
-	public String getJVMName() {
+	public String getJVMNType() {
 		return "Z";
 	}
 

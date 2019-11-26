@@ -58,7 +58,7 @@ public class ClassFile {
 		if (this instanceof StackFrame)
 			code.appendCodeLine(".field public sl " + superName);
 		for (IdentifierDetails details : fields)
-			code.appendCodeLine(".field public " + details.getName() + " " + details.getType().getJVMName());
+			code.appendCodeLine(".field public " + details.getName() + " " + details.getType().getJVMNType());
 		code.appendCodeLine("");
 	}
 
