@@ -1,6 +1,6 @@
 package types;
 
-public class BooleanType extends AnyType {
+public class BooleanType extends AnyType implements PrimitiveType {
 	public final static BooleanType value = new BooleanType();
 
 	@Override

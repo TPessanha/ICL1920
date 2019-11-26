@@ -8,10 +8,7 @@ import nodes.ASTAsType;
 import nodes.ASTExpression;
 import nodes.ASTNode;
 import state.Environment;
-import types.AnyType;
-import types.BooleanType;
-import types.IType;
-import types.NumberType;
+import types.*;
 import values.IValue;
 
 public class ASTTernary extends ASTExpression {
@@ -41,8 +38,9 @@ public class ASTTernary extends ASTExpression {
 
 		code.tabify();
 		code.appendCodeBlock(positiveExpression.compile(environment));
-		if (!sameTypeCheck)
-			code.emit_valueOf(positiveExpression.getType());
+		IType t1 = positiveExpression.getType();
+		if (!sameTypeCheck && t1 instanceof PrimitiveType)
+			code.emit_valueOf(t1);
 		code.emit_goto(l2);
 		code.detabify();
 
@@ -50,8 +48,9 @@ public class ASTTernary extends ASTExpression {
 
 		code.tabify();
 		code.appendCodeBlock(negativeExpression.compile(environment));
-		if (!sameTypeCheck)
-			code.emit_valueOf(negativeExpression.getType());
+		IType t2 = negativeExpression.getType();
+		if (!sameTypeCheck && t2 instanceof PrimitiveType)
+			code.emit_valueOf(t2);
 		code.detabify();
 
 		code.emit_label(l2);
