@@ -27,4 +27,15 @@ public class AnyType implements IType {
 	public String getJavaClass() {
 		return "java/lang/Object";
 	}
+
+	@Override
+	public String toString() {
+		return "any";
+	}
+
+	@Override
+	public boolean equals(IType anotherType)
+	{
+		return getName().equals(anotherType.getName());
+	}
 }

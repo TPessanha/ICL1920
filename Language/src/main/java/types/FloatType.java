@@ -37,4 +37,9 @@ public class FloatType extends NumberType {
 	public String getJavaClass() {
 		return "java/lang/Float";
 	}
+
+	@Override
+	public String toString() {
+		return "float";
+	}
 }

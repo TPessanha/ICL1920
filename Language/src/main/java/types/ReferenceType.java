@@ -31,4 +31,8 @@ public class ReferenceType<type extends IType> extends AnyType {
 		return getName();
 	}
 
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

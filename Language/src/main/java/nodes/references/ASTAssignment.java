@@ -3,6 +3,7 @@ package nodes.references;
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import exceptions.IllegalOperatorException;
+import exceptions.IncompatibleTypeException;
 import nodes.ASTBinaryNode;
 import nodes.ASTNode;
 import nodes.ASTOperation;
@@ -34,7 +35,8 @@ public class ASTAssignment extends ASTBinaryNode implements ASTOperation {
 		IType t1 = lNode.getType();
 		IType t2 = rNode.getType();
 
-		if (this.getType() instanceof UndefinedType || !((ReferenceType) t1).getReferenceType().getName().equals(t2.getName()))
+		if (this.getType() instanceof UndefinedType || !((ReferenceType) t1).getReferenceType().getName()
+			.equals(t2.getName()))
 			throw new IllegalOperatorException(getOperator(), t1.getName(), t2.getName());
 
 		CodeBlock code = lNode.compile(environment);
@@ -46,13 +48,16 @@ public class ASTAssignment extends ASTBinaryNode implements ASTOperation {
 		return code;
 	}
 
-
 	@Override
 	public IType typecheck(Environment<IType> environment) throws Exception {
 		IType refType = lNode.typecheck(environment);
+		IType expressionType = rNode.typecheck(environment);
 
 		if (!(refType instanceof ReferenceType))
-			return UndefinedType.value;
+			throw new IncompatibleTypeException(ReferenceType.value, refType.getType());
+
+		if (!((ReferenceType) refType).getReferenceType().equals(expressionType))
+			throw new IncompatibleTypeException(((ReferenceType) refType).getReferenceType(), expressionType);
 
 		return setType(new ReferenceType<>(rNode.typecheck(environment)));
 	}

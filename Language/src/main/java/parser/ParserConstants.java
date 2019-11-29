@@ -13,7 +13,7 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int DOT = 7;
   /** RegularExpression Id. */
-  int COMA = 8;
+  int COMMA = 8;
   /** RegularExpression Id. */
   int ADD = 9;
   /** RegularExpression Id. */
@@ -55,7 +55,7 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int SEMICOLON = 28;
   /** RegularExpression Id. */
-  int SCSC = 29;
+  int DOUBLE_SEMICOLON = 29;
   /** RegularExpression Id. */
   int COLON = 30;
   /** RegularExpression Id. */
@@ -77,39 +77,49 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int FALSE = 39;
   /** RegularExpression Id. */
-  int INT = 40;
+  int NEW = 40;
   /** RegularExpression Id. */
-  int FLOAT = 41;
+  int AS = 41;
   /** RegularExpression Id. */
-  int NEW = 42;
+  int IF = 42;
   /** RegularExpression Id. */
-  int AS = 43;
+  int THEN = 43;
   /** RegularExpression Id. */
-  int IF = 44;
+  int ELSE = 44;
   /** RegularExpression Id. */
-  int THEN = 45;
+  int WHILE = 45;
   /** RegularExpression Id. */
-  int ELSE = 46;
+  int DO = 46;
   /** RegularExpression Id. */
-  int WHILE = 47;
+  int FUN = 47;
   /** RegularExpression Id. */
-  int DO = 48;
+  int INSTANCEOF = 48;
   /** RegularExpression Id. */
-  int INSTANCEOF = 49;
+  int PRINTLN = 49;
   /** RegularExpression Id. */
-  int PRINTLN = 50;
+  int PRINT = 50;
   /** RegularExpression Id. */
-  int PRINT = 51;
+  int INT = 51;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 52;
+  int FLOAT = 52;
   /** RegularExpression Id. */
-  int FLOAT_LITERAL = 53;
+  int BOOLEAN = 53;
   /** RegularExpression Id. */
-  int IDENTIFIER = 54;
+  int ANY = 54;
   /** RegularExpression Id. */
-  int LETTER = 55;
+  int VOID = 55;
   /** RegularExpression Id. */
-  int DIGIT = 56;
+  int REFERENCE = 56;
+  /** RegularExpression Id. */
+  int INTEGER_LITERAL = 57;
+  /** RegularExpression Id. */
+  int FLOAT_LITERAL = 58;
+  /** RegularExpression Id. */
+  int IDENTIFIER = 59;
+  /** RegularExpression Id. */
+  int LETTER = 60;
+  /** RegularExpression Id. */
+  int DIGIT = 61;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -156,8 +166,6 @@ public interface ParserConstants {
     "\"in\"",
     "\"true\"",
     "\"false\"",
-    "\"int\"",
-    "\"float\"",
     "\"new\"",
     "\"as\"",
     "\"if\"",
@@ -165,9 +173,16 @@ public interface ParserConstants {
     "\"else\"",
     "\"while\"",
     "\"do\"",
+    "\"fun\"",
     "\"instanceof\"",
     "\"println\"",
     "\"print\"",
+    "\"int\"",
+    "\"float\"",
+    "\"boolean\"",
+    "\"any\"",
+    "\"void\"",
+    "\"ref\"",
     "<INTEGER_LITERAL>",
     "<FLOAT_LITERAL>",
     "<IDENTIFIER>",

@@ -5,11 +5,31 @@ import state.Environment;
 import types.ClosureType;
 import types.IType;
 
+import java.util.List;
+
 public class ClosureValue implements IValue<Closure> {
 	private Closure value;
 
-	public ClosureValue(String id, Environment environment, ASTNode body) {
-		value = new Closure(id,environment,body);
+	public ClosureValue(List<String> parameters, Environment environment, ASTNode body) {
+		value = new Closure(parameters, environment, body);
+	}
+
+	public ClosureValue(Closure value) {
+		this.value = value;
+	}
+
+	public List<String> getParameters() {
+		return value.parameters;
+	}
+
+	public ASTNode getBody()
+	{
+		return value.body;
+	}
+
+	public Environment getEnvironment()
+	{
+		return value.environment;
 	}
 
 	@Override

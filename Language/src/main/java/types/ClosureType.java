@@ -1,6 +1,6 @@
 package types;
 
-public class ClosureType implements IType {
+public class ClosureType extends AnyType {
 	public final static ClosureType value = new ClosureType();
 
 	@Override

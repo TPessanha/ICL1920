@@ -23,13 +23,14 @@ public class MainInterpreter {
 			try {
 				Node exp = parser.Start();
 				IType resultType = exp.typecheck(new Environment<>(false));
-				System.out.println("Expected type: " + resultType.getName());
+				if (resultType != null)
+					System.out.println("Expected type: " + resultType.getName());
 
 				IValue<?> out = exp.eval(new Environment<>(false));
-				if(out.getType() instanceof VoidType)
-					System.out.println("done");
+				if (out.getType() instanceof VoidType)
+					System.out.println("(void)");
 				else
-					System.out.println(out);
+					System.out.println((Object) out);
 			} catch (ParseException e) {
 				System.out.println("Syntax Error!");
 				System.out.println(e.getMessage());

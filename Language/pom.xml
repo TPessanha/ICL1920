@@ -110,6 +110,7 @@
 						</goals>
 						<configuration>
 							<defaultGrammarDirectoryJavaCC>src/main/Grammar</defaultGrammarDirectoryJavaCC>
+							<outputDirectory>src/main/Grammar</outputDirectory>
 						</configuration>
 					</execution>
                 </executions>

@@ -10,4 +10,6 @@ public interface IType {
 	String getClassName();
 
 	String getJavaClass();
+
+	boolean equals(IType anotherType);
 }

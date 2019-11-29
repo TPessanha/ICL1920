@@ -2,16 +2,16 @@ package exceptions;
 
 import types.IType;
 
-public class IllegalCastException extends Exception {
+public class IllegalCastException extends TypeMismatchException {
 	public IllegalCastException() {
 		super("Can't cast from type 1 to type 2");
 	}
 
-	public IllegalCastException(String type1, String type2) {
-		super("Can 't cast from " + type1 + " to " + type2);
+	public IllegalCastException(String fromType, String toType) {
+		super("Can 't cast from " + fromType + " to " + toType);
 	}
 
-	public IllegalCastException(IType type1, IType type2) {
-		this(type1.getName(),type2.getName());
+	public IllegalCastException(IType fromType, IType toType) {
+		this(fromType.getName(), toType.getName());
 	}
 }

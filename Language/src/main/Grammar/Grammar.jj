@@ -3,6 +3,7 @@ options
 {
     DEBUG_PARSER=false;
     DEBUG_TOKEN_MANAGER=false;
+    LOOKAHEAD = 1;
 }
 
 PARSER_BEGIN(Parser)
@@ -15,6 +16,7 @@ import nodes.arithmetic.*;
 import nodes.relation.*;
 import nodes.references.*;
 import nodes.logic.*;
+import nodes.functions.*;
 import nodes.conditional.*;
 import state.*;
 import types.*;
@@ -47,7 +49,7 @@ SKIP :
 TOKEN :
 {
   < DOT :  "." > |
-  < COMA : "," > |
+  < COMMA : "," > |
   < ADD : "+" > |
   < SUB : "-" > |
   < MULT : "*" > |
@@ -68,7 +70,7 @@ TOKEN :
   < LE_EQUALS : "<=" > |
   < ARROW : "->" > |
   < SEMICOLON: ";" > |
-  < SCSC: ";;" > |
+  < DOUBLE_SEMICOLON: ";;" > |
   < COLON: ":" > |
   < LPAR : "(" > |
   < RPAR : ")" > |
@@ -86,8 +88,6 @@ TOKEN : {
 	< IN: "in" > |
 	< TRUE: "true" > |
    	< FALSE: "false" > |
-   	< INT: "int" > |
-   	< FLOAT: "float" > |
    	< NEW: "new" > |
    	< AS: "as" > |
    	< IF: "if" > |
@@ -95,9 +95,20 @@ TOKEN : {
    	< ELSE: "else" > |
    	< WHILE: "while" > |
 	< DO: "do" > |
+	< FUN: "fun" > |
    	< INSTANCEOF: "instanceof" > |
    	< PRINTLN: "println" > |
    	< PRINT: "print" >
+}
+
+//Types
+TOKEN : {
+   	< INT: "int" > |
+   	< FLOAT: "float" > |
+   	< BOOLEAN: "boolean" > |
+   	< ANY: "any" > |
+   	< VOID: "void" > |
+   	< REFERENCE: "ref" >
 }
 
 TOKEN : {
@@ -117,7 +128,7 @@ ASTNode Start():
 //   (node = Statment() ((<STAT_ENDS> | <EOF>) Statment())* (<EOF>)?
 //   {return node;}
 //   )?
-    node = Sequence() <SCSC>
+    node = Sequence() <DOUBLE_SEMICOLON>
     {return node;}
 
 }
@@ -127,7 +138,7 @@ ASTNode Sequence() :
 	ASTNode node, node2;
 }
 {
-	node = Statment() ( <SEMICOLON> node2 = Sequence()
+	node = Statment() ( <SEMICOLON> node2 = Statment()
     	{
         	node = new ASTSequence(node,node2);
     	}
@@ -173,7 +184,7 @@ ASTNode Disjunction() :
     ASTNode node,node2;
 }
 {
-    node = Conjunction() ((op = <DISJ> | op = <EAGER_DISJ>) node2 = Conjunction()
+    node = Conjunction() (LOOKAHEAD(1)(op = <DISJ> | op = <EAGER_DISJ>) node2 = Conjunction()
     	{
 		 	switch(op.kind)
          	{
@@ -195,7 +206,7 @@ ASTNode Conjunction() :
     ASTNode node,node2;
 }
 {
-    node = Equality() ((op = <CONJ> | op = <EAGER_CONJ>) node2 = Equality()
+    node = Equality() (LOOKAHEAD(1)(op = <CONJ> | op = <EAGER_CONJ>) node2 = Equality()
     	{
 		 	switch(op.kind)
          	{
@@ -217,7 +228,7 @@ ASTNode Equality() :
     ASTNode node,node2;
 }
 {
-    node = Comparison() (( op=<EQEQ> | op=<EXCL_EQUALS> )  node2=Comparison()
+    node = Comparison() (LOOKAHEAD(1)( op=<EQEQ> | op=<EXCL_EQUALS> )  node2=Comparison()
     	{
 			switch(op.kind)
    			{
@@ -239,7 +250,7 @@ ASTNode Comparison() :
     ASTNode node,node2;
 }
 {
-    node = AddSubExpression() (( op=<GREATER> | op=<LESS> | op=<GR_EQUALS> | op=<LE_EQUALS> )  node2=AddSubExpression()
+    node = AddSubExpression() (LOOKAHEAD(1) ( op=<GREATER> | op=<LESS> | op=<GR_EQUALS> | op=<LE_EQUALS> )  node2=AddSubExpression()
     	{
 			switch(op.kind)
    			{
@@ -267,12 +278,34 @@ ASTNode AddSubExpression() :
     ASTNode node, node2;
 }
 {
-    node = Term() (( op=<ADD> | op=<SUB> )  node2=Term()
+    node = MultDivExpression()
+    (
+    	LOOKAHEAD(1)
+    ( op=<ADD> | op=<SUB> )  node2=MultDivExpression()
     	{
 			if (op.kind == ADD)
-        		node = new ASTAddition(node,node2);
-  			else
-  				node = new ASTSubtraction(node,node2);
+				node = new ASTAddition(node,node2);
+			else
+				node = new ASTSubtraction(node,node2);
+		}
+    )*
+    { return node; }
+}
+
+ASTNode MultDivExpression() :
+{
+    Token op;
+    ASTNode node, node2;
+}
+{
+	node = Term()
+    (
+    	LOOKAHEAD(1)( op=<MULT> | op=<DIV> ) node2 = Term()
+		{
+			if (op.kind == MULT)
+    	    	node = new ASTMultiplication(node,node2);
+			else
+				node = new ASTDivision(node,node2);
 		}
     )*
     { return node; }
@@ -284,30 +317,14 @@ ASTNode Term() :
 	Token op;
 }
 {
-	node = AsType()
+	node = AsExpression()
 	(
+		LOOKAHEAD(1)
 		node = Assignment(node)
 		|
-		node = MultDivExpression(node)
-	)
+		node = ApplyFunction(node)
+	)?
 	{ return node; }
-}
-
-ASTNode MultDivExpression(ASTNode node) :
-{
-    Token op;
-    ASTNode node2;
-}
-{
-    (( op=<MULT> | op=<DIV> ) node2 = Term()
-		{
-			if (op.kind == MULT)
-    	    	node = new ASTMultiplication(node,node2);
-			else
-				node = new ASTDivision(node,node2);
-		}
-    )*
-    { return node; }
 }
 
 IType NumberType() :
@@ -316,21 +333,20 @@ IType NumberType() :
 }
 {
 	(
-		<FLOAT> { t = FloatType.value; }
-		|
+		<FLOAT> { t = FloatType.value; } |
 		<INT> {t = IntType.value; }
 	)
     { return t; }
 }
 
 
-ASTNode AsType() :
+ASTNode AsExpression() :
 {
 	IType type = null;
     ASTNode node;
 }
 {
-	node = Unary() (<AS> type = NumberType() )?
+	node = PrefixUnaryExpression() (LOOKAHEAD(1) <AS> type = NumberType() )?
 	{
 		if (type==null)
     	   	return node;
@@ -339,7 +355,7 @@ ASTNode AsType() :
 	}
 }
 
-Token UnaryOperator() :
+Token PrefixUnaryOperator() :
 {
     Token t;
 }
@@ -348,30 +364,56 @@ Token UnaryOperator() :
     {return t;}
 }
 
-ASTNode Unary():
+ASTNode PrefixUnaryExpression():
 {
-    Token op = null;
+    Token op;
+    List<Token> ops = new ArrayList<>();
     ASTNode node;
 }
 {
-    (op=UnaryOperator())? node = Fact()
+    (op = PrefixUnaryOperator() { ops.add(op); } )* node = Fact()
     {
-    if (op==null)
-        return node;
-    switch(op.kind)
-    {
-        case SUB:
-            node = new ASTNegate(node);
-            break;
-        case TILDE:
-            node = new ASTNot(node);
-            break;
-    }
-    return node;
-}
+    	for(Token t: ops)
+    	{
+    		switch(t.kind)
+            {
+            	case SUB:
+            		node = new ASTNegate(node);
+            		break;
+            	case TILDE:
+            		node = new ASTNot(node);
+            		break;
+//                case EXCL:
+//                	node = new ASTDereference(node);
+//                	break;
+            }
+    	}
+    	return node;
+	}
 }
 
+ASTNode ApplyFunction(ASTNode function) :
+{
+	List<ASTNode> arguments;
+}
+{
+	<LPAR> arguments = FunctionArguments() <RPAR>
+	{ return new ASTApplyFunction(function,arguments); }
+}
 
+List<ASTNode> FunctionArguments() :
+{
+	List<ASTNode> arguments = new ArrayList<>();
+	ASTNode argument;
+}
+{
+	(
+		argument = Sequence() { arguments.add(argument); }
+		(< COMMA > argument = Sequence() { arguments.add(argument); })*
+	)?
+
+	{ return arguments; }
+}
 
 ASTNode Assignment(ASTNode ref) :
 {
@@ -402,11 +444,39 @@ ASTNode Fact() :
         |
         node = Dereference()
         |
+        node = Function()
+        |
         node = Println()
     )
     {
         return node;
     }
+}
+
+List<String> FunctionParameters() :
+{
+	List<String> parameters = new ArrayList<>();
+	Token identifier;
+}
+{
+	identifier = <IDENTIFIER> { parameters.add(identifier.image); }
+	(<COMMA> identifier = <IDENTIFIER> { parameters.add(identifier.image); })*
+	{ return parameters; }
+}
+
+ASTNode Function() :
+{
+    List<String> parameters;
+    ASTNode body;
+}
+{
+
+	<FUN>
+		parameters = FunctionParameters()
+	<ARROW>
+		body = Sequence()
+	<END>
+	{ return new ASTFunction(parameters,body); }
 }
 
 ASTNode IfThenElse() :
@@ -438,7 +508,7 @@ ASTNode NewReference() :
 	ASTNode exp;
 }
 {
-	<NEW> exp = AsType()
+	<NEW> exp = Expression()
 	{return new ASTReference(exp);}
 }
 
@@ -449,6 +519,36 @@ ASTNode Dereference() :
 {
 	<EXCL> exp = Fact()
 	{return new ASTDereference(exp);}
+}
+
+IType PrimitiveType() :
+{
+	IType t;
+}
+{
+	(
+		t = NumberType()
+		|
+		< BOOLEAN > { t = BooleanType.value; }
+
+	)
+    { return t; }
+}
+
+IType Type() :
+{
+	IType t;
+}
+{
+	(
+		t = PrimitiveType()
+		|
+		< ANY > { t = AnyType.value; }
+		|
+		< VOID > { t = VoidType.value; }
+
+	)
+	{ return t; }
 }
 
 ASTNode Identifier() :
@@ -480,7 +580,7 @@ List<Binding> BindingsList() :
     List<Binding> list = new ArrayList<>();
 }
 {
-    d=Binding() {list.add(d);} ((<COMA>)? d= Binding() {list.add(d);})*
+    d=Binding() {list.add(d);} ((<COMMA>)? d= Binding() {list.add(d);})*
     {return list;}
 
 }

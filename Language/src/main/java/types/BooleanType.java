@@ -27,4 +27,9 @@ public class BooleanType extends AnyType implements PrimitiveType {
 	public String getJavaClass() {
 		return "java/lang/Boolean";
 	}
+
+	@Override
+	public String toString() {
+		return "boolean";
+	}
 }

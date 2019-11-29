@@ -36,4 +36,9 @@ public class IntType extends NumberType{
 	public String getConversionLiteral(){
 		return "i";
 	}
+
+	@Override
+	public String toString() {
+		return "int";
+	}
 }

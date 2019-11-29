@@ -64,18 +64,18 @@ public class Environment<T> {
 		declarations.put(identifier, value);
 	}
 
-	public T assign(String identifier, T value) throws UndeclaredException {
-		Environment<T> scope = this;
-		do {
-			if (scope.declarations.containsKey(identifier)) {
-				scope.declarations.put(identifier, value);
-				return value;
-			}
-			scope = scope.parent;
-		} while (scope != null);
-
-		throw new UndeclaredException("Variable '" + identifier + "' is not declared");
-	}
+//	public T assign(String identifier, T value) throws UndeclaredException {
+//		Environment<T> scope = this;
+//		do {
+//			if (scope.declarations.containsKey(identifier)) {
+//				scope.declarations.put(identifier, value);
+//				return value;
+//			}
+//			scope = scope.parent;
+//		} while (scope != null);
+//
+//		throw new UndeclaredException("Variable '" + identifier + "' is not declared");
+//	}
 
 	public Environment<T> getParent() {
 		return parent;

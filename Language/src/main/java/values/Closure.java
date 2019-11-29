@@ -3,19 +3,21 @@ package values;
 import nodes.ASTNode;
 import state.Environment;
 
+import java.util.List;
+
 public class Closure {
-	String id;
+	List<String> parameters;
 	Environment environment;
 	ASTNode body;
 
-	public Closure(String id, Environment environment, ASTNode body) {
-		this.id = id;
+	public Closure(List<String> parameters, Environment environment, ASTNode body) {
+		this.parameters = parameters;
 		this.environment = environment;
 		this.body = body;
 	}
 
-	public String getId() {
-		return id;
+	public List<String> getParameters() {
+		return parameters;
 	}
 
 	public Environment getEnvironment() {

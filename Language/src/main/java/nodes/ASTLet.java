@@ -33,27 +33,30 @@ public class ASTLet extends ASTExpression {
 		for (Binding d : this.bindings)
 			localScope.associate(d.getIdentifier(), d.getExpression().eval(localScope));
 
-		return body.eval(localScope);
+		IValue result = body.eval(localScope);
+		localScope.endScope();
+
+		return result;
 	}
 
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
-		CompilerEnvironment newEnv = environment.beginScope();
+		CompilerEnvironment localScope = environment.beginScope();
 
 		for (int i = 0; i < this.bindings.size(); i++) {
 			Binding d = this.bindings.get(i);
 
 			IdentifierDetails details =
-				new IdentifierDetails(((ASTNode)d.getExpression()).getType(), newEnv.getLevel(), "x_" + i);
-			newEnv.associate(this.bindings.get(i).getIdentifier(), details);
-			newEnv.getFrame().addField(details);
+				new IdentifierDetails(((ASTNode) d.getExpression()).getType(), localScope.getLevel(), "x_" + i);
+			localScope.associate(this.bindings.get(i).getIdentifier(), details);
+			localScope.getFrame().addField(details);
 		}
 
-		Compiler.addClassFile(newEnv.getFrame());
+		Compiler.addClassFile(localScope.getFrame());
 
 		CodeBlock code = new CodeBlock();
 		int SL = environment.getSL();
-		StackFrame frame = newEnv.getFrame();
+		StackFrame frame = localScope.getFrame();
 		String className = frame.getClassName();
 		String parentName = environment.getFrame().getClassName();
 
@@ -76,7 +79,7 @@ public class ASTLet extends ASTExpression {
 		//store vars
 		code.tabify();
 
-		List<IdentifierDetails> vars = new ArrayList<>(newEnv.getValues());
+		List<IdentifierDetails> vars = new ArrayList<>(localScope.getValues());
 		for (int i = 0; i < vars.size(); i++) {
 			Binding binding = this.bindings.get(i);
 			IdentifierDetails details = vars.get(i);
@@ -84,7 +87,7 @@ public class ASTLet extends ASTExpression {
 			code.emit_comment("Value of " + binding.getIdentifier());
 
 			code.emit_aload(SL);
-			code.appendCodeBlock(binding.getExpression().compile(newEnv));
+			code.appendCodeBlock(binding.getExpression().compile(localScope));
 			code.emit_putField(className + "/x_" + i, details.getType().getJVMType());
 
 			code.emit_blank();
@@ -97,7 +100,7 @@ public class ASTLet extends ASTExpression {
 		code.emit_comment("Body code START --------------------------------");
 		code.emit_blank();
 		code.tabify();
-		code.appendCodeBlock(body.compile(newEnv));
+		code.appendCodeBlock(body.compile(localScope));
 		code.detabify();
 		code.emit_blank();
 		code.emit_comment("Body code END --------------------------------");
@@ -112,6 +115,7 @@ public class ASTLet extends ASTExpression {
 
 		code.emit_comment("LET CODE END --------------------------------");
 
+		localScope.endScope();
 		return code;
 	}
 
@@ -120,8 +124,11 @@ public class ASTLet extends ASTExpression {
 		Environment<IType> localScope = environment.beginScope();
 
 		for (Binding d : this.bindings)
-			localScope.associate(d.getIdentifier(),d.getExpression().typecheck(localScope));
+			localScope.associate(d.getIdentifier(), d.getExpression().typecheck(localScope));
 
-		return setType(body.typecheck(localScope));
+		IType type = setType(body.typecheck(localScope));
+
+		localScope.endScope();
+		return type;
 	}
 }

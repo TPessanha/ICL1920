@@ -1,3 +1,10 @@
+import types.BooleanType;
+import types.FunctionType;
+import types.IType;
+import types.IntType;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class RandomTests {
@@ -8,9 +15,31 @@ public class RandomTests {
 //		boolean x2 = false;
 //		boolean t = x && x2;
 
-		boolean x = false;
+		List<IType> ll = new ArrayList<>();
+		List<IType> l2 = new ArrayList<>();
 
-		x= !x;
+		ll.add(BooleanType.value);
+		ll.add(IntType.value);
+		ll.add(BooleanType.value);
+
+		l2.add(BooleanType.value);
+		l2.add(IntType.value);
+		l2.add(IntType.value);
+
+		FunctionType fType = new FunctionType(BooleanType.value,ll);
+		FunctionType fType2 = new FunctionType(BooleanType.value,l2);
+
+		List<IType> ll1 = new ArrayList<>();
+		List<IType> l22 = new ArrayList<>();
+
+		ll1.add(fType);
+
+
+		FunctionType lfType = new FunctionType(BooleanType.value, ll1);
+		l22.add(lfType);
+		FunctionType lfType2 = new FunctionType(lfType, l22);
+
+		System.out.printf(lfType2.toString());
 
 
 //        Environment<Value> scope = new Environment();
