@@ -565,18 +565,36 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod2">Sequence</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod3">Statment</A> ( &lt;SEMICOLON&gt; <A HREF="#prod3">Statment</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod3">Statement</A> ( &lt;SEMICOLON&gt; <A HREF="#prod3">Statement</A> )*</TD>
 </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+    <PRE>
+/*
+ * Statement syntax follows.
+ */    </PRE>
+  </TD>
+ </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod3">Statment</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod3">Statement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod4">Expression</A> | <A HREF="#prod5">While</A> )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod5">While</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;WHILE&gt; <A HREF="#prod2">Sequence</A> &lt;DO&gt; <A HREF="#prod2">Sequence</A> &lt;END&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;WHILE&gt; <A HREF="#prod4">Expression</A> &lt;DO&gt; <A HREF="#prod2">Sequence</A> &lt;END&gt;</TD>
 </TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+    <PRE>
+/*
+ * Expression syntax follows.
+ */    </PRE>
+  </TD>
+ </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod4">Expression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
@@ -655,7 +673,7 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod19">Fact</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod21">Constant</A> | <A HREF="#prod22">Let</A> | <A HREF="#prod23">IfThenElse</A> | <A HREF="#prod24">parenthesizedSequence</A> | <A HREF="#prod25">Identifier</A> | <A HREF="#prod26">NewReference</A> | <A HREF="#prod27">Dereference</A> | <A HREF="#prod28">Function</A> | <A HREF="#prod29">Println</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod21">Literal</A> | <A HREF="#prod22">Let</A> | <A HREF="#prod23">TernaryExpression</A> | <A HREF="#prod24">parenthesizedSequence</A> | <A HREF="#prod25">Identifier</A> | <A HREF="#prod26">NewReference</A> | <A HREF="#prod27">Dereference</A> | <A HREF="#prod28">Function</A> | <A HREF="#prod29">Println</A> )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod30">FunctionParameters</A></TD>
@@ -668,12 +686,12 @@
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;FUN&gt; <A HREF="#prod30">FunctionParameters</A> &lt;ARROW&gt; <A HREF="#prod2">Sequence</A> &lt;END&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod23">IfThenElse</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod23">TernaryExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;IF&gt; <A HREF="#prod2">Sequence</A> &lt;THEN&gt; <A HREF="#prod2">Sequence</A> &lt;ELSE&gt; <A HREF="#prod2">Sequence</A> &lt;END&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod21">Constant</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod21">Literal</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;INTEGER_LITERAL&gt;</TD>
 </TR>
@@ -730,7 +748,7 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod29">Println</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;PRINTLN&gt; | &lt;PRINT&gt; ) &lt;LPAR&gt; <A HREF="#prod2">Sequence</A> &lt;RPAR&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;PRINTLN&gt; | &lt;PRINT&gt; ) &lt;LPAR&gt; <A HREF="#prod4">Expression</A> &lt;RPAR&gt;</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod24">parenthesizedSequence</A></TD>

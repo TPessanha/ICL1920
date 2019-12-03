@@ -138,7 +138,7 @@ ASTNode Sequence() :
 	ASTNode node, node2;
 }
 {
-	node = Statment() ( <SEMICOLON> node2 = Statment()
+	node = Statement() ( <SEMICOLON> node2 = Statement()
     	{
         	node = new ASTSequence(node,node2);
     	}
@@ -146,7 +146,11 @@ ASTNode Sequence() :
     {return node;}
 }
 
-ASTNode Statment() :
+/*
+ * Statement syntax
+ */
+
+ASTNode Statement() :
 {
 	ASTNode node;
 }
@@ -164,9 +168,13 @@ ASTStatement While() :
 	ASTNode cond, body;
 }
 {
-	<WHILE> cond = Sequence() <DO> body = Sequence() <END>
+	<WHILE> cond = Expression() <DO> body = Sequence() <END>
 	{ return new ASTWhile(cond,body); }
 }
+
+/*
+ * Expression syntax
+ */
 
 ASTNode Expression() :
 {
@@ -430,11 +438,11 @@ ASTNode Fact() :
 }
 {
     (
-        node = Constant()
+        node = Literal()
         |
         node = Let()
         |
-        node = IfThenElse()
+        node = TernaryExpression()
         |
         node = parenthesizedSequence()
         |
@@ -479,28 +487,28 @@ ASTNode Function() :
 	{ return new ASTFunction(parameters,body); }
 }
 
-ASTNode IfThenElse() :
+ASTNode TernaryExpression() :
 {
 	ASTNode cond,pos,neg;
 }
 {
-	<IF> cond = Sequence() <THEN> pos = Sequence() <ELSE> neg = Sequence() <END>
+	<IF> cond = Expression() <THEN> pos = Sequence() <ELSE> neg = Sequence() <END>
 	{ return new ASTTernary(cond,pos,neg); }
 }
 
-ASTNode Constant() :
+ASTNode Literal() :
 {
-    Token primitive;
+    Token literal;
 }
 {
-   primitive = <INTEGER_LITERAL>
-   { return new ASTInteger(Integer.parseInt(primitive.image)); }
+   literal = <INTEGER_LITERAL>
+   { return new ASTInteger(Integer.parseInt(literal.image)); }
    |
-   primitive = <FLOAT_LITERAL>
-   { return new ASTFloat(Float.parseFloat(primitive.image)); }
+   literal = <FLOAT_LITERAL>
+   { return new ASTFloat(Float.parseFloat(literal.image)); }
    |
-   (primitive = <TRUE> | primitive = <FALSE> )
-   { return new ASTBoolean(Boolean.parseBoolean(primitive.image)); }
+   (literal = <TRUE> | literal = <FALSE> )
+   { return new ASTBoolean(Boolean.parseBoolean(literal.image)); }
 }
 
 ASTNode NewReference() :
@@ -604,7 +612,7 @@ ASTNode Println() :
     ASTNode exp;
 }
 {
-	( <PRINTLN> | <PRINT> ) <LPAR> exp = Sequence() <RPAR>
+	( <PRINTLN> | <PRINT> ) <LPAR> exp = Expression() <RPAR>
    { return new ASTPrintln(exp,out); }
 }
 

@@ -47,7 +47,7 @@ public class Parser implements ParserConstants {
 }
 
   final public ASTNode Sequence() throws ParseException {ASTNode node, node2;
-    node = Statment();
+    node = Statement();
     label_1:
     while (true) {
       switch (jj_ntk == -1 ? jj_ntk_f() : jj_ntk) {
@@ -59,14 +59,18 @@ public class Parser implements ParserConstants {
         break label_1;
       }
       jj_consume_token(SEMICOLON);
-      node2 = Statment();
+      node2 = Statement();
 node = new ASTSequence(node,node2);
     }
 {if ("" != null) return node;}
     throw new IllegalStateException ("Missing return statement in function");
 }
 
-  final public ASTNode Statment() throws ParseException {ASTNode node;
+/*
+ * Statement syntax follows.
+ */
+  final public
+ASTNode Statement() throws ParseException {ASTNode node;
     switch (jj_ntk == -1 ? jj_ntk_f() : jj_ntk) {
     case SUB:
     case EXCL:
@@ -101,7 +105,7 @@ node = new ASTSequence(node,node2);
 
   final public ASTStatement While() throws ParseException {ASTNode cond, body;
     jj_consume_token(WHILE);
-    cond = Sequence();
+    cond = Expression();
     jj_consume_token(DO);
     body = Sequence();
     jj_consume_token(END);
@@ -109,7 +113,11 @@ node = new ASTSequence(node,node2);
     throw new IllegalStateException ("Missing return statement in function");
 }
 
-  final public ASTNode Expression() throws ParseException {ASTNode node;
+/*
+ * Expression syntax follows.
+ */
+  final public
+ASTNode Expression() throws ParseException {ASTNode node;
     node = Disjunction();
 {if ("" != null) return node;}
     throw new IllegalStateException ("Missing return statement in function");
@@ -569,7 +577,7 @@ arguments.add(argument);
     case FALSE:
     case INTEGER_LITERAL:
     case FLOAT_LITERAL:{
-      node = Constant();
+      node = Literal();
       break;
       }
     case LET:{
@@ -577,7 +585,7 @@ arguments.add(argument);
       break;
       }
     case IF:{
-      node = IfThenElse();
+      node = TernaryExpression();
       break;
       }
     case LPAR:{
@@ -647,7 +655,7 @@ parameters.add(identifier.image);
     throw new IllegalStateException ("Missing return statement in function");
 }
 
-  final public ASTNode IfThenElse() throws ParseException {ASTNode cond,pos,neg;
+  final public ASTNode TernaryExpression() throws ParseException {ASTNode cond,pos,neg;
     jj_consume_token(IF);
     cond = Sequence();
     jj_consume_token(THEN);
@@ -659,27 +667,27 @@ parameters.add(identifier.image);
     throw new IllegalStateException ("Missing return statement in function");
 }
 
-  final public ASTNode Constant() throws ParseException {Token primitive;
+  final public ASTNode Literal() throws ParseException {Token literal;
     switch (jj_ntk == -1 ? jj_ntk_f() : jj_ntk) {
     case INTEGER_LITERAL:{
-      primitive = jj_consume_token(INTEGER_LITERAL);
-{if ("" != null) return new ASTInteger(Integer.parseInt(primitive.image));}
+      literal = jj_consume_token(INTEGER_LITERAL);
+{if ("" != null) return new ASTInteger(Integer.parseInt(literal.image));}
       break;
       }
     case FLOAT_LITERAL:{
-      primitive = jj_consume_token(FLOAT_LITERAL);
-{if ("" != null) return new ASTFloat(Float.parseFloat(primitive.image));}
+      literal = jj_consume_token(FLOAT_LITERAL);
+{if ("" != null) return new ASTFloat(Float.parseFloat(literal.image));}
       break;
       }
     case TRUE:
     case FALSE:{
       switch (jj_ntk == -1 ? jj_ntk_f() : jj_ntk) {
       case TRUE:{
-        primitive = jj_consume_token(TRUE);
+        literal = jj_consume_token(TRUE);
         break;
         }
       case FALSE:{
-        primitive = jj_consume_token(FALSE);
+        literal = jj_consume_token(FALSE);
         break;
         }
       default:
@@ -687,7 +695,7 @@ parameters.add(identifier.image);
         jj_consume_token(-1);
         throw new ParseException();
       }
-{if ("" != null) return new ASTBoolean(Boolean.parseBoolean(primitive.image));}
+{if ("" != null) return new ASTBoolean(Boolean.parseBoolean(literal.image));}
       break;
       }
     default:
@@ -835,7 +843,7 @@ list.add(d);
       throw new ParseException();
     }
     jj_consume_token(LPAR);
-    exp = Sequence();
+    exp = Expression();
     jj_consume_token(RPAR);
 {if ("" != null) return new ASTPrintln(exp,out);}
     throw new IllegalStateException ("Missing return statement in function");
