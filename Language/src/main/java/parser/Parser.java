@@ -67,7 +67,7 @@ node = new ASTSequence(node,node2);
 }
 
 /*
- * Statement syntax follows.
+ * Statement syntax
  */
   final public
 ASTNode Statement() throws ParseException {ASTNode node;
@@ -114,7 +114,7 @@ ASTNode Statement() throws ParseException {ASTNode node;
 }
 
 /*
- * Expression syntax follows.
+ * Expression syntax
  */
   final public
 ASTNode Expression() throws ParseException {ASTNode node;
@@ -657,7 +657,7 @@ parameters.add(identifier.image);
 
   final public ASTNode TernaryExpression() throws ParseException {ASTNode cond,pos,neg;
     jj_consume_token(IF);
-    cond = Sequence();
+    cond = Expression();
     jj_consume_token(THEN);
     pos = Sequence();
     jj_consume_token(ELSE);

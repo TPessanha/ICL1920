@@ -17,7 +17,6 @@ public class ASTDereference extends ASTExpression implements ASTOperation {
 	private final Node reference;
 
 	public ASTDereference(Node reference) {
-		super();
 		this.reference = reference;
 	}
 

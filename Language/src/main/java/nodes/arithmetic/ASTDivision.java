@@ -2,7 +2,7 @@ package nodes.arithmetic;
 
 import compiler.CodeBlock;
 import exceptions.DividedByZeroException;
-import exceptions.NullTypecheckException;
+import exceptions.UndeclaredTypeException;
 import nodes.ASTNode;
 import types.NumberType;
 import values.IValue;
@@ -16,7 +16,7 @@ public class ASTDivision extends ASTArithmetic {
 	}
 
 	@Override
-	public CodeBlock emitOperation() throws NullTypecheckException {
+	public CodeBlock emitOperation() throws UndeclaredTypeException {
 		CodeBlock code = new CodeBlock();
 		code.emit_div(((NumberType) getType()).getConversionLiteral());
 		code.emit_blank();

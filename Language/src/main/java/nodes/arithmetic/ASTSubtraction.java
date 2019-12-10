@@ -1,7 +1,7 @@
 package nodes.arithmetic;
 
 import compiler.CodeBlock;
-import exceptions.NullTypecheckException;
+import exceptions.UndeclaredTypeException;
 import nodes.ASTNode;
 import types.NumberType;
 import values.IValue;
@@ -15,7 +15,7 @@ public class ASTSubtraction extends ASTArithmetic {
 	}
 
 	@Override
-	public CodeBlock emitOperation() throws NullTypecheckException {
+	public CodeBlock emitOperation() throws UndeclaredTypeException {
 		CodeBlock code = new CodeBlock();
 		code.emit_sub(((NumberType) getType()).getConversionLiteral());
 		code.emit_blank();

@@ -3,7 +3,7 @@ package nodes.relation;
 import compiler.CodeBlock;
 import compiler.Compiler;
 import exceptions.IllegalOperatorException;
-import exceptions.NullTypecheckException;
+import exceptions.UndeclaredTypeException;
 import nodes.ASTAsType;
 import nodes.ASTBinaryOperation;
 import nodes.ASTNode;
@@ -42,7 +42,7 @@ public abstract class ASTRelation extends ASTBinaryOperation {
 	public abstract IValue doOperation(IValue v1, IValue v2) throws Exception;
 
 	@Override
-	public CodeBlock emitOperation() throws NullTypecheckException {
+	public CodeBlock emitOperation() throws UndeclaredTypeException {
 		CodeBlock code = new CodeBlock();
 		switch (lNode.getType().getName()) {
 			case "int":

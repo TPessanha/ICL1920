@@ -2,7 +2,7 @@ package nodes;
 
 import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
-import exceptions.NullTypecheckException;
+import exceptions.UndeclaredTypeException;
 import state.Environment;
 import values.IValue;
 
@@ -30,7 +30,7 @@ public abstract class ASTBinaryOperation extends ASTBinaryNode implements ASTOpe
 
 	protected abstract IValue doOperation(IValue v1, IValue v2) throws Exception;
 
-	public abstract CodeBlock emitOperation() throws NullTypecheckException;
+	public abstract CodeBlock emitOperation() throws UndeclaredTypeException;
 
 	public String getOperator() {
 		return operator;

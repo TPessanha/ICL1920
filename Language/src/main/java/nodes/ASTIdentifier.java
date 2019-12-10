@@ -4,6 +4,7 @@ import compiler.CodeBlock;
 import compiler.CompilerEnvironment;
 import compiler.IdentifierDetails;
 import exceptions.IllegalTypeException;
+import exceptions.RepeatedTypeInitException;
 import exceptions.UndeclaredException;
 import state.Environment;
 import types.IType;
@@ -47,7 +48,7 @@ public class ASTIdentifier extends ASTExpression {
 	}
 
 	@Override
-	public IType typecheck(Environment<IType> environment) throws UndeclaredException, IllegalTypeException {
+	public IType typecheck(Environment<IType> environment) throws UndeclaredException, IllegalTypeException, RepeatedTypeInitException {
 		return setType(environment.find(name));
 	}
 }

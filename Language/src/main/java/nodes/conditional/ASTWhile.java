@@ -10,6 +10,7 @@ import state.Environment;
 import types.BooleanType;
 import types.IType;
 import values.IValue;
+import values.VoidValue;
 
 public class ASTWhile extends ASTStatement {
 	ASTNode condition, body;
@@ -25,7 +26,7 @@ public class ASTWhile extends ASTStatement {
 			body.eval(environment);
 		}
 
-		return getValue();
+		return new VoidValue();
 	}
 
 	@Override

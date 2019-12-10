@@ -1,6 +1,6 @@
 package nodes.primitives;
 
-import exceptions.NullTypecheckException;
+import exceptions.UndeclaredTypeException;
 import nodes.ASTExpression;
 import state.Environment;
 import types.IType;
@@ -20,7 +20,7 @@ public abstract class ASTPrimitive<v extends IValue> extends ASTExpression {
 	}
 
 	@Override
-	public IType typecheck(Environment<IType> environment) throws NullTypecheckException {
+	public IType typecheck(Environment<IType> environment) throws UndeclaredTypeException {
 		return getType();
 	}
 }
