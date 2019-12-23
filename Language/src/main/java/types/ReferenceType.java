@@ -1,6 +1,7 @@
 package types;
 
 public class ReferenceType<type extends IType> extends AnyType {
+	public static final ReferenceType value = new ReferenceType(AnyType.value);
 	private type referenceTo;
 
 	public ReferenceType(type referenceTo) {
@@ -34,5 +35,10 @@ public class ReferenceType<type extends IType> extends AnyType {
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	public boolean equals(ReferenceType other)
+	{
+		return getName().equals(other.getName());
 	}
 }

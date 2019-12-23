@@ -38,11 +38,11 @@ public class ASTIdentifier extends ASTExpression {
 		CompilerEnvironment curr = environment;
 		CompilerEnvironment parent = (CompilerEnvironment) curr.getParent();
 		for (i = level; i > details.getLevel(); i--) {
-			code.emit_getField(curr.getFrame().getClassName() + "/sl", "L" + parent.getFrame().getClassName() + ";");
+			code.emit_getField(curr.getFrame().getClassName() + "/SL", "L" + parent.getFrame().getClassName() + ";");
 			curr=parent;
 			parent= (CompilerEnvironment) parent.getParent();
 		}
-		code.emit_getField(curr.getFrame().getClassName() + "/" + details.getName(), details.getType().getJVMType());
+		code.emit_getField(curr.getFrame().getClassName() + "/" + details.getName(), details.getType());
 		code.emit_blank();
 		return code;
 	}

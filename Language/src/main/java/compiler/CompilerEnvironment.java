@@ -44,6 +44,10 @@ public class CompilerEnvironment extends Environment<IdentifierDetails> {
 		return SL;
 	}
 
+	public void setSL(int SL) {
+		this.SL = SL;
+	}
+
 	public StackFrame getFrame() {
 		return frame;
 	}

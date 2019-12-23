@@ -42,4 +42,14 @@ public class FloatType extends NumberType {
 	public String toString() {
 		return "float";
 	}
+
+	@Override
+	public String returnValue() {
+		return "freturn";
+	}
+
+	@Override
+	public String loadValue() {
+		return "fload";
+	}
 }

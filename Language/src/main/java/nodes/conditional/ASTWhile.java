@@ -37,11 +37,11 @@ public class ASTWhile extends ASTStatement {
 		CodeBlock code = new CodeBlock();
 
 		code.emit_label(l1);
-		code.appendCodeBlock(condition.compile(environment));
+		code.append(condition.compile(environment));
 		code.emit_if_equal(l2);
 
 		code.tabify();
-		code.appendCodeBlock(body.compile(environment));
+		code.append(body.compile(environment));
 		code.emit_goto(l1);
 		code.detabify();
 

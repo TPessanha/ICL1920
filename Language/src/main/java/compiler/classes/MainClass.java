@@ -24,7 +24,7 @@ public class MainClass extends ClassFile {
 		writeHeader();
 		writeDefaultConstructor();
 		writeMain(localsSize, stackSize);
-		code.appendCodeBlock(body);
+		code.append(body);
 		writeMainFooter();
 	}
 
@@ -33,35 +33,35 @@ public class MainClass extends ClassFile {
 	}
 
 	private void writeMain(int localsSize, int stackSize) {
-		code.appendCodeLine(".method public static main([Ljava/lang/String;)V");
-		code.appendCodeLine("; set limits used by this method");
-		code.appendCodeLine(".limit locals " + localsSize);
-		code.appendCodeLine(".limit stack " + stackSize);
-		code.appendCodeLine("");
-		code.appendCodeLine("; setup local variables:");
-		code.appendCodeLine("");
-		code.appendCodeLine("; START =================================================");
-		code.appendCodeLine("");
-		code.appendCodeLine("; initialize frame pointer SL stored in local #SL to null");
-		code.appendCodeLine("aconst_null");
-		code.appendCodeLine("astore " + SL);
-		code.appendCodeLine("");
-		code.appendCodeLine("; initialize base Stack Frame");
-		code.appendCodeLine("new frame_0");
-		code.appendCodeLine("dup");
-		code.appendCodeLine("invokespecial frame_0/<init>()V");
-		code.appendCodeLine("dup");
-		code.appendCodeLine("aload " + SL);
-		code.appendCodeLine("putfield frame_0/sl Ljava/lang/Object;");
-		code.appendCodeLine("astore " + SL);
-		code.appendCodeLine("");
+		code.append(".method public static main([Ljava/lang/String;)V");
+		code.append("; set limits used by this method");
+		code.append(".limit locals " + localsSize);
+		code.append(".limit stack " + stackSize);
+		code.append("");
+		code.append("; setup local variables:");
+		code.append("");
+		code.append("; START =================================================");
+		code.append("");
+		code.append("; initialize frame pointer SL stored in local #SL to null");
+		code.append("aconst_null");
+		code.append("astore " + SL);
+		code.append("");
+		code.append("; initialize base Stack Frame");
+		code.append("new frame_0");
+		code.append("dup");
+		code.append("invokespecial frame_0/<init>()V");
+		code.append("dup");
+		code.append("aload " + SL);
+		code.append("putfield frame_0/SL Ljava/lang/Object;");
+		code.append("astore " + SL);
+		code.append("");
 	}
 
 	public void writeMainFooter() {
-		code.appendCodeLine("");
-		code.appendCodeLine("; END ===================================================");
-		code.appendCodeLine("");
-		code.appendCodeLine("return");
-		code.appendCodeLine(".end method");
+		code.append("");
+		code.append("; END ===================================================");
+		code.append("");
+		code.append("return");
+		code.append(".end method");
 	}
 }

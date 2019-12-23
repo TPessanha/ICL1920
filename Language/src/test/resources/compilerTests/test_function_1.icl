@@ -1,8 +1,8 @@
-//5:int
-let x=1 in
-	let f = fun y -> y+x end in
-		let g = fun x -> x+f(x) end in
-			print(g(2))
-		end
-	end
+//120:int
+let
+    factorial:(int)int = fun n:int ->
+        if n == 0 then 1 else n * factorial(n - 1) end
+    end
+in
+    println factorial(5)
 end;;

@@ -86,4 +86,9 @@ public class FunctionType extends AnyType {
 		return returnType.equals(that.returnType) &&
 			parameters.equals(that.parameters);
 	}
+
+	@Override
+	public String returnValue() {
+		return "areturn";
+	}
 }

@@ -35,7 +35,7 @@ public class ASTReference extends ASTExpression {
 		code.emit_duplicate();
 		code.emit_invokeSpecial(refClass.getClassName() + "/<init>()V");
 		code.emit_duplicate();
-		code.appendCodeBlock(referenceTo.compile(environment));
+		code.append(referenceTo.compile(environment));
 		code.emit_putField(refClass.getClassName() + "/value", referenceTo.getType().getJVMType());
 		code.emit_blank();
 		return code;

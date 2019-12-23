@@ -7,7 +7,7 @@ import java.util.Collections;
 
 public class ReferenceClass extends ClassFile {
 	public ReferenceClass(ReferenceType type) {
-		this(type, new IdentifierDetails(type.getReferenceType(), "value"));
+		this(type, new IdentifierDetails("value", type.getReferenceType()));
 	}
 
 	public ReferenceClass(ReferenceType type, IdentifierDetails value) {

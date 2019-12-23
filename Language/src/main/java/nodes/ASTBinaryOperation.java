@@ -11,8 +11,8 @@ public abstract class ASTBinaryOperation extends ASTBinaryNode implements ASTOpe
 
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		CodeBlock code = lNode.compile(environment);
-		code.appendCodeBlock(rNode.compile(environment));
-		code.appendCodeBlock(emitOperation());
+		code.append(rNode.compile(environment));
+		code.append(emitOperation());
 		return code;
 	}
 

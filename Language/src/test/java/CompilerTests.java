@@ -15,6 +15,8 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CompilerTests {
+	private static File compileDir = null;
+
 	@AfterAll
 	static void finish() throws IOException {
 		File dir =
@@ -26,7 +28,11 @@ public class CompilerTests {
 	}
 
 	@TestFactory
-	public Iterable<DynamicTest> runTests() throws URISyntaxException {
+	public Iterable<DynamicTest> runTests() throws URISyntaxException, IOException {
+		if (compileDir == null)
+			compileDir =
+				new File(Paths.get(PropertiesUtils.getCompiledPath().toString()).toString());
+
 		List<DynamicTest> tests = new ArrayList<>();
 		File dir =
 			new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("compilerTests/")).toURI());
@@ -45,12 +51,9 @@ public class CompilerTests {
 		return tests;
 	}
 
-	void cleanup() throws IOException {
-		File dir =
-			new File(Paths.get(PropertiesUtils.getCompiledPath().toString()).toString());
-
-		System.out.println("Delete: " + dir.getAbsolutePath());
-		for (File f : Objects.requireNonNull(dir.listFiles())) {
+	void cleanup() {
+		System.out.println("Delete: " + compileDir.getAbsolutePath());
+		for (File f : Objects.requireNonNull(compileDir.listFiles())) {
 			f.delete();
 		}
 	}

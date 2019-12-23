@@ -1,2 +1,2 @@
 //10:int
-println(let x= new 5 in let y= new x in let z=new y in let g= new z in let h= new g in !!!!!h + let r= new 4 in !r+1 end end end end end end);;
+println(let x:ref int= new 5 in let y : ref ref int = new x in let z: ref ref ref int =new y in let g: ref ref ref ref int= new z in let h: ref ref ref ref ref int = new g in !!!!!h + let r: ref int = new 4 in !r+1 end end end end end end);;

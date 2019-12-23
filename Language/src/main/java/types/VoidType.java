@@ -27,4 +27,11 @@ public class VoidType extends AnyType {
 	public String getJavaClass() {
 		return "java/lang/void";
 	}
+
+	@Override
+	public String toString() {
+		return "void";
+	}
+
+
 }

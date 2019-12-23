@@ -5,6 +5,7 @@ import compiler.Compiler;
 import compiler.CompilerEnvironment;
 import compiler.IdentifierDetails;
 import compiler.classes.StackFrame;
+import exceptions.IncompatibleTypeException;
 import state.Binding;
 import state.Environment;
 import types.IType;
@@ -47,7 +48,7 @@ public class ASTLet extends ASTExpression {
 			Binding d = this.bindings.get(i);
 
 			IdentifierDetails details =
-				new IdentifierDetails(((ASTNode) d.getExpression()).getType(), localScope.getLevel(), "x_" + i);
+				new IdentifierDetails("x_" + i, ((ASTNode) d.getExpression()).getType(), localScope.getLevel());
 			localScope.associate(this.bindings.get(i).getIdentifier(), details);
 			localScope.getFrame().addField(details);
 		}
@@ -71,7 +72,7 @@ public class ASTLet extends ASTExpression {
 		code.emit_duplicate();
 		code.emit_comment("store SL in new frame");
 		code.emit_aload(SL);
-		code.emit_putField(className + "/sl", "L" + parentName + ";");
+		code.emit_putField(className + "/SL", "L" + parentName + ";");
 		code.emit_comment("update SL");
 		code.emit_astore(SL);
 		code.emit_blank();
@@ -87,8 +88,8 @@ public class ASTLet extends ASTExpression {
 			code.emit_comment("Value of " + binding.getIdentifier());
 
 			code.emit_aload(SL);
-			code.appendCodeBlock(binding.getExpression().compile(localScope));
-			code.emit_putField(className + "/x_" + i, details.getType().getJVMType());
+			code.append(binding.getExpression().compile(localScope));
+			code.emit_putField(className + "/x_" + i, details.getType());
 
 			code.emit_blank();
 		}
@@ -100,7 +101,7 @@ public class ASTLet extends ASTExpression {
 		code.emit_comment("Body code START --------------------------------");
 		code.emit_blank();
 		code.tabify();
-		code.appendCodeBlock(body.compile(localScope));
+		code.append(body.compile(localScope));
 		code.detabify();
 		code.emit_blank();
 		code.emit_comment("Body code END --------------------------------");
@@ -109,7 +110,7 @@ public class ASTLet extends ASTExpression {
 		//finish
 		code.emit_comment("Update the SL");
 		code.emit_aload(SL);
-		code.emit_getField(className + "/sl", "L" + parentName + ";");
+		code.emit_getField(className + "/SL", "L" + parentName + ";");
 		code.emit_astore(SL);
 		code.emit_blank();
 
@@ -123,9 +124,15 @@ public class ASTLet extends ASTExpression {
 	public IType typecheck(Environment<IType> environment) throws Exception {
 		Environment<IType> localScope = environment.beginScope();
 
-		for (Binding d : this.bindings)
-			localScope.associate(d.getIdentifier(), d.getExpression().typecheck(localScope));
+		for (Binding bind : this.bindings) {
+//			if (((ASTNode) d.getExpression()).getType() == AnyType.value)
+//				d.setType(d.getExpression().typecheck(localScope));
+			localScope.associate(bind.getIdentifier(), bind.getType());
+			IType bindType = bind.getExpression().typecheck(localScope);
 
+			if (!bindType.equals(bindType.getType()))
+				throw new IncompatibleTypeException(bind.getType(),bindType);
+		}
 		IType type = setType(body.typecheck(localScope));
 
 		localScope.endScope();

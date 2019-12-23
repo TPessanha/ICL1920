@@ -11,8 +11,10 @@ import state.Environment;
 import types.IType;
 import types.ReferenceType;
 import types.UndefinedType;
+import types.VoidType;
 import values.IValue;
 import values.ReferenceValue;
+import values.VoidValue;
 
 public class ASTAssignment extends ASTBinaryNode implements ASTOperation {
 	private static final String operator = ":=";
@@ -27,7 +29,7 @@ public class ASTAssignment extends ASTBinaryNode implements ASTOperation {
 		IValue value = rNode.eval(environment);
 		ref.setValue(value);
 
-		return ref;
+		return new VoidValue();
 	}
 
 	@Override
@@ -41,7 +43,8 @@ public class ASTAssignment extends ASTBinaryNode implements ASTOperation {
 
 		CodeBlock code = lNode.compile(environment);
 		code.emit_checkcast(t1.getClassName());
-		code.appendCodeBlock(rNode.compile(environment));
+//		code.emit_duplicate();
+		code.append(rNode.compile(environment));
 		code.emit_putField(t1.getClassName() + "/value", t2.getJVMType());
 		code.emit_blank();
 
@@ -59,7 +62,8 @@ public class ASTAssignment extends ASTBinaryNode implements ASTOperation {
 		if (!((ReferenceType) refType).getReferenceType().equals(expressionType))
 			throw new IncompatibleTypeException(((ReferenceType) refType).getReferenceType(), expressionType);
 
-		return setType(new ReferenceType<>(rNode.typecheck(environment)));
+		return setType(VoidType.value);
+//		return setType(new ReferenceType<>(expressionType));
 	}
 
 	@Override

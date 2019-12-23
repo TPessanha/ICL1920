@@ -20,7 +20,7 @@ public class ASTSequence extends ASTBinaryNode {
 	@Override
 	public CodeBlock compile(CompilerEnvironment environment) throws Exception {
 		CodeBlock code = lNode.compile(environment);
-		code.appendCodeBlock(rNode.compile(environment));
+		code.append(rNode.compile(environment));
 		return code;
 	}
 

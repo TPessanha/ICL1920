@@ -35,9 +35,9 @@ public class ASTAnd extends ASTBinaryNode implements ASTOperation {
 
 		CodeBlock code = new CodeBlock();
 
-		code.appendCodeBlock(lNode.compile(environment));
+		code.append(lNode.compile(environment));
 		code.emit_if_equal(l1);
-		code.appendCodeBlock(rNode.compile(environment));
+		code.append(rNode.compile(environment));
 		code.emit_if_equal(l1);
 		code.emit_boolean(true);
 		code.emit_goto(l2);

@@ -36,9 +36,9 @@ public class ASTOr extends ASTBinaryNode implements ASTOperation {
 
 		CodeBlock code = new CodeBlock();
 
-		code.appendCodeBlock(lNode.compile(environment));
+		code.append(lNode.compile(environment));
 		code.emit_if_not_equal(l1);
-		code.appendCodeBlock(rNode.compile(environment));
+		code.append(rNode.compile(environment));
 		code.emit_if_equal(l2);
 		code.emit_label(l1);
 		code.emit_boolean(true);

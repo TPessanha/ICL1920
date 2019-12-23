@@ -32,4 +32,14 @@ public class BooleanType extends AnyType implements PrimitiveType {
 	public String toString() {
 		return "boolean";
 	}
+
+	@Override
+	public String returnValue() {
+		return "ireturn";
+	}
+
+	@Override
+	public String loadValue() {
+		return "iload";
+	}
 }

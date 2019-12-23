@@ -47,10 +47,10 @@ public abstract class ASTRelation extends ASTBinaryOperation {
 		switch (lNode.getType().getName()) {
 			case "int":
 			case "boolean":
-				code.appendCodeBlock(integerCompare());
+				code.append(integerCompare());
 				break;
 			case "float":
-				code.appendCodeBlock(floatCompare());
+				code.append(floatCompare());
 				break;
 		}
 		code.emit_blank();
@@ -63,7 +63,7 @@ public abstract class ASTRelation extends ASTBinaryOperation {
 
 		CodeBlock code = new CodeBlock();
 		code.emit_float_compare();
-		code.appendCodeBlock(floatJumpCondition(l1));
+		code.append(floatJumpCondition(l1));
 		code.emit_boolean(true);
 		code.emit_goto(l2);
 		code.emit_label(l1);
@@ -78,7 +78,7 @@ public abstract class ASTRelation extends ASTBinaryOperation {
 		String l2 = Compiler.generateUniqueLabel();
 
 		CodeBlock code = new CodeBlock();
-		code.appendCodeBlock(intJumpCondition(l1));
+		code.append(intJumpCondition(l1));
 		code.emit_boolean(true);
 		code.emit_goto(l2);
 		code.emit_label(l1);

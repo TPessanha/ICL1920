@@ -2,23 +2,24 @@ package values;
 
 import nodes.ASTNode;
 import state.Environment;
+import state.Parameter;
 import types.ClosureType;
 import types.IType;
 
 import java.util.List;
 
-public class ClosureValue implements IValue<Closure> {
+public class FunctionValue implements IValue<Closure> {
 	private Closure value;
 
-	public ClosureValue(List<String> parameters, Environment environment, ASTNode body) {
+	public FunctionValue(List<Parameter> parameters, Environment environment, ASTNode body) {
 		value = new Closure(parameters, environment, body);
 	}
 
-	public ClosureValue(Closure value) {
+	public FunctionValue(Closure value) {
 		this.value = value;
 	}
 
-	public List<String> getParameters() {
+	public List<Parameter> getParameters() {
 		return value.parameters;
 	}
 

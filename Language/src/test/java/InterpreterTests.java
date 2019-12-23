@@ -10,10 +10,7 @@ import parser.StreamProvider;
 import parser.StringProvider;
 import state.Environment;
 import types.IType;
-import values.BooleanValue;
-import values.FloatValue;
-import values.IValue;
-import values.IntValue;
+import values.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,16 +31,17 @@ class InterpreterTests {
 
 	final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	private PrintStream out = new PrintStream(outputStream);
+	private Parser parser = new Parser(new StringProvider(""));
 
 	private Parser getParser(String cmd) {
-		Parser parser = new Parser(new StringProvider(cmd));
+		parser.ReInit(new StringProvider(cmd));
 		outputStream.reset();
 		parser.setOutputStream(out);
 		return parser;
 	}
 
 	private Parser getParser(InputStream cmd) {
-		Parser parser = new Parser(new StreamProvider(cmd, Charset.defaultCharset()));
+		parser.ReInit(new StreamProvider(cmd, Charset.defaultCharset()));
 		outputStream.reset();
 		parser.setOutputStream(out);
 		return parser;
@@ -102,7 +100,7 @@ class InterpreterTests {
 
 	@Test
 	void test_let_1() throws Exception {
-		Parser parser = getParser("let x=5 in x end;;");
+		Parser parser = getParser("let x:int=5 in x end;;");
 		IValue result = runInterpreter(parser);
 
 		assertTrue(result instanceof IntValue);
@@ -111,7 +109,7 @@ class InterpreterTests {
 
 	@Test
 	void test_let_2() throws Exception {
-		Parser parser = getParser("let x=5 in x+5 end;;");
+		Parser parser = getParser("let x:int=5 in x+5 end;;");
 		IValue result = runInterpreter(parser);
 
 		assertTrue(result instanceof IntValue);
@@ -120,7 +118,7 @@ class InterpreterTests {
 
 	@Test
 	void test_let_3() throws Exception {
-		Parser parser = getParser("let x=2 in (let x=5 in x+1 end) + x end;;");
+		Parser parser = getParser("let x:int=2 in (let x:int=5 in x+1 end) + x end;;");
 		IValue result = runInterpreter(parser);
 
 		assertTrue(result instanceof IntValue);
@@ -129,7 +127,7 @@ class InterpreterTests {
 
 	@Test
 	void test_let_list_1() throws Exception {
-		Parser parser = getParser("let x=2,y=4 in x + y end;;");
+		Parser parser = getParser("let x:int=2,y:int=4 in x + y end;;");
 		IValue result = runInterpreter(parser);
 
 		assertTrue(result instanceof IntValue);
@@ -192,7 +190,7 @@ class InterpreterTests {
 
 	@Test
 	void test_let_with_boolean_1() throws Exception {
-		Parser parser = getParser("let x=false in x end;;");
+		Parser parser = getParser("let x:boolean=false in x end;;");
 		IValue result = runInterpreter(parser);
 
 		assertTrue(result instanceof BooleanValue);
@@ -234,7 +232,7 @@ class InterpreterTests {
 
 	@Test
 	void test_erro_2() throws Exception {
-		Parser parser = getParser("let x=1 in y end;;");
+		Parser parser = getParser("let x:int=1 in y end;;");
 
 		assertThrows(
 			UndeclaredException.class,
@@ -245,7 +243,7 @@ class InterpreterTests {
 
 	@Test
 	void test_erro_3() throws Exception {
-		Parser parser = getParser("let x=1 x=5 in x end;;");
+		Parser parser = getParser("let x:int=1 x:int=5 in x end;;");
 
 		assertThrows(
 			DuplicatedIdentifierException.class,
@@ -282,7 +280,7 @@ class InterpreterTests {
 			Parser parser = getParser(in);
 			IValue result = runInterpreter(parser);
 
-			List outputs = Arrays.asList(outputStream.toString().replace("\r","").split("\n"));
+			List outputs = Arrays.asList(outputStream.toString().replace("\r", "").split("\n"));
 
 			for (int i = 0; i < expected.size(); i++) {
 				assertEquals(expected.get(i).getValue(), outputs.get(i));
@@ -293,7 +291,10 @@ class InterpreterTests {
 
 			TypedResult fResult = expected.get(expected.size() - 1);
 			assertEquals(fResult.getType(), result.getTypeName());
-			assertEquals(fResult.getValue(), result.getValue().toString());
+			if (result instanceof ReferenceValue)
+				assertEquals(fResult.getValue(), result.toString());
+			else
+				assertEquals(fResult.getValue(), result.getValue().toString());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

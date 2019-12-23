@@ -159,6 +159,8 @@ ASTNode Statement() :
 		node = Expression()
 		|
 		node = While()
+		|
+		node = Println()
 	)
     { return node; }
 }
@@ -172,6 +174,7 @@ ASTStatement While() :
 	{ return new ASTWhile(cond,body); }
 }
 
+
 /*
  * Expression syntax
  */
@@ -181,10 +184,23 @@ ASTNode Expression() :
     ASTNode node;
 }
 {
-    node=Disjunction()
+    node=Assignment()
     { return node; }
 }
 
+
+ASTNode Assignment() :
+{
+    ASTNode node,node2;
+}
+{
+    node = Disjunction() (LOOKAHEAD(1) <ASSIGNMENT> node2 = Disjunction()
+    	{
+			node = new ASTAssignment(node,node2);
+ 		}
+    )*
+    { return node; }
+}
 
 ASTNode Disjunction() :
 {
@@ -306,9 +322,9 @@ ASTNode MultDivExpression() :
     ASTNode node, node2;
 }
 {
-	node = Term()
+	node = AsExpression()
     (
-    	LOOKAHEAD(1)( op=<MULT> | op=<DIV> ) node2 = Term()
+    	LOOKAHEAD(1)( op=<MULT> | op=<DIV> ) node2 = AsExpression()
 		{
 			if (op.kind == MULT)
     	    	node = new ASTMultiplication(node,node2);
@@ -317,22 +333,6 @@ ASTNode MultDivExpression() :
 		}
     )*
     { return node; }
-}
-
-ASTNode Term() :
-{
-	ASTNode node;
-	Token op;
-}
-{
-	node = AsExpression()
-	(
-		LOOKAHEAD(1)
-		node = Assignment(node)
-		|
-		node = ApplyFunction(node)
-	)?
-	{ return node; }
 }
 
 IType NumberType() :
@@ -368,7 +368,7 @@ Token PrefixUnaryOperator() :
     Token t;
 }
 {
-    ( t = <SUB> | t =<TILDE>)
+    ( t = <SUB> | t =<TILDE> | t = <EXCL>)
     {return t;}
 }
 
@@ -391,9 +391,9 @@ ASTNode PrefixUnaryExpression():
             	case TILDE:
             		node = new ASTNot(node);
             		break;
-//                case EXCL:
-//                	node = new ASTDereference(node);
-//                	break;
+                case EXCL:
+                	node = new ASTDereference(node);
+                	break;
             }
     	}
     	return node;
@@ -423,15 +423,6 @@ List<ASTNode> FunctionArguments() :
 	{ return arguments; }
 }
 
-ASTNode Assignment(ASTNode ref) :
-{
-	ASTNode exp;
-}
-{
-	<ASSIGNMENT> exp = Expression()
-	{ return new ASTAssignment(ref,exp); }
-}
-
 ASTNode Fact() :
 {
     ASTNode node;
@@ -450,31 +441,29 @@ ASTNode Fact() :
         |
         node = NewReference()
         |
-        node = Dereference()
-        |
         node = Function()
-        |
-        node = Println()
+
     )
     {
         return node;
     }
 }
 
-List<String> FunctionParameters() :
+List<Parameter> FunctionParameters() :
 {
-	List<String> parameters = new ArrayList<>();
+	List<Parameter> parameters = new ArrayList<>();
 	Token identifier;
+	IType type;
 }
 {
-	identifier = <IDENTIFIER> { parameters.add(identifier.image); }
-	(<COMMA> identifier = <IDENTIFIER> { parameters.add(identifier.image); })*
+	(identifier = <IDENTIFIER> <COLON> type = Type()  { parameters.add(new Parameter(identifier.image,type)); }
+	(<COMMA> identifier = <IDENTIFIER> <COLON> type = Type() { parameters.add(new Parameter(identifier.image,type)); })*)?
 	{ return parameters; }
 }
 
 ASTNode Function() :
 {
-    List<String> parameters;
+    List<Parameter> parameters;
     ASTNode body;
 }
 {
@@ -516,17 +505,8 @@ ASTNode NewReference() :
 	ASTNode exp;
 }
 {
-	<NEW> exp = Expression()
+	<NEW> exp = Disjunction()
 	{return new ASTReference(exp);}
-}
-
-ASTNode Dereference() :
-{
-	ASTNode exp;
-}
-{
-	<EXCL> exp = Fact()
-	{return new ASTDereference(exp);}
 }
 
 IType PrimitiveType() :
@@ -543,6 +523,17 @@ IType PrimitiveType() :
     { return t; }
 }
 
+
+FunctionType functionType():
+{
+	IType t;
+	List<IType> params = new ArrayList<>();
+}
+{
+	<LPAR> ( t = Type() { params.add(t); } (<COMMA> t = Type() { params.add(t); } )*)? <RPAR> t = Type()
+	{ return new FunctionType(t,params); }
+}
+
 IType Type() :
 {
 	IType t;
@@ -554,6 +545,11 @@ IType Type() :
 		< ANY > { t = AnyType.value; }
 		|
 		< VOID > { t = VoidType.value; }
+		|
+		<REFERENCE> t = Type() { t = new ReferenceType(t); }
+		|
+		t = functionType()
+
 
 	)
 	{ return t; }
@@ -562,13 +558,18 @@ IType Type() :
 ASTNode Identifier() :
 {
     Token id;
-    ASTNode node;
+    ASTNode identifier = null, opFun = null;
 }
 {
     id = <IDENTIFIER>
+    (
+    	{ identifier = new ASTIdentifier(id.image); }
+        opFun = ApplyFunction(identifier)
+    )?
     {
-        node = new ASTIdentifier(id.image);
-        return node;
+    	if(opFun == null)
+        	return new ASTIdentifier(id.image);
+       	return opFun;
     }
 }
 
@@ -576,10 +577,11 @@ Binding Binding() :
 {
     Token id;
     ASTNode sequence;
+    IType type;
 }
 {
-    id=<IDENTIFIER> <EQUALS> sequence = Sequence()
-    { return new Binding(id.image,sequence); }
+    id=<IDENTIFIER> <COLON> type = Type() <EQUALS> sequence = Sequence()
+    { return new Binding(id.image,sequence,type); }
 }
 
 List<Binding> BindingsList() :
@@ -612,7 +614,7 @@ ASTNode Println() :
     ASTNode exp;
 }
 {
-	( <PRINTLN> | <PRINT> ) <LPAR> exp = Expression() <RPAR>
+	( <PRINTLN> | <PRINT> ) exp = Disjunction()
    { return new ASTPrintln(exp,out); }
 }
 

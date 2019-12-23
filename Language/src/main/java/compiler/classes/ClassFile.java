@@ -3,37 +3,53 @@ package compiler.classes;
 import compiler.CodeBlock;
 import compiler.IdentifierDetails;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ClassFile {
-	protected CodeBlock code;
+public class ClassFile extends CompilerFile {
 	protected CodeBlock body;
 	protected String className;
 	protected String superName;
+	protected List<String> implementsI;
 	protected List<IdentifierDetails> fields;
-
-	private String[] parentStructuresStart = {".method", "; tabify"};
-	private String[] parentStructuresEnd = {".end method", "; detabify"};
+	protected List<Method> methods;
 
 	public ClassFile(String className, String superName, List<IdentifierDetails> fields) {
-		code = new CodeBlock();
+		super();
 		this.className = className;
 		this.superName = superName;
+		implementsI = new ArrayList<>();
 		this.fields = fields;
+		this.methods = new ArrayList<>();
 		body = new CodeBlock();
 	}
 
+	protected List<String> getImplementsI() {
+		return implementsI;
+	}
+
+	protected void addImplements(String implementsI) {
+		this.implementsI.add(implementsI);
+	}
+
+	@Override
 	public void close() {
 		writeHeader();
 		writeDefaultConstructor();
-		code.appendCodeBlock(body);
+		writeMethods();
+		code.append(body);
+	}
+
+	public void addField(IdentifierDetails details){
+		fields.add(details);
+	}
+
+	public void addMethod(Method m) {
+		methods.add(m);
+	}
+
+	public List<IdentifierDetails> getFields() {
+		return fields;
 	}
 
 	public String getClassName() {
@@ -45,88 +61,53 @@ public class ClassFile {
 	}
 
 	public ClassFile(String className, String superName) {
-		this(className, superName, Collections.emptyList());
+		this(className, superName, new ArrayList<>());
 	}
 
 	public ClassFile(String className) {
-		this(className, "java/lang/Object", Collections.emptyList());
+		this(className, "java/lang/Object", new ArrayList<>());
 	}
 
 	protected void writeHeader() {
-		code.appendCodeLine(".class public " + getClassName());
-		code.appendCodeLine(".super java/lang/Object");
+		code.append(".class public " + getClassName());
+		code.append(".super java/lang/Object");
+
+		for (String i: implementsI)
+			code.append(".implements " + i);
+
 		if (this instanceof StackFrame)
-			code.appendCodeLine(".field public sl " + superName);
+			code.append(".field public SL " + superName);
 		for (IdentifierDetails details : fields)
-			code.appendCodeLine(".field public " + details.getName() + " " + details.getType().getJVMType());
-		code.appendCodeLine("");
+			code.append(".field public " + details.getName() + " " + details.getType());
+
+
+		code.emit_blank();
 	}
 
 	protected void writeDefaultConstructor() {
-		code.appendCodeLine("; standard initializer");
-		code.appendCodeLine(".method public <init>()V");
-		code.appendCodeLine("aload_0");
-		code.appendCodeLine("invokenonvirtual java/lang/Object/<init>()V");
-		code.appendCodeLine("return");
-		code.appendCodeLine(".end method");
-		code.appendCodeLine("");
+		code.append("; standard initializer");
+		code.append(".method public <init>()V");
+		code.append("aload_0");
+		code.append("invokenonvirtual java/lang/Object/<init>()V");
+		code.append("return");
+		code.append(".end method");
+		code.emit_blank();
+	}
+
+	private void writeMethods(){
+		for (Method m: methods)
+		{
+			code.append(".method public " + m.getSignature());
+			code.append(".limit locals 10");
+			code.append(".limit stack 256");
+			code.append(m.getBody());
+			code.append(m.getReturnValue());
+			code.append(".end method");
+			code.emit_blank();
+		}
 	}
 
 	public String getFileName() {
 		return getClassName() + ".j";
-	}
-
-	public void dump(PrintStream out, boolean prettify) {
-		if (prettify) {
-			StringBuilder tabs = new StringBuilder();
-
-			for (String line : code.getCode()) {
-				if (isParentStructureEnd(line)) {
-					tabs.deleteCharAt(tabs.length() - 1);
-					out.println(tabs + line);
-				} else if (isParentStructureStart(line)) {
-					out.println(tabs + line);
-					tabs.append("\t");
-				} else
-					out.println(tabs + line);
-			}
-		} else {
-			for (String line : code.getCode())
-				out.println(line);
-		}
-	}
-
-	private boolean isParentStructureStart(String line) {
-		return Arrays.stream(parentStructuresStart).parallel().anyMatch(line::contains);
-	}
-
-	private boolean isParentStructureEnd(String line) {
-		return Arrays.stream(parentStructuresEnd).parallel().anyMatch(line::contains);
-	}
-
-//	public String dump() {
-//		StringBuilder builder = new StringBuilder();
-//		for (String line : code.getCode())
-//			builder.append(line + "\n");
-//		return builder.toString();
-//	}
-
-	public void dump(Path path) throws IOException {
-		dump(path.toAbsolutePath().toString());
-	}
-
-	public void dump(String path) throws IOException {
-		File compiledFile = new File(Paths.get(path, getFileName()).toString());
-		if (!compiledFile.exists()) {
-			compiledFile.getParentFile().mkdirs();
-			compiledFile.createNewFile();
-		}
-		PrintStream out = new PrintStream(compiledFile);
-		dump(out, true);
-		out.close();
-	}
-
-	public void emitCodeBlock(CodeBlock code) {
-		this.code.appendCodeBlock(code);
 	}
 }

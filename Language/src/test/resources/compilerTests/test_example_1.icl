@@ -1,5 +1,5 @@
 //55:int
-let x = new 10 s = new 0 in
+let x : ref int = new 10 s : ref int = new 0 in
 	while
 		!x>0
 	do

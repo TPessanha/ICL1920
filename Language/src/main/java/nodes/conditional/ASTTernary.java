@@ -37,7 +37,7 @@ public class ASTTernary extends ASTExpression {
 		code.emit_if_equal(l1);
 
 		code.tabify();
-		code.appendCodeBlock(positiveExpression.compile(environment));
+		code.append(positiveExpression.compile(environment));
 		IType t1 = positiveExpression.getType();
 		if (!sameTypeCheck && t1 instanceof PrimitiveType)
 			code.emit_valueOf(t1);
@@ -47,7 +47,7 @@ public class ASTTernary extends ASTExpression {
 		code.emit_label(l1);
 
 		code.tabify();
-		code.appendCodeBlock(negativeExpression.compile(environment));
+		code.append(negativeExpression.compile(environment));
 		IType t2 = negativeExpression.getType();
 		if (!sameTypeCheck && t2 instanceof PrimitiveType)
 			code.emit_valueOf(t2);

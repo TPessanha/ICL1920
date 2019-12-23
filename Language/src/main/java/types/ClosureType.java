@@ -27,4 +27,9 @@ public class ClosureType extends AnyType {
 	public String getJavaClass() {
 		return "java/lang/Object";
 	}
+
+	@Override
+	public String returnValue() {
+		return "areturn";
+	}
 }

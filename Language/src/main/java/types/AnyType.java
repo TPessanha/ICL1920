@@ -38,4 +38,14 @@ public class AnyType implements IType {
 	{
 		return getName().equals(anotherType.getName());
 	}
+
+	@Override
+	public String returnValue() {
+		return "return";
+	}
+
+	@Override
+	public String loadValue() {
+		return "aload";
+	}
 }

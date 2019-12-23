@@ -27,4 +27,9 @@ public class StringType extends AnyType {
 	public String getJavaClass() {
 		return "java/lang/String";
 	}
+
+	@Override
+	public String returnValue() {
+		return "areturn";
+	}
 }

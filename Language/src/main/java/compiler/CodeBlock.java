@@ -18,7 +18,7 @@ public class CodeBlock {
 		code = new ArrayList<>();
 	}
 
-	public void appendCodeLine(String codeLine) {
+	public void append(String codeLine) {
 
 		code.add(codeLine);
 	}
@@ -31,29 +31,29 @@ public class CodeBlock {
 		emit_comment("detabify");
 	}
 
-	public void appendAllCodeLines(List<String> codeLines) {
+	public void append(List<String> codeLines) {
 		for (String line : codeLines)
-			appendCodeLine(line);
+			append(line);
 	}
 
 	public List<String> getCode() {
 		return code;
 	}
 
-	public void appendCodeBlock(CodeBlock instructions) {
-		appendAllCodeLines(instructions.getCode());
+	public void append(CodeBlock instructions) {
+		append(instructions.getCode());
 	}
 
 	public void emit_sint(int i) {
-		appendCodeLine("sipush " + i);
+		append("sipush " + i);
 	}
 
 	public void emit_bint(int i) {
-		appendCodeLine("bipush " + i);
+		append("bipush " + i);
 	}
 
 	public void emit_iconst(int i) {
-		appendCodeLine("iconst_" + i);
+		append("iconst_" + i);
 	}
 
 	public void emit_boolean(boolean b) {
@@ -61,139 +61,139 @@ public class CodeBlock {
 	}
 
 	public void emit_iadd() {
-		appendCodeLine("iadd");
+		append("iadd");
 	}
 
 	public void emit_add(String type) {
-		appendCodeLine(type + "add");
+		append(type + "add");
 	}
 
 	public void emit_sub(String type) {
-		appendCodeLine(type + "sub");
+		append(type + "sub");
 	}
 
 	public void emit_optimize_int(int value) {
 		if (value >= 0 && value <= 5)
 			emit_iconst(value);
 		else if (value == -1)
-			appendCodeLine("iconst_m1");
+			append("iconst_m1");
 		else if (value >= -128 && value <= 127)
 			emit_bint(value);
 		else if (value >= -32768 && value <= 32767)
 			emit_sint(value);
 		else
-			appendCodeLine("ldc " + value);
+			append("ldc " + value);
 	}
 
 	public void emit_mul(String type) {
-		appendCodeLine(type + "mul");
+		append(type + "mul");
 	}
 
 	public void emit_div(String type) {
-		appendCodeLine(type + "div");
+		append(type + "div");
 	}
 
 	public void emit_int_compare_not_equal(String label) {
-		appendCodeLine("if_icmpne " + label);
+		append("if_icmpne " + label);
 	}
 
 	public void emit_int_compare_less_or_equal(String label) {
-		appendCodeLine("if_icmple " + label);
+		append("if_icmple " + label);
 	}
 
 	public void emit_int_compare_equal(String label) {
-		appendCodeLine("if_icmpeq " + label);
+		append("if_icmpeq " + label);
 	}
 
 	public void emit_goto(String label) {
-		appendCodeLine("goto " + label);
+		append("goto " + label);
 	}
 
 	public void emit_isub() {
-		appendCodeLine("isub");
+		append("isub");
 	}
 
 	public void emit_imul() {
-		appendCodeLine("imul");
+		append("imul");
 	}
 
 	public void emit_idiv() {
-		appendCodeLine("idiv");
+		append("idiv");
 	}
 
 	public void emit_fadd() {
-		appendCodeLine("fadd");
+		append("fadd");
 	}
 
 	public void emit_fsub() {
-		appendCodeLine("fsub");
+		append("fsub");
 	}
 
 	public void emit_fmul() {
-		appendCodeLine("fmul");
+		append("fmul");
 	}
 
 	public void emit_fdiv() {
-		appendCodeLine("fdiv");
+		append("fdiv");
 	}
 
 	public void emit_new(String className) {
-		appendCodeLine("new " + className);
+		append("new " + className);
 	}
 
 	public void emit_duplicate() {
-		appendCodeLine("dup");
+		append("dup");
 	}
 
 	public void emit_invokeSpecial(String params) {
-		appendCodeLine("invokespecial " + params);
+		append("invokespecial " + params);
 	}
 
 	public void emit_aload(int n) {
-		appendCodeLine("aload " + n);
+		append("aload " + n);
 	}
 
 	public void emit_astore(int n) {
-		appendCodeLine("astore " + n);
+		append("astore " + n);
 	}
 
 	public void emit_putField(String field, String descriptor) {
-		appendCodeLine("putfield " + field + " " + descriptor);
+		append("putfield " + field + " " + descriptor);
 	}
 
 	public void emit_comment(String msg) {
-		appendCodeLine("; " + msg);
+		append("; " + msg);
 	}
 
 	public void emit_blank() {
-		appendCodeLine("");
+		append("");
 	}
 
 	public void emit_getField(String field, String descriptor) {
-		appendCodeLine("getfield " + field + " " + descriptor);
+		append("getfield " + field + " " + descriptor);
 	}
 
 	public void emit_ineg() {
-		appendCodeLine("ineg");
+		append("ineg");
 	}
 
 	public void emit_float(float value) {
-		appendCodeLine("ldc " + value);
+		append("ldc " + value);
 	}
 
 	public void emit_optimize_float(float value) {
 		if (value == 0 || value == 1 || value == 2) {
-			appendCodeLine("fconst_" + (int) value);
+			append("fconst_" + (int) value);
 		} else
-			appendCodeLine("ldc " + value);
+			append("ldc " + value);
 	}
 
 	public void emit_ixor() {
-		appendCodeLine("ixor");
+		append("ixor");
 	}
 
 	public void emit_label(String name) {
-		appendCodeLine(name + ":");
+		append(name + ":");
 	}
 
 	public void emit_int_to_float() {
@@ -205,23 +205,23 @@ public class CodeBlock {
 	}
 
 	public void emit_float_compare() {
-		appendCodeLine("fcmpl");
+		append("fcmpl");
 	}
 
 	public void emit_if_not_equal(String label) {
-		appendCodeLine("ifne " + label);
+		append("ifne " + label);
 	}
 
 	public void emit_if_less_equal(String label) {
-		appendCodeLine("ifle " + label);
+		append("ifle " + label);
 	}
 
 	public void emit_if_equal(String label) {
-		appendCodeLine("ifeq " + label);
+		append("ifeq " + label);
 	}
 
 	public void emit_convert(String type1, String type2) {
-		appendCodeLine(type1 + "2" + type2);
+		append(type1 + "2" + type2);
 	}
 
 	public void emit_convert(IType type1, IType type2) {
@@ -237,51 +237,51 @@ public class CodeBlock {
 //	}
 
 	public void emit_if_greater_equal(String label) {
-		appendCodeLine("ifge " + label);
+		append("ifge " + label);
 	}
 
 	public void emit_int_compare_greater_or_equal(String label) {
-		appendCodeLine("if_icmpge " + label);
+		append("if_icmpge " + label);
 	}
 
 	public void emit_if_less(String label) {
-		appendCodeLine("ifle " + label);
+		append("ifle " + label);
 	}
 
 	public void emit_int_compare_less(String label) {
-		appendCodeLine("if_icmplt " + label);
+		append("if_icmplt " + label);
 	}
 
 	public void emit_if_greater(String label) {
-		appendCodeLine("ifgt " + label);
+		append("ifgt " + label);
 	}
 
 	public void emit_int_compare_greater(String label) {
-		appendCodeLine("if_icmpgt " + label);
+		append("if_icmpgt " + label);
 	}
 
 	public void emit_iand() {
-		appendCodeLine("iand");
+		append("iand");
 	}
 
 	public void emit_ior() {
-		appendCodeLine("ior");
+		append("ior");
 	}
 
 	public void emit_checkcast(String className) {
-		appendCodeLine("checkcast " + className);
+		append("checkcast " + className);
 	}
 
 	public void emit_getstatic(String field, String descriptor) {
-		appendCodeLine("getstatic " + field + " " + descriptor);
+		append("getstatic " + field + " " + descriptor);
 	}
 
 	public void emit_invokevirtual(String method) {
-		appendCodeLine("invokevirtual " + method);
+		append("invokevirtual " + method);
 	}
 
 	public void emit_invokeStatic(String method) {
-		appendCodeLine("invokestatic " + method);
+		append("invokestatic " + method);
 	}
 
 	public void emit_valueOf(IType type) {
@@ -295,5 +295,9 @@ public class CodeBlock {
 
 	public void emit_invoke_println(String type) {
 		emit_invokevirtual("java/io/PrintStream/println(" + type + ")V");
+	}
+
+	public void emit_invokeinterface(String method) {
+		append("invokeinterface " + method);
 	}
 }

@@ -554,6 +554,41 @@
    </PRE>
   </TD>
  </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+   </PRE>
+  </TD>
+ </TR>
 </TABLE>
 <H2 ALIGN='CENTER'>NON-TERMINALS</H2>
 <TABLE>
@@ -579,7 +614,7 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod3">Statement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod4">Expression</A> | <A HREF="#prod5">While</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod4">Expression</A> | <A HREF="#prod5">While</A> | <A HREF="#prod6">Println</A> )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod5">While</A></TD>
@@ -598,65 +633,65 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod4">Expression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod6">Disjunction</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod7">Assignment</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod6">Disjunction</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">Assignment</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod7">Conjunction</A> ( ( &lt;DISJ&gt; | &lt;EAGER_DISJ&gt; ) <A HREF="#prod7">Conjunction</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod8">Disjunction</A> ( &lt;ASSIGNMENT&gt; <A HREF="#prod8">Disjunction</A> )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">Conjunction</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">Disjunction</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod8">Equality</A> ( ( &lt;CONJ&gt; | &lt;EAGER_CONJ&gt; ) <A HREF="#prod8">Equality</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod9">Conjunction</A> ( ( &lt;DISJ&gt; | &lt;EAGER_DISJ&gt; ) <A HREF="#prod9">Conjunction</A> )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">Equality</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">Conjunction</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod9">Comparison</A> ( ( &lt;EQEQ&gt; | &lt;EXCL_EQUALS&gt; ) <A HREF="#prod9">Comparison</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod10">Equality</A> ( ( &lt;CONJ&gt; | &lt;EAGER_CONJ&gt; ) <A HREF="#prod10">Equality</A> )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">Comparison</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">Equality</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod10">AddSubExpression</A> ( ( &lt;GREATER&gt; | &lt;LESS&gt; | &lt;GR_EQUALS&gt; | &lt;LE_EQUALS&gt; ) <A HREF="#prod10">AddSubExpression</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod11">Comparison</A> ( ( &lt;EQEQ&gt; | &lt;EXCL_EQUALS&gt; ) <A HREF="#prod11">Comparison</A> )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">AddSubExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod11">Comparison</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod11">MultDivExpression</A> ( ( &lt;ADD&gt; | &lt;SUB&gt; ) <A HREF="#prod11">MultDivExpression</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod12">AddSubExpression</A> ( ( &lt;GREATER&gt; | &lt;LESS&gt; | &lt;GR_EQUALS&gt; | &lt;LE_EQUALS&gt; ) <A HREF="#prod12">AddSubExpression</A> )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod11">MultDivExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod12">AddSubExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod12">Term</A> ( ( &lt;MULT&gt; | &lt;DIV&gt; ) <A HREF="#prod12">Term</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod13">MultDivExpression</A> ( ( &lt;ADD&gt; | &lt;SUB&gt; ) <A HREF="#prod13">MultDivExpression</A> )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod12">Term</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">MultDivExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod13">AsExpression</A> ( <A HREF="#prod14">Assignment</A> | <A HREF="#prod15">ApplyFunction</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod14">AsExpression</A> ( ( &lt;MULT&gt; | &lt;DIV&gt; ) <A HREF="#prod14">AsExpression</A> )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod16">NumberType</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod15">NumberType</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>( &lt;FLOAT&gt; | &lt;INT&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">AsExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod14">AsExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod17">PrefixUnaryExpression</A> ( &lt;AS&gt; <A HREF="#prod16">NumberType</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod16">PrefixUnaryExpression</A> ( &lt;AS&gt; <A HREF="#prod15">NumberType</A> )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod18">PrefixUnaryOperator</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod17">PrefixUnaryOperator</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;SUB&gt; | &lt;TILDE&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;SUB&gt; | &lt;TILDE&gt; | &lt;EXCL&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod17">PrefixUnaryExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod16">PrefixUnaryExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod18">PrefixUnaryOperator</A> )* <A HREF="#prod19">Fact</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod17">PrefixUnaryOperator</A> )* <A HREF="#prod18">Fact</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod15">ApplyFunction</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod19">ApplyFunction</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;LPAR&gt; <A HREF="#prod20">FunctionArguments</A> &lt;RPAR&gt;</TD>
 </TR>
@@ -666,24 +701,19 @@
 <TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod2">Sequence</A> ( &lt;COMMA&gt; <A HREF="#prod2">Sequence</A> )* )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod14">Assignment</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod18">Fact</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;ASSIGNMENT&gt; <A HREF="#prod4">Expression</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod21">Literal</A> | <A HREF="#prod22">Let</A> | <A HREF="#prod23">TernaryExpression</A> | <A HREF="#prod24">parenthesizedSequence</A> | <A HREF="#prod25">Identifier</A> | <A HREF="#prod26">NewReference</A> | <A HREF="#prod27">Function</A> )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod19">Fact</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod28">FunctionParameters</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod21">Literal</A> | <A HREF="#prod22">Let</A> | <A HREF="#prod23">TernaryExpression</A> | <A HREF="#prod24">parenthesizedSequence</A> | <A HREF="#prod25">Identifier</A> | <A HREF="#prod26">NewReference</A> | <A HREF="#prod27">Dereference</A> | <A HREF="#prod28">Function</A> | <A HREF="#prod29">Println</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;IDENTIFIER&gt; &lt;COLON&gt; <A HREF="#prod29">Type</A> ( &lt;COMMA&gt; &lt;IDENTIFIER&gt; &lt;COLON&gt; <A HREF="#prod29">Type</A> )* )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod30">FunctionParameters</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">Function</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENTIFIER&gt; ( &lt;COMMA&gt; &lt;IDENTIFIER&gt; )*</TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod28">Function</A></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FUN&gt; <A HREF="#prod30">FunctionParameters</A> &lt;ARROW&gt; <A HREF="#prod2">Sequence</A> &lt;END&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FUN&gt; <A HREF="#prod28">FunctionParameters</A> &lt;ARROW&gt; <A HREF="#prod2">Sequence</A> &lt;END&gt;</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod23">TernaryExpression</A></TD>
@@ -708,47 +738,47 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">NewReference</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;NEW&gt; <A HREF="#prod4">Expression</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;NEW&gt; <A HREF="#prod8">Disjunction</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">Dereference</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod30">PrimitiveType</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;EXCL&gt; <A HREF="#prod19">Fact</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod15">NumberType</A> | &lt;BOOLEAN&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod31">PrimitiveType</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod31">functionType</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod16">NumberType</A> | &lt;BOOLEAN&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LPAR&gt; ( <A HREF="#prod29">Type</A> ( &lt;COMMA&gt; <A HREF="#prod29">Type</A> )* )? &lt;RPAR&gt; <A HREF="#prod29">Type</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod32">Type</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod29">Type</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod31">PrimitiveType</A> | &lt;ANY&gt; | &lt;VOID&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod30">PrimitiveType</A> | &lt;ANY&gt; | &lt;VOID&gt; | &lt;REFERENCE&gt; <A HREF="#prod29">Type</A> | <A HREF="#prod31">functionType</A> )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod25">Identifier</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENTIFIER&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENTIFIER&gt; ( <A HREF="#prod19">ApplyFunction</A> )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod33">Binding</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod32">Binding</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENTIFIER&gt; &lt;EQUALS&gt; <A HREF="#prod2">Sequence</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENTIFIER&gt; &lt;COLON&gt; <A HREF="#prod29">Type</A> &lt;EQUALS&gt; <A HREF="#prod2">Sequence</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod34">BindingsList</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod33">BindingsList</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod33">Binding</A> ( ( &lt;COMMA&gt; )? <A HREF="#prod33">Binding</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod32">Binding</A> ( ( &lt;COMMA&gt; )? <A HREF="#prod32">Binding</A> )*</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod22">Let</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LET&gt; <A HREF="#prod34">BindingsList</A> &lt;IN&gt; <A HREF="#prod2">Sequence</A> &lt;END&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LET&gt; <A HREF="#prod33">BindingsList</A> &lt;IN&gt; <A HREF="#prod2">Sequence</A> &lt;END&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod29">Println</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod6">Println</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;PRINTLN&gt; | &lt;PRINT&gt; ) &lt;LPAR&gt; <A HREF="#prod4">Expression</A> &lt;RPAR&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;PRINTLN&gt; | &lt;PRINT&gt; ) <A HREF="#prod8">Disjunction</A></TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod24">parenthesizedSequence</A></TD>

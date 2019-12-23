@@ -3,21 +3,31 @@ package compiler;
 import types.IType;
 
 public class IdentifierDetails {
-	private IType type;
-	private int level;
 	private String name;
+	private String type;
+	private int level;
 
-	public IdentifierDetails(IType type, int level, String name) {
-		this.type = type;
+	public IdentifierDetails(String name, IType type, int level) {
+		this.type = type.getJVMType();
 		this.level = level;
 		this.name = name;
 	}
 
-	public IdentifierDetails(IType type, String name) {
-		this(type,0,name);
+	public IdentifierDetails(String name, String type, int level) {
+		this.name = name;
+		this.type = type;
+		this.level = level;
 	}
 
-	public IType getType() {
+	public IdentifierDetails(String name, IType type) {
+		this(name, type, 0);
+	}
+
+	public IdentifierDetails(String name, String type) {
+		this(name, type, 0);
+	}
+
+	public String getType() {
 		return type;
 	}
 

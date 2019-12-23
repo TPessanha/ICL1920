@@ -12,4 +12,8 @@ public interface IType {
 	String getJavaClass();
 
 	boolean equals(IType anotherType);
+
+	String returnValue();
+
+	String loadValue();
 }

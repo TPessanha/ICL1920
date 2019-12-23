@@ -1,6 +1,6 @@
 package compiler;
 
-import compiler.classes.ClassFile;
+import compiler.classes.CompilerFile;
 import compiler.classes.MainClass;
 import exceptions.TypeMismatchException;
 import nodes.Node;
@@ -73,11 +73,11 @@ public class Compiler {
 		compiledClasses.clear();
 	}
 
-	public static void addClassFile(ClassFile file) throws IOException {
-		if (!compiledClasses.contains(file.getClassName())) {
+	public static void addClassFile(CompilerFile file) throws IOException {
+		if (!compiledClasses.contains(file.getFileName())) {
 			file.close();
 			file.dump(getCompiledPath());
-			compiledClasses.add(file.getClassName());
+			compiledClasses.add(file.getFileName());
 		}
 	}
 

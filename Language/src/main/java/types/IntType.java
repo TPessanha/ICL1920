@@ -41,4 +41,14 @@ public class IntType extends NumberType{
 	public String toString() {
 		return "int";
 	}
+
+	@Override
+	public String returnValue() {
+		return "ireturn";
+	}
+
+	@Override
+	public String loadValue() {
+		return "iload";
+	}
 }
