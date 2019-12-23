@@ -7,7 +7,6 @@ import parser.Parser;
 import parser.Provider;
 import parser.StreamProvider;
 import state.Environment;
-import types.IType;
 import types.VoidType;
 import values.IValue;
 
@@ -22,9 +21,9 @@ public class MainInterpreter {
 		while (true) {
 			try {
 				Node exp = parser.Start();
-				IType resultType = exp.typecheck(new Environment<>(false));
-				if (resultType != null)
-					System.out.println("Expected type: " + resultType.getName());
+//				IType resultType = exp.typecheck(new Environment<>(false));
+//				if (resultType != null)
+//					System.out.println("Expected type: " + resultType.getName());
 
 				IValue<?> out = exp.eval(new Environment<>(false));
 				if (out.getType() instanceof VoidType)
