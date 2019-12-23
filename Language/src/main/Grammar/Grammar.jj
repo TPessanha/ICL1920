@@ -564,7 +564,10 @@ ASTNode Identifier() :
     id = <IDENTIFIER>
     (
     	{ identifier = new ASTIdentifier(id.image); }
-        opFun = ApplyFunction(identifier)
+		opFun = ApplyFunction(identifier)
+        (
+        	opFun = ApplyFunction(opFun)
+        )*
     )?
     {
     	if(opFun == null)
