@@ -1,8 +1,10 @@
 # ICL1920_41774_44292
-
-Gon�alo Feliciano - 44292
+This is a basic programming language with an interpreter and a compiler.
+Made for the ICL (Interpretação e Compilação de Linguagens) course at FCT 1920.
 
 Tomas Pessanha - 41774
+
+Gonçalo Feliciano - 44292
 
 ## Main
 
